@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pcitc.oilmachine.dao.AdInfoDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.pcitc.oilmachine.model.AdInfoDetail" >
+    <id column="adInfodetailId" property="adinfodetailid" jdbcType="VARCHAR" />
+    <result column="adInfoId" property="adinfoid" jdbcType="VARCHAR" />
+    <result column="tenantid" property="tenantid" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="adType" property="adtype" jdbcType="BIGINT" />
+    <result column="fileName" property="filename" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="SORTS" property="sorts" jdbcType="BIGINT" />
+    <result column="CREATOR" property="creator" jdbcType="VARCHAR" />
+    <result column="UPDATEUSER" property="updateuser" jdbcType="VARCHAR" />
+    <result column="UPDATETIME" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="CREATEDATE" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    adInfodetailId, adInfoId, tenantid, url, adType, fileName, STATUS, SORTS, CREATOR, 
+    UPDATEUSER, UPDATETIME, CREATEDATE
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pcitc.oilmachine.model.AdInfoDetailExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from iot_adinfodetail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from iot_adinfodetail
+    where adInfodetailId = #{adinfodetailid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from iot_adinfodetail
+    where adInfodetailId = #{adinfodetailid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pcitc.oilmachine.model.AdInfoDetailExample" >
+    delete from iot_adinfodetail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pcitc.oilmachine.model.AdInfoDetail" >
+    insert into iot_adinfodetail (adInfodetailId, adInfoId, tenantid, 
+      url, adType, fileName, 
+      STATUS, SORTS, CREATOR, 
+      UPDATEUSER, UPDATETIME, CREATEDATE
+      )
+    values (#{adinfodetailid,jdbcType=VARCHAR}, #{adinfoid,jdbcType=VARCHAR}, #{tenantid,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{adtype,jdbcType=BIGINT}, #{filename,jdbcType=VARCHAR}, 
+      #{status,jdbcType=TINYINT}, #{sorts,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, 
+      #{updateuser,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{createdate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pcitc.oilmachine.model.AdInfoDetail" >
+    insert into iot_adinfodetail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="adinfodetailid != null" >
+        adInfodetailId,
+      </if>
+      <if test="adinfoid != null" >
+        adInfoId,
+      </if>
+      <if test="tenantid != null" >
+        tenantid,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="adtype != null" >
+        adType,
+      </if>
+      <if test="filename != null" >
+        fileName,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="sorts != null" >
+        SORTS,
+      </if>
+      <if test="creator != null" >
+        CREATOR,
+      </if>
+      <if test="updateuser != null" >
+        UPDATEUSER,
+      </if>
+      <if test="updatetime != null" >
+        UPDATETIME,
+      </if>
+      <if test="createdate != null" >
+        CREATEDATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="adinfodetailid != null" >
+        #{adinfodetailid,jdbcType=VARCHAR},
+      </if>
+      <if test="adinfoid != null" >
+        #{adinfoid,jdbcType=VARCHAR},
+      </if>
+      <if test="tenantid != null" >
+        #{tenantid,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="adtype != null" >
+        #{adtype,jdbcType=BIGINT},
+      </if>
+      <if test="filename != null" >
+        #{filename,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="sorts != null" >
+        #{sorts,jdbcType=BIGINT},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updateuser != null" >
+        #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pcitc.oilmachine.model.AdInfoDetailExample" resultType="java.lang.Integer" >
+    select count(*) from iot_adinfodetail
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update iot_adinfodetail
+    <set >
+      <if test="record.adinfodetailid != null" >
+        adInfodetailId = #{record.adinfodetailid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.adinfoid != null" >
+        adInfoId = #{record.adinfoid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tenantid != null" >
+        tenantid = #{record.tenantid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.url != null" >
+        url = #{record.url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.adtype != null" >
+        adType = #{record.adtype,jdbcType=BIGINT},
+      </if>
+      <if test="record.filename != null" >
+        fileName = #{record.filename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.sorts != null" >
+        SORTS = #{record.sorts,jdbcType=BIGINT},
+      </if>
+      <if test="record.creator != null" >
+        CREATOR = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateuser != null" >
+        UPDATEUSER = #{record.updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updatetime != null" >
+        UPDATETIME = #{record.updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdate != null" >
+        CREATEDATE = #{record.createdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update iot_adinfodetail
+    set adInfodetailId = #{record.adinfodetailid,jdbcType=VARCHAR},
+      adInfoId = #{record.adinfoid,jdbcType=VARCHAR},
+      tenantid = #{record.tenantid,jdbcType=VARCHAR},
+      url = #{record.url,jdbcType=VARCHAR},
+      adType = #{record.adtype,jdbcType=BIGINT},
+      fileName = #{record.filename,jdbcType=VARCHAR},
+      STATUS = #{record.status,jdbcType=TINYINT},
+      SORTS = #{record.sorts,jdbcType=BIGINT},
+      CREATOR = #{record.creator,jdbcType=VARCHAR},
+      UPDATEUSER = #{record.updateuser,jdbcType=VARCHAR},
+      UPDATETIME = #{record.updatetime,jdbcType=TIMESTAMP},
+      CREATEDATE = #{record.createdate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pcitc.oilmachine.model.AdInfoDetail" >
+    update iot_adinfodetail
+    <set >
+      <if test="adinfoid != null" >
+        adInfoId = #{adinfoid,jdbcType=VARCHAR},
+      </if>
+      <if test="tenantid != null" >
+        tenantid = #{tenantid,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="adtype != null" >
+        adType = #{adtype,jdbcType=BIGINT},
+      </if>
+      <if test="filename != null" >
+        fileName = #{filename,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="sorts != null" >
+        SORTS = #{sorts,jdbcType=BIGINT},
+      </if>
+      <if test="creator != null" >
+        CREATOR = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updateuser != null" >
+        UPDATEUSER = #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        UPDATETIME = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdate != null" >
+        CREATEDATE = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where adInfodetailId = #{adinfodetailid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pcitc.oilmachine.model.AdInfoDetail" >
+    update iot_adinfodetail
+    set adInfoId = #{adinfoid,jdbcType=VARCHAR},
+      tenantid = #{tenantid,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      adType = #{adtype,jdbcType=BIGINT},
+      fileName = #{filename,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=TINYINT},
+      SORTS = #{sorts,jdbcType=BIGINT},
+      CREATOR = #{creator,jdbcType=VARCHAR},
+      UPDATEUSER = #{updateuser,jdbcType=VARCHAR},
+      UPDATETIME = #{updatetime,jdbcType=TIMESTAMP},
+      CREATEDATE = #{createdate,jdbcType=TIMESTAMP}
+    where adInfodetailId = #{adinfodetailid,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<!-- 数据库驱动包位置 -->
+	<classPathEntry location="C:\Users\zhzhi.zhang\.m2\repository\mysql\mysql-connector-java\5.1.30\mysql-connector-java-5.1.30.jar" />
+	<context id="MysqlTables" targetRuntime="MyBatis3">
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+			<!-- 生成的Java文件的编码 -->
+			<property name="javaFileEncoding" value="UTF-8" />
+			<!-- 格式化java代码 -->
+			<property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter" />
+			<!-- 格式化XML代码 -->
+			<property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter" />
+		</commentGenerator>
+		<!-- 数据库链接URL、用户名、密码 -->
+<!-- 		<jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://10.248.245.87:8066/mycat?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull&amp;useOldAliasMetadataBehavior=true" userId="shouji" password="shouji">
+ -->		<jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://10.248.245.87:8066/oilmachine?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull&amp;useOldAliasMetadataBehavior=true" userId="oilmachine" password="oilmachine">
+		
+			<!--<jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver" connectionURL="jdbc:oracle:thin:@localhost:1521:orcl" userId="msa" password="msa"> -->
+		</jdbcConnection>
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+		<!-- 生成模型的包名和位置 -->
+		<javaModelGenerator targetPackage="com.pcitc.oilmachine.model" targetProject="src/main/java">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+		<!-- 生成的映射文件包名和位置 -->
+		<sqlMapGenerator targetPackage="mybatis.mapper" targetProject="src/main/resources">
+		<!-- <sqlMapGenerator targetPackage="mybatis.ncmimapper" targetProject="src/main/resources"> -->
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+		<!-- 生成DAO的包名和位置 -->
+		<!-- <javaClientGenerator type="XMLMAPPER" targetPackage="com.pcitc.oilmachine.ncmidao" targetProject="src/main/java"> -->
+		<javaClientGenerator type="XMLMAPPER" targetPackage="com.pcitc.oilmachine.dao" targetProject="src/main/java">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+		<!-- 要生成那些表(更改tableName和domainObjectName就可以)
+		<table tableName="iot_userinfo" domainObjectName="UserInfo"/> 
+		<table tableName="iot_gassubscribe" domainObjectName="GasSubscribe"/> 
+		<table tableName="iot_gasorder" domainObjectName="GasOrder"/> 
+		<table tableName="iot_gasorderrefund" domainObjectName="GasOrderRefund"/>  -->
+		<!-- <table tableName="tbl_userinfo" domainObjectName="UserInfo"/> 
+		<table tableName="crm_memberdetail" domainObjectName="MemberDetail"/> 
+		<table tableName="iot_gasorder" domainObjectName="GasOrder"/> 
+		<table tableName="iot_mqsendexception" domainObjectName="MqSendException"/>
+		  
+		
+		<table tableName="iot_sellsubscribe" domainObjectName="SellProduct"/>
+		<table tableName="iot_preauthorization" domainObjectName="PreAuthorization"/>
+		
+		
+		<table tableName="iot_sellproduct" domainObjectName="SellProduct"/>
+		<table tableName="iot_selldiscounts" domainObjectName="SellDiscounts"/> 
+		<table tableName="iot_sellrefund" domainObjectName="SellRefund"/>
+		<table tableName="iot_sellOrder" domainObjectName="SellOrder"/>
+		<table tableName="iot_userlogininfo" domainObjectName="UserLoginfo"/> -->
+		<table tableName="iot_posrecord" domainObjectName="PosRecord"/>
+		
+		 
+		
+	</context>
+</generatorConfiguration>

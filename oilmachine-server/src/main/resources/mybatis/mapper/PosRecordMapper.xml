@@ -1,0 +1,696 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pcitc.oilmachine.dao.PosRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.pcitc.oilmachine.model.PosRecord" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="tenantid" property="tenantid" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="saleno" property="saleno" jdbcType="VARCHAR" />
+    <result column="deviceconnid" property="deviceconnid" jdbcType="VARCHAR" />
+    <result column="posttc" property="posttc" jdbcType="BIGINT" />
+    <result column="ttype" property="ttype" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="BIGINT" />
+    <result column="asn" property="asn" jdbcType="BIGINT" />
+    <result column="bal" property="bal" jdbcType="BIGINT" />
+    <result column="amn" property="amn" jdbcType="BIGINT" />
+    <result column="ctc" property="ctc" jdbcType="BIGINT" />
+    <result column="tac" property="tac" jdbcType="BIGINT" />
+    <result column="gmac" property="gmac" jdbcType="BIGINT" />
+    <result column="psamtac" property="psamtac" jdbcType="BIGINT" />
+    <result column="psamasn" property="psamasn" jdbcType="VARCHAR" />
+    <result column="psamtid" property="psamtid" jdbcType="BIGINT" />
+    <result column="psamttc" property="psamttc" jdbcType="BIGINT" />
+    <result column="ds" property="ds" jdbcType="BIGINT" />
+    <result column="unit" property="unit" jdbcType="VARCHAR" />
+    <result column="ctype" property="ctype" jdbcType="VARCHAR" />
+    <result column="ver" property="ver" jdbcType="VARCHAR" />
+    <result column="nzn" property="nzn" jdbcType="BIGINT" />
+    <result column="gcode" property="gcode" jdbcType="VARCHAR" />
+    <result column="vol" property="vol" jdbcType="BIGINT" />
+    <result column="prc" property="prc" jdbcType="BIGINT" />
+    <result column="emp" property="emp" jdbcType="BIGINT" />
+    <result column="vtot" property="vtot" jdbcType="BIGINT" />
+    <result column="rfu" property="rfu" jdbcType="BIGINT" />
+    <result column="tmac" property="tmac" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="sorts" property="sorts" jdbcType="BIGINT" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="updateuser" property="updateuser" jdbcType="VARCHAR" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, tenantid, userid, saleno, deviceconnid, posttc, ttype, time, asn, bal, amn, ctc, 
+    tac, gmac, psamtac, psamasn, psamtid, psamttc, ds, unit, ctype, ver, nzn, gcode, 
+    vol, prc, emp, vtot, rfu, tmac, status, sorts, creator, updateuser, updatetime, createdate
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pcitc.oilmachine.model.PosRecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from iot_posrecord
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from iot_posrecord
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from iot_posrecord
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pcitc.oilmachine.model.PosRecordExample" >
+    delete from iot_posrecord
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pcitc.oilmachine.model.PosRecord" >
+    insert into iot_posrecord (id, tenantid, userid, 
+      saleno, deviceconnid, posttc, 
+      ttype, time, asn, bal, 
+      amn, ctc, tac, gmac, 
+      psamtac, psamasn, psamtid, 
+      psamttc, ds, unit, ctype, 
+      ver, nzn, gcode, vol, 
+      prc, emp, vtot, rfu, 
+      tmac, status, sorts, 
+      creator, updateuser, updatetime, 
+      createdate)
+    values (#{id,jdbcType=VARCHAR}, #{tenantid,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, 
+      #{saleno,jdbcType=VARCHAR}, #{deviceconnid,jdbcType=VARCHAR}, #{posttc,jdbcType=BIGINT}, 
+      #{ttype,jdbcType=VARCHAR}, #{time,jdbcType=BIGINT}, #{asn,jdbcType=BIGINT}, #{bal,jdbcType=BIGINT}, 
+      #{amn,jdbcType=BIGINT}, #{ctc,jdbcType=BIGINT}, #{tac,jdbcType=BIGINT}, #{gmac,jdbcType=BIGINT}, 
+      #{psamtac,jdbcType=BIGINT}, #{psamasn,jdbcType=VARCHAR}, #{psamtid,jdbcType=BIGINT}, 
+      #{psamttc,jdbcType=BIGINT}, #{ds,jdbcType=BIGINT}, #{unit,jdbcType=VARCHAR}, #{ctype,jdbcType=VARCHAR}, 
+      #{ver,jdbcType=VARCHAR}, #{nzn,jdbcType=BIGINT}, #{gcode,jdbcType=VARCHAR}, #{vol,jdbcType=BIGINT}, 
+      #{prc,jdbcType=BIGINT}, #{emp,jdbcType=BIGINT}, #{vtot,jdbcType=BIGINT}, #{rfu,jdbcType=BIGINT}, 
+      #{tmac,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, #{sorts,jdbcType=BIGINT}, 
+      #{creator,jdbcType=VARCHAR}, #{updateuser,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{createdate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pcitc.oilmachine.model.PosRecord" >
+    insert into iot_posrecord
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="tenantid != null" >
+        tenantid,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="saleno != null" >
+        saleno,
+      </if>
+      <if test="deviceconnid != null" >
+        deviceconnid,
+      </if>
+      <if test="posttc != null" >
+        posttc,
+      </if>
+      <if test="ttype != null" >
+        ttype,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="asn != null" >
+        asn,
+      </if>
+      <if test="bal != null" >
+        bal,
+      </if>
+      <if test="amn != null" >
+        amn,
+      </if>
+      <if test="ctc != null" >
+        ctc,
+      </if>
+      <if test="tac != null" >
+        tac,
+      </if>
+      <if test="gmac != null" >
+        gmac,
+      </if>
+      <if test="psamtac != null" >
+        psamtac,
+      </if>
+      <if test="psamasn != null" >
+        psamasn,
+      </if>
+      <if test="psamtid != null" >
+        psamtid,
+      </if>
+      <if test="psamttc != null" >
+        psamttc,
+      </if>
+      <if test="ds != null" >
+        ds,
+      </if>
+      <if test="unit != null" >
+        unit,
+      </if>
+      <if test="ctype != null" >
+        ctype,
+      </if>
+      <if test="ver != null" >
+        ver,
+      </if>
+      <if test="nzn != null" >
+        nzn,
+      </if>
+      <if test="gcode != null" >
+        gcode,
+      </if>
+      <if test="vol != null" >
+        vol,
+      </if>
+      <if test="prc != null" >
+        prc,
+      </if>
+      <if test="emp != null" >
+        emp,
+      </if>
+      <if test="vtot != null" >
+        vtot,
+      </if>
+      <if test="rfu != null" >
+        rfu,
+      </if>
+      <if test="tmac != null" >
+        tmac,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="sorts != null" >
+        sorts,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="updateuser != null" >
+        updateuser,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="createdate != null" >
+        createdate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="tenantid != null" >
+        #{tenantid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="saleno != null" >
+        #{saleno,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceconnid != null" >
+        #{deviceconnid,jdbcType=VARCHAR},
+      </if>
+      <if test="posttc != null" >
+        #{posttc,jdbcType=BIGINT},
+      </if>
+      <if test="ttype != null" >
+        #{ttype,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=BIGINT},
+      </if>
+      <if test="asn != null" >
+        #{asn,jdbcType=BIGINT},
+      </if>
+      <if test="bal != null" >
+        #{bal,jdbcType=BIGINT},
+      </if>
+      <if test="amn != null" >
+        #{amn,jdbcType=BIGINT},
+      </if>
+      <if test="ctc != null" >
+        #{ctc,jdbcType=BIGINT},
+      </if>
+      <if test="tac != null" >
+        #{tac,jdbcType=BIGINT},
+      </if>
+      <if test="gmac != null" >
+        #{gmac,jdbcType=BIGINT},
+      </if>
+      <if test="psamtac != null" >
+        #{psamtac,jdbcType=BIGINT},
+      </if>
+      <if test="psamasn != null" >
+        #{psamasn,jdbcType=VARCHAR},
+      </if>
+      <if test="psamtid != null" >
+        #{psamtid,jdbcType=BIGINT},
+      </if>
+      <if test="psamttc != null" >
+        #{psamttc,jdbcType=BIGINT},
+      </if>
+      <if test="ds != null" >
+        #{ds,jdbcType=BIGINT},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="ctype != null" >
+        #{ctype,jdbcType=VARCHAR},
+      </if>
+      <if test="ver != null" >
+        #{ver,jdbcType=VARCHAR},
+      </if>
+      <if test="nzn != null" >
+        #{nzn,jdbcType=BIGINT},
+      </if>
+      <if test="gcode != null" >
+        #{gcode,jdbcType=VARCHAR},
+      </if>
+      <if test="vol != null" >
+        #{vol,jdbcType=BIGINT},
+      </if>
+      <if test="prc != null" >
+        #{prc,jdbcType=BIGINT},
+      </if>
+      <if test="emp != null" >
+        #{emp,jdbcType=BIGINT},
+      </if>
+      <if test="vtot != null" >
+        #{vtot,jdbcType=BIGINT},
+      </if>
+      <if test="rfu != null" >
+        #{rfu,jdbcType=BIGINT},
+      </if>
+      <if test="tmac != null" >
+        #{tmac,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="sorts != null" >
+        #{sorts,jdbcType=BIGINT},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updateuser != null" >
+        #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pcitc.oilmachine.model.PosRecordExample" resultType="java.lang.Integer" >
+    select count(*) from iot_posrecord
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update iot_posrecord
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tenantid != null" >
+        tenantid = #{record.tenantid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userid != null" >
+        userid = #{record.userid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.saleno != null" >
+        saleno = #{record.saleno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deviceconnid != null" >
+        deviceconnid = #{record.deviceconnid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.posttc != null" >
+        posttc = #{record.posttc,jdbcType=BIGINT},
+      </if>
+      <if test="record.ttype != null" >
+        ttype = #{record.ttype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.time != null" >
+        time = #{record.time,jdbcType=BIGINT},
+      </if>
+      <if test="record.asn != null" >
+        asn = #{record.asn,jdbcType=BIGINT},
+      </if>
+      <if test="record.bal != null" >
+        bal = #{record.bal,jdbcType=BIGINT},
+      </if>
+      <if test="record.amn != null" >
+        amn = #{record.amn,jdbcType=BIGINT},
+      </if>
+      <if test="record.ctc != null" >
+        ctc = #{record.ctc,jdbcType=BIGINT},
+      </if>
+      <if test="record.tac != null" >
+        tac = #{record.tac,jdbcType=BIGINT},
+      </if>
+      <if test="record.gmac != null" >
+        gmac = #{record.gmac,jdbcType=BIGINT},
+      </if>
+      <if test="record.psamtac != null" >
+        psamtac = #{record.psamtac,jdbcType=BIGINT},
+      </if>
+      <if test="record.psamasn != null" >
+        psamasn = #{record.psamasn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.psamtid != null" >
+        psamtid = #{record.psamtid,jdbcType=BIGINT},
+      </if>
+      <if test="record.psamttc != null" >
+        psamttc = #{record.psamttc,jdbcType=BIGINT},
+      </if>
+      <if test="record.ds != null" >
+        ds = #{record.ds,jdbcType=BIGINT},
+      </if>
+      <if test="record.unit != null" >
+        unit = #{record.unit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ctype != null" >
+        ctype = #{record.ctype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ver != null" >
+        ver = #{record.ver,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nzn != null" >
+        nzn = #{record.nzn,jdbcType=BIGINT},
+      </if>
+      <if test="record.gcode != null" >
+        gcode = #{record.gcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vol != null" >
+        vol = #{record.vol,jdbcType=BIGINT},
+      </if>
+      <if test="record.prc != null" >
+        prc = #{record.prc,jdbcType=BIGINT},
+      </if>
+      <if test="record.emp != null" >
+        emp = #{record.emp,jdbcType=BIGINT},
+      </if>
+      <if test="record.vtot != null" >
+        vtot = #{record.vtot,jdbcType=BIGINT},
+      </if>
+      <if test="record.rfu != null" >
+        rfu = #{record.rfu,jdbcType=BIGINT},
+      </if>
+      <if test="record.tmac != null" >
+        tmac = #{record.tmac,jdbcType=BIGINT},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.sorts != null" >
+        sorts = #{record.sorts,jdbcType=BIGINT},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateuser != null" >
+        updateuser = #{record.updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updatetime != null" >
+        updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdate != null" >
+        createdate = #{record.createdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update iot_posrecord
+    set id = #{record.id,jdbcType=VARCHAR},
+      tenantid = #{record.tenantid,jdbcType=VARCHAR},
+      userid = #{record.userid,jdbcType=VARCHAR},
+      saleno = #{record.saleno,jdbcType=VARCHAR},
+      deviceconnid = #{record.deviceconnid,jdbcType=VARCHAR},
+      posttc = #{record.posttc,jdbcType=BIGINT},
+      ttype = #{record.ttype,jdbcType=VARCHAR},
+      time = #{record.time,jdbcType=BIGINT},
+      asn = #{record.asn,jdbcType=BIGINT},
+      bal = #{record.bal,jdbcType=BIGINT},
+      amn = #{record.amn,jdbcType=BIGINT},
+      ctc = #{record.ctc,jdbcType=BIGINT},
+      tac = #{record.tac,jdbcType=BIGINT},
+      gmac = #{record.gmac,jdbcType=BIGINT},
+      psamtac = #{record.psamtac,jdbcType=BIGINT},
+      psamasn = #{record.psamasn,jdbcType=VARCHAR},
+      psamtid = #{record.psamtid,jdbcType=BIGINT},
+      psamttc = #{record.psamttc,jdbcType=BIGINT},
+      ds = #{record.ds,jdbcType=BIGINT},
+      unit = #{record.unit,jdbcType=VARCHAR},
+      ctype = #{record.ctype,jdbcType=VARCHAR},
+      ver = #{record.ver,jdbcType=VARCHAR},
+      nzn = #{record.nzn,jdbcType=BIGINT},
+      gcode = #{record.gcode,jdbcType=VARCHAR},
+      vol = #{record.vol,jdbcType=BIGINT},
+      prc = #{record.prc,jdbcType=BIGINT},
+      emp = #{record.emp,jdbcType=BIGINT},
+      vtot = #{record.vtot,jdbcType=BIGINT},
+      rfu = #{record.rfu,jdbcType=BIGINT},
+      tmac = #{record.tmac,jdbcType=BIGINT},
+      status = #{record.status,jdbcType=TINYINT},
+      sorts = #{record.sorts,jdbcType=BIGINT},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      updateuser = #{record.updateuser,jdbcType=VARCHAR},
+      updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      createdate = #{record.createdate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pcitc.oilmachine.model.PosRecord" >
+    update iot_posrecord
+    <set >
+      <if test="tenantid != null" >
+        tenantid = #{tenantid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="saleno != null" >
+        saleno = #{saleno,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceconnid != null" >
+        deviceconnid = #{deviceconnid,jdbcType=VARCHAR},
+      </if>
+      <if test="posttc != null" >
+        posttc = #{posttc,jdbcType=BIGINT},
+      </if>
+      <if test="ttype != null" >
+        ttype = #{ttype,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=BIGINT},
+      </if>
+      <if test="asn != null" >
+        asn = #{asn,jdbcType=BIGINT},
+      </if>
+      <if test="bal != null" >
+        bal = #{bal,jdbcType=BIGINT},
+      </if>
+      <if test="amn != null" >
+        amn = #{amn,jdbcType=BIGINT},
+      </if>
+      <if test="ctc != null" >
+        ctc = #{ctc,jdbcType=BIGINT},
+      </if>
+      <if test="tac != null" >
+        tac = #{tac,jdbcType=BIGINT},
+      </if>
+      <if test="gmac != null" >
+        gmac = #{gmac,jdbcType=BIGINT},
+      </if>
+      <if test="psamtac != null" >
+        psamtac = #{psamtac,jdbcType=BIGINT},
+      </if>
+      <if test="psamasn != null" >
+        psamasn = #{psamasn,jdbcType=VARCHAR},
+      </if>
+      <if test="psamtid != null" >
+        psamtid = #{psamtid,jdbcType=BIGINT},
+      </if>
+      <if test="psamttc != null" >
+        psamttc = #{psamttc,jdbcType=BIGINT},
+      </if>
+      <if test="ds != null" >
+        ds = #{ds,jdbcType=BIGINT},
+      </if>
+      <if test="unit != null" >
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="ctype != null" >
+        ctype = #{ctype,jdbcType=VARCHAR},
+      </if>
+      <if test="ver != null" >
+        ver = #{ver,jdbcType=VARCHAR},
+      </if>
+      <if test="nzn != null" >
+        nzn = #{nzn,jdbcType=BIGINT},
+      </if>
+      <if test="gcode != null" >
+        gcode = #{gcode,jdbcType=VARCHAR},
+      </if>
+      <if test="vol != null" >
+        vol = #{vol,jdbcType=BIGINT},
+      </if>
+      <if test="prc != null" >
+        prc = #{prc,jdbcType=BIGINT},
+      </if>
+      <if test="emp != null" >
+        emp = #{emp,jdbcType=BIGINT},
+      </if>
+      <if test="vtot != null" >
+        vtot = #{vtot,jdbcType=BIGINT},
+      </if>
+      <if test="rfu != null" >
+        rfu = #{rfu,jdbcType=BIGINT},
+      </if>
+      <if test="tmac != null" >
+        tmac = #{tmac,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="sorts != null" >
+        sorts = #{sorts,jdbcType=BIGINT},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updateuser != null" >
+        updateuser = #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdate != null" >
+        createdate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pcitc.oilmachine.model.PosRecord" >
+    update iot_posrecord
+    set tenantid = #{tenantid,jdbcType=VARCHAR},
+      userid = #{userid,jdbcType=VARCHAR},
+      saleno = #{saleno,jdbcType=VARCHAR},
+      deviceconnid = #{deviceconnid,jdbcType=VARCHAR},
+      posttc = #{posttc,jdbcType=BIGINT},
+      ttype = #{ttype,jdbcType=VARCHAR},
+      time = #{time,jdbcType=BIGINT},
+      asn = #{asn,jdbcType=BIGINT},
+      bal = #{bal,jdbcType=BIGINT},
+      amn = #{amn,jdbcType=BIGINT},
+      ctc = #{ctc,jdbcType=BIGINT},
+      tac = #{tac,jdbcType=BIGINT},
+      gmac = #{gmac,jdbcType=BIGINT},
+      psamtac = #{psamtac,jdbcType=BIGINT},
+      psamasn = #{psamasn,jdbcType=VARCHAR},
+      psamtid = #{psamtid,jdbcType=BIGINT},
+      psamttc = #{psamttc,jdbcType=BIGINT},
+      ds = #{ds,jdbcType=BIGINT},
+      unit = #{unit,jdbcType=VARCHAR},
+      ctype = #{ctype,jdbcType=VARCHAR},
+      ver = #{ver,jdbcType=VARCHAR},
+      nzn = #{nzn,jdbcType=BIGINT},
+      gcode = #{gcode,jdbcType=VARCHAR},
+      vol = #{vol,jdbcType=BIGINT},
+      prc = #{prc,jdbcType=BIGINT},
+      emp = #{emp,jdbcType=BIGINT},
+      vtot = #{vtot,jdbcType=BIGINT},
+      rfu = #{rfu,jdbcType=BIGINT},
+      tmac = #{tmac,jdbcType=BIGINT},
+      status = #{status,jdbcType=TINYINT},
+      sorts = #{sorts,jdbcType=BIGINT},
+      creator = #{creator,jdbcType=VARCHAR},
+      updateuser = #{updateuser,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      createdate = #{createdate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

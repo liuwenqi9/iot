@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pcitc.oilmachine.dao.DictionaryMapper" >
+  <resultMap id="BaseResultMap" type="com.pcitc.oilmachine.model.Dictionary" >
+    <id column="dictionaryid" property="dictionaryid" jdbcType="VARCHAR" />
+    <result column="tenantid" property="tenantid" jdbcType="VARCHAR" />
+    <result column="iscache" property="iscache" jdbcType="TINYINT" />
+    <result column="dic_name" property="dicName" jdbcType="VARCHAR" />
+    <result column="dic_code" property="dicCode" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="sorts" property="sorts" jdbcType="TINYINT" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="updateuser" property="updateuser" jdbcType="VARCHAR" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    dictionaryid, tenantid, iscache, dic_name, dic_code, status, sorts, creator, updateuser, 
+    updatetime, createdate
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pcitc.oilmachine.model.DictionaryExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from iot_dictionary
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from iot_dictionary
+    where dictionaryid = #{dictionaryid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from iot_dictionary
+    where dictionaryid = #{dictionaryid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pcitc.oilmachine.model.DictionaryExample" >
+    delete from iot_dictionary
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pcitc.oilmachine.model.Dictionary" >
+    insert into iot_dictionary (dictionaryid, tenantid, iscache, 
+      dic_name, dic_code, status, 
+      sorts, creator, updateuser, 
+      updatetime, createdate)
+    values (#{dictionaryid,jdbcType=VARCHAR}, #{tenantid,jdbcType=VARCHAR}, #{iscache,jdbcType=TINYINT}, 
+      #{dicName,jdbcType=VARCHAR}, #{dicCode,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{sorts,jdbcType=TINYINT}, #{creator,jdbcType=VARCHAR}, #{updateuser,jdbcType=VARCHAR}, 
+      #{updatetime,jdbcType=TIMESTAMP}, #{createdate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pcitc.oilmachine.model.Dictionary" >
+    insert into iot_dictionary
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="dictionaryid != null" >
+        dictionaryid,
+      </if>
+      <if test="tenantid != null" >
+        tenantid,
+      </if>
+      <if test="iscache != null" >
+        iscache,
+      </if>
+      <if test="dicName != null" >
+        dic_name,
+      </if>
+      <if test="dicCode != null" >
+        dic_code,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="sorts != null" >
+        sorts,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="updateuser != null" >
+        updateuser,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="createdate != null" >
+        createdate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="dictionaryid != null" >
+        #{dictionaryid,jdbcType=VARCHAR},
+      </if>
+      <if test="tenantid != null" >
+        #{tenantid,jdbcType=VARCHAR},
+      </if>
+      <if test="iscache != null" >
+        #{iscache,jdbcType=TINYINT},
+      </if>
+      <if test="dicName != null" >
+        #{dicName,jdbcType=VARCHAR},
+      </if>
+      <if test="dicCode != null" >
+        #{dicCode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="sorts != null" >
+        #{sorts,jdbcType=TINYINT},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updateuser != null" >
+        #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pcitc.oilmachine.model.DictionaryExample" resultType="java.lang.Integer" >
+    select count(*) from iot_dictionary
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update iot_dictionary
+    <set >
+      <if test="record.dictionaryid != null" >
+        dictionaryid = #{record.dictionaryid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tenantid != null" >
+        tenantid = #{record.tenantid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.iscache != null" >
+        iscache = #{record.iscache,jdbcType=TINYINT},
+      </if>
+      <if test="record.dicName != null" >
+        dic_name = #{record.dicName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dicCode != null" >
+        dic_code = #{record.dicCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.sorts != null" >
+        sorts = #{record.sorts,jdbcType=TINYINT},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateuser != null" >
+        updateuser = #{record.updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updatetime != null" >
+        updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdate != null" >
+        createdate = #{record.createdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update iot_dictionary
+    set dictionaryid = #{record.dictionaryid,jdbcType=VARCHAR},
+      tenantid = #{record.tenantid,jdbcType=VARCHAR},
+      iscache = #{record.iscache,jdbcType=TINYINT},
+      dic_name = #{record.dicName,jdbcType=VARCHAR},
+      dic_code = #{record.dicCode,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=TINYINT},
+      sorts = #{record.sorts,jdbcType=TINYINT},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      updateuser = #{record.updateuser,jdbcType=VARCHAR},
+      updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      createdate = #{record.createdate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pcitc.oilmachine.model.Dictionary" >
+    update iot_dictionary
+    <set >
+      <if test="tenantid != null" >
+        tenantid = #{tenantid,jdbcType=VARCHAR},
+      </if>
+      <if test="iscache != null" >
+        iscache = #{iscache,jdbcType=TINYINT},
+      </if>
+      <if test="dicName != null" >
+        dic_name = #{dicName,jdbcType=VARCHAR},
+      </if>
+      <if test="dicCode != null" >
+        dic_code = #{dicCode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="sorts != null" >
+        sorts = #{sorts,jdbcType=TINYINT},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updateuser != null" >
+        updateuser = #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdate != null" >
+        createdate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where dictionaryid = #{dictionaryid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pcitc.oilmachine.model.Dictionary" >
+    update iot_dictionary
+    set tenantid = #{tenantid,jdbcType=VARCHAR},
+      iscache = #{iscache,jdbcType=TINYINT},
+      dic_name = #{dicName,jdbcType=VARCHAR},
+      dic_code = #{dicCode,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      sorts = #{sorts,jdbcType=TINYINT},
+      creator = #{creator,jdbcType=VARCHAR},
+      updateuser = #{updateuser,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      createdate = #{createdate,jdbcType=TIMESTAMP}
+    where dictionaryid = #{dictionaryid,jdbcType=VARCHAR}
+  </update>
+</mapper>

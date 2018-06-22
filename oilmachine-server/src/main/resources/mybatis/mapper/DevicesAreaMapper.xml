@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pcitc.oilmachine.dao.DevicesAreaMapper" >
+  <resultMap id="BaseResultMap" type="com.pcitc.oilmachine.model.DevicesArea" >
+    <id column="devicesareaid" property="devicesareaid" jdbcType="VARCHAR" />
+    <result column="oilid" property="oilid" jdbcType="VARCHAR" />
+    <result column="cameraid" property="cameraid" jdbcType="VARCHAR" />
+    <result column="lefttopx" property="lefttopx" jdbcType="DECIMAL" />
+    <result column="lefttopy" property="lefttopy" jdbcType="DECIMAL" />
+    <result column="rightbottomx" property="rightbottomx" jdbcType="DECIMAL" />
+    <result column="rightbottomy" property="rightbottomy" jdbcType="DECIMAL" />
+    <result column="areacode" property="areacode" jdbcType="TINYINT" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="SORTS" property="sorts" jdbcType="BIGINT" />
+    <result column="CREATOR" property="creator" jdbcType="VARCHAR" />
+    <result column="UPDATEUSER" property="updateuser" jdbcType="VARCHAR" />
+    <result column="UPDATETIME" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="CREATEDATE" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    devicesareaid, oilid, cameraid, lefttopx, lefttopy, rightbottomx, rightbottomy, areacode, 
+    STATUS, SORTS, CREATOR, UPDATEUSER, UPDATETIME, CREATEDATE
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pcitc.oilmachine.model.DevicesAreaExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from iot_devicesarea
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from iot_devicesarea
+    where devicesareaid = #{devicesareaid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from iot_devicesarea
+    where devicesareaid = #{devicesareaid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pcitc.oilmachine.model.DevicesAreaExample" >
+    delete from iot_devicesarea
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pcitc.oilmachine.model.DevicesArea" >
+    insert into iot_devicesarea (devicesareaid, oilid, cameraid, 
+      lefttopx, lefttopy, rightbottomx, 
+      rightbottomy, areacode, STATUS, 
+      SORTS, CREATOR, UPDATEUSER, 
+      UPDATETIME, CREATEDATE)
+    values (#{devicesareaid,jdbcType=VARCHAR}, #{oilid,jdbcType=VARCHAR}, #{cameraid,jdbcType=VARCHAR}, 
+      #{lefttopx,jdbcType=DECIMAL}, #{lefttopy,jdbcType=DECIMAL}, #{rightbottomx,jdbcType=DECIMAL}, 
+      #{rightbottomy,jdbcType=DECIMAL}, #{areacode,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, 
+      #{sorts,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{updateuser,jdbcType=VARCHAR}, 
+      #{updatetime,jdbcType=TIMESTAMP}, #{createdate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pcitc.oilmachine.model.DevicesArea" >
+    insert into iot_devicesarea
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="devicesareaid != null" >
+        devicesareaid,
+      </if>
+      <if test="oilid != null" >
+        oilid,
+      </if>
+      <if test="cameraid != null" >
+        cameraid,
+      </if>
+      <if test="lefttopx != null" >
+        lefttopx,
+      </if>
+      <if test="lefttopy != null" >
+        lefttopy,
+      </if>
+      <if test="rightbottomx != null" >
+        rightbottomx,
+      </if>
+      <if test="rightbottomy != null" >
+        rightbottomy,
+      </if>
+      <if test="areacode != null" >
+        areacode,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="sorts != null" >
+        SORTS,
+      </if>
+      <if test="creator != null" >
+        CREATOR,
+      </if>
+      <if test="updateuser != null" >
+        UPDATEUSER,
+      </if>
+      <if test="updatetime != null" >
+        UPDATETIME,
+      </if>
+      <if test="createdate != null" >
+        CREATEDATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="devicesareaid != null" >
+        #{devicesareaid,jdbcType=VARCHAR},
+      </if>
+      <if test="oilid != null" >
+        #{oilid,jdbcType=VARCHAR},
+      </if>
+      <if test="cameraid != null" >
+        #{cameraid,jdbcType=VARCHAR},
+      </if>
+      <if test="lefttopx != null" >
+        #{lefttopx,jdbcType=DECIMAL},
+      </if>
+      <if test="lefttopy != null" >
+        #{lefttopy,jdbcType=DECIMAL},
+      </if>
+      <if test="rightbottomx != null" >
+        #{rightbottomx,jdbcType=DECIMAL},
+      </if>
+      <if test="rightbottomy != null" >
+        #{rightbottomy,jdbcType=DECIMAL},
+      </if>
+      <if test="areacode != null" >
+        #{areacode,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="sorts != null" >
+        #{sorts,jdbcType=BIGINT},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updateuser != null" >
+        #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pcitc.oilmachine.model.DevicesAreaExample" resultType="java.lang.Integer" >
+    select count(*) from iot_devicesarea
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update iot_devicesarea
+    <set >
+      <if test="record.devicesareaid != null" >
+        devicesareaid = #{record.devicesareaid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.oilid != null" >
+        oilid = #{record.oilid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cameraid != null" >
+        cameraid = #{record.cameraid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lefttopx != null" >
+        lefttopx = #{record.lefttopx,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lefttopy != null" >
+        lefttopy = #{record.lefttopy,jdbcType=DECIMAL},
+      </if>
+      <if test="record.rightbottomx != null" >
+        rightbottomx = #{record.rightbottomx,jdbcType=DECIMAL},
+      </if>
+      <if test="record.rightbottomy != null" >
+        rightbottomy = #{record.rightbottomy,jdbcType=DECIMAL},
+      </if>
+      <if test="record.areacode != null" >
+        areacode = #{record.areacode,jdbcType=TINYINT},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.sorts != null" >
+        SORTS = #{record.sorts,jdbcType=BIGINT},
+      </if>
+      <if test="record.creator != null" >
+        CREATOR = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateuser != null" >
+        UPDATEUSER = #{record.updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updatetime != null" >
+        UPDATETIME = #{record.updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdate != null" >
+        CREATEDATE = #{record.createdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update iot_devicesarea
+    set devicesareaid = #{record.devicesareaid,jdbcType=VARCHAR},
+      oilid = #{record.oilid,jdbcType=VARCHAR},
+      cameraid = #{record.cameraid,jdbcType=VARCHAR},
+      lefttopx = #{record.lefttopx,jdbcType=DECIMAL},
+      lefttopy = #{record.lefttopy,jdbcType=DECIMAL},
+      rightbottomx = #{record.rightbottomx,jdbcType=DECIMAL},
+      rightbottomy = #{record.rightbottomy,jdbcType=DECIMAL},
+      areacode = #{record.areacode,jdbcType=TINYINT},
+      STATUS = #{record.status,jdbcType=TINYINT},
+      SORTS = #{record.sorts,jdbcType=BIGINT},
+      CREATOR = #{record.creator,jdbcType=VARCHAR},
+      UPDATEUSER = #{record.updateuser,jdbcType=VARCHAR},
+      UPDATETIME = #{record.updatetime,jdbcType=TIMESTAMP},
+      CREATEDATE = #{record.createdate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pcitc.oilmachine.model.DevicesArea" >
+    update iot_devicesarea
+    <set >
+      <if test="oilid != null" >
+        oilid = #{oilid,jdbcType=VARCHAR},
+      </if>
+      <if test="cameraid != null" >
+        cameraid = #{cameraid,jdbcType=VARCHAR},
+      </if>
+      <if test="lefttopx != null" >
+        lefttopx = #{lefttopx,jdbcType=DECIMAL},
+      </if>
+      <if test="lefttopy != null" >
+        lefttopy = #{lefttopy,jdbcType=DECIMAL},
+      </if>
+      <if test="rightbottomx != null" >
+        rightbottomx = #{rightbottomx,jdbcType=DECIMAL},
+      </if>
+      <if test="rightbottomy != null" >
+        rightbottomy = #{rightbottomy,jdbcType=DECIMAL},
+      </if>
+      <if test="areacode != null" >
+        areacode = #{areacode,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="sorts != null" >
+        SORTS = #{sorts,jdbcType=BIGINT},
+      </if>
+      <if test="creator != null" >
+        CREATOR = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updateuser != null" >
+        UPDATEUSER = #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        UPDATETIME = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdate != null" >
+        CREATEDATE = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where devicesareaid = #{devicesareaid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pcitc.oilmachine.model.DevicesArea" >
+    update iot_devicesarea
+    set oilid = #{oilid,jdbcType=VARCHAR},
+      cameraid = #{cameraid,jdbcType=VARCHAR},
+      lefttopx = #{lefttopx,jdbcType=DECIMAL},
+      lefttopy = #{lefttopy,jdbcType=DECIMAL},
+      rightbottomx = #{rightbottomx,jdbcType=DECIMAL},
+      rightbottomy = #{rightbottomy,jdbcType=DECIMAL},
+      areacode = #{areacode,jdbcType=TINYINT},
+      STATUS = #{status,jdbcType=TINYINT},
+      SORTS = #{sorts,jdbcType=BIGINT},
+      CREATOR = #{creator,jdbcType=VARCHAR},
+      UPDATEUSER = #{updateuser,jdbcType=VARCHAR},
+      UPDATETIME = #{updatetime,jdbcType=TIMESTAMP},
+      CREATEDATE = #{createdate,jdbcType=TIMESTAMP}
+    where devicesareaid = #{devicesareaid,jdbcType=VARCHAR}
+  </update>
+</mapper>

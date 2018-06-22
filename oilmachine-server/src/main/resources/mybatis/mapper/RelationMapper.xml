@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pcitc.oilmachine.dao.relationdao.RelationMapper" >
+<!--   MqSendException -->
+  <resultMap id="mqSendException_ResultMap" type="com.pcitc.oilmachine.model.MqSendException" >
+    <id column="mqsendexceptionid" property="mqsendexceptionid" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="foreignkeyid" property="foreignkeyid" jdbcType="VARCHAR" />
+    <result column="tenantid" property="tenantid" jdbcType="VARCHAR" />
+    <result column="typecode" property="typecode" jdbcType="VARCHAR" />
+    <result column="sendmsg" property="sendmsg" jdbcType="VARCHAR" />
+    <result column="exmsg" property="exmsg" jdbcType="VARCHAR" />
+    <result column="methodname" property="methodname" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="SORTS" property="sorts" jdbcType="TINYINT" />
+    <result column="CREATOR" property="creator" jdbcType="VARCHAR" />
+    <result column="UPDATEUSER" property="updateuser" jdbcType="VARCHAR" />
+    <result column="UPDATETIME" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="CREATEDATE" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+<!--   AdInfo -->
+  <resultMap id="adInfo_ResultMap" type="com.pcitc.oilmachine.model.AdInfo" >
+    <id column="adInfoId" property="adinfoid" jdbcType="VARCHAR" />
+    <result column="TENANTID" property="tenantid" jdbcType="VARCHAR" />
+    <result column="buid" property="buid" jdbcType="VARCHAR" />
+    <result column="bucode" property="bucode" jdbcType="VARCHAR" />
+    <result column="buname" property="buname" jdbcType="VARCHAR" />
+    <result column="adName" property="adname" jdbcType="VARCHAR" />
+    <result column="expiryDate" property="expirydate" jdbcType="TIMESTAMP" />
+    <result column="isUse" property="isuse" jdbcType="TINYINT" />
+    <result column="version" property="version" jdbcType="BIGINT" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="SORTS" property="sorts" jdbcType="BIGINT" />
+    <result column="CREATOR" property="creator" jdbcType="VARCHAR" />
+    <result column="UPDATEUSER" property="updateuser" jdbcType="VARCHAR" />
+    <result column="UPDATETIME" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="CREATEDATE" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="SINOPECNODENO" property="sinopecnodeno" jdbcType="VARCHAR" />
+    <result column="ISREVIEW" property="isreview" jdbcType="TINYINT" />
+    <result column="CUSTTYPE" property="custtype" jdbcType="VARCHAR" />
+    <result column="CONFIDENCE" property="confidence" jdbcType="VARCHAR" />
+  </resultMap>
+<!--   AdInfoDetail -->
+  <resultMap id="adInfoDetail_ResultMap" type="com.pcitc.oilmachine.model.AdInfoDetail" >
+    <id column="adInfodetailId" property="adinfodetailid" jdbcType="VARCHAR" />
+    <result column="adInfoId" property="adinfoid" jdbcType="VARCHAR" />
+    <result column="tenantid" property="tenantid" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="adType" property="adtype" jdbcType="BIGINT" />
+    <result column="fileName" property="filename" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="SORTS" property="sorts" jdbcType="BIGINT" />
+    <result column="CREATOR" property="creator" jdbcType="VARCHAR" />
+    <result column="UPDATEUSER" property="updateuser" jdbcType="VARCHAR" />
+    <result column="UPDATETIME" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="CREATEDATE" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+<!--   AdTags -->
+  <resultMap id="adTags_ResultMap" type="com.pcitc.oilmachine.model.AdTags" >
+    <id column="adTagsId" property="adtagsid" jdbcType="VARCHAR" />
+    <result column="tenantid" property="tenantid" jdbcType="VARCHAR" />
+    <result column="adTagCode" property="adtagcode" jdbcType="VARCHAR" />
+    <result column="tagName" property="tagname" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="SORTS" property="sorts" jdbcType="BIGINT" />
+    <result column="CREATOR" property="creator" jdbcType="VARCHAR" />
+    <result column="UPDATEUSER" property="updateuser" jdbcType="VARCHAR" />
+    <result column="UPDATETIME" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="CREATEDATE" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+<!--   UserTags -->
+  <resultMap id="userTags_ResultMap" type="com.pcitc.oilmachine.model.UserTags" >
+    <id column="userTagsId" property="usertagsid" jdbcType="VARCHAR" />
+    <result column="userTagsName" property="usertagsname" jdbcType="VARCHAR" />
+    <result column="usertag" property="usertag" jdbcType="VARCHAR" />
+    <result column="tagValue" property="tagvalue" jdbcType="VARCHAR" />
+    <result column="tagValueType" property="tagvaluetype" jdbcType="BIGINT" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="SORTS" property="sorts" jdbcType="BIGINT" />
+    <result column="CREATOR" property="creator" jdbcType="VARCHAR" />
+    <result column="UPDATEUSER" property="updateuser" jdbcType="VARCHAR" />
+    <result column="UPDATETIME" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="CREATEDATE" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+<!--   Devices -->
+  <resultMap id="devices_ResultMap" type="com.pcitc.oilmachine.model.Devices" >
+    <id column="devicesID" property="devicesid" jdbcType="VARCHAR" />
+    <result column="nodecode" property="nodecode" jdbcType="VARCHAR" />
+    <result column="nodetag" property="nodetag" jdbcType="VARCHAR" />
+    <result column="TENANTID" property="tenantid" jdbcType="VARCHAR" />
+    <result column="devicestypecode" property="devicestypecode" jdbcType="VARCHAR" />
+    <result column="devicestypename" property="devicestypename" jdbcType="VARCHAR" />
+    <result column="buid" property="buid" jdbcType="VARCHAR" />
+    <result column="BUCODE" property="bucode" jdbcType="VARCHAR" />
+    <result column="BUNAME" property="buname" jdbcType="VARCHAR" />
+    <result column="connstatus" property="connstatus" jdbcType="TINYINT" />
+    <result column="selfservice" property="selfservice" jdbcType="TINYINT" />
+    <result column="freepasswd" property="freepasswd" jdbcType="TINYINT" />
+    <result column="deviceareanum" property="deviceareanum" jdbcType="TINYINT" />
+    <result column="connid" property="connid" jdbcType="VARCHAR" />
+    <result column="conname" property="conname" jdbcType="VARCHAR" />
+    <result column="xlength" property="xlength" jdbcType="DECIMAL" />
+    <result column="ylength" property="ylength" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="SORTS" property="sorts" jdbcType="BIGINT" />
+    <result column="CREATOR" property="creator" jdbcType="VARCHAR" />
+    <result column="UPDATEUSER" property="updateuser" jdbcType="VARCHAR" />
+    <result column="UPDATETIME" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="CREATEDATE" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+<!--   DevicesArea -->
+  <resultMap id="devicesArea_ResultMap" type="com.pcitc.oilmachine.model.DevicesArea" >
+    <id column="devicesareaid" property="devicesareaid" jdbcType="VARCHAR" />
+    <result column="oilid" property="oilid" jdbcType="VARCHAR" />
+    <result column="cameraid" property="cameraid" jdbcType="VARCHAR" />
+    <result column="lefttopx" property="lefttopx" jdbcType="DECIMAL" />
+    <result column="lefttopy" property="lefttopy" jdbcType="DECIMAL" />
+    <result column="rightbottomx" property="rightbottomx" jdbcType="DECIMAL" />
+    <result column="rightbottomy" property="rightbottomy" jdbcType="DECIMAL" />
+    <result column="areacode" property="areacode" jdbcType="TINYINT" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="SORTS" property="sorts" jdbcType="BIGINT" />
+    <result column="CREATOR" property="creator" jdbcType="VARCHAR" />
+    <result column="UPDATEUSER" property="updateuser" jdbcType="VARCHAR" />
+    <result column="UPDATETIME" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="CREATEDATE" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+<!--   dictionary -->
+  <resultMap id="dictionary_ResultMap" type="com.pcitc.oilmachine.model.Dictionary" >
+    <id column="dictionaryid" property="dictionaryid" jdbcType="VARCHAR" />
+    <result column="tenantid" property="tenantid" jdbcType="VARCHAR" />
+    <result column="iscache" property="iscache" jdbcType="TINYINT" />
+    <result column="dic_name" property="dicName" jdbcType="VARCHAR" />
+    <result column="dic_code" property="dicCode" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="sorts" property="sorts" jdbcType="TINYINT" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="updateuser" property="updateuser" jdbcType="VARCHAR" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+<!--   dictionaryData -->
+  <resultMap id="dictionaryData_ResultMap" type="com.pcitc.oilmachine.model.DictionaryData" >
+    <id column="dictionarydataid" property="dictionarydataid" jdbcType="VARCHAR" />
+    <result column="dict_id" property="dictId" jdbcType="VARCHAR" />
+    <result column="item_name" property="itemName" jdbcType="VARCHAR" />
+    <result column="item_code" property="itemCode" jdbcType="VARCHAR" />
+    <result column="item_value" property="itemValue" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="sorts" property="sorts" jdbcType="TINYINT" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="updateuser" property="updateuser" jdbcType="VARCHAR" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+<!--   CameraDevicesArea -->
+  <resultMap id="cameraDevicesArea_ResultMap" type="com.pcitc.oilmachine.model.CameraDevicesArea" >
+    <id column="devicesareaid" property="devicesareaid" jdbcType="VARCHAR" />
+     <result column="oilid" property="oilid" jdbcType="VARCHAR" />
+    <result column="cameraid" property="cameraid" jdbcType="VARCHAR" />
+    <result column="conname" property="conname" jdbcType="VARCHAR" />
+    <result column="lefttopx" property="lefttopx" jdbcType="DECIMAL" />
+    <result column="lefttopy" property="lefttopy" jdbcType="DECIMAL" />
+    <result column="rightbottomx" property="rightbottomx" jdbcType="DECIMAL" />
+    <result column="rightbottomy" property="rightbottomy" jdbcType="DECIMAL" />
+    <result column="areacode" property="areacode" jdbcType="TINYINT" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="SORTS" property="sorts" jdbcType="BIGINT" />
+    <result column="CREATOR" property="creator" jdbcType="VARCHAR" />
+    <result column="UPDATEUSER" property="updateuser" jdbcType="VARCHAR" />
+    <result column="UPDATETIME" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="CREATEDATE" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <!--   SellOrder -->
+  <resultMap id="sellOrder_ResultMap" type="com.pcitc.oilmachine.model.SellOrder" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="tenantid" property="tenantid" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="stncode" property="stncode" jdbcType="VARCHAR" />
+    <result column="stnname" property="stnname" jdbcType="VARCHAR" />
+    <result column="saleno" property="saleno" jdbcType="VARCHAR" />
+    <result column="opetime" property="opetime" jdbcType="TIMESTAMP" />
+    <result column="deviceid" property="deviceid" jdbcType="VARCHAR" />
+    <result column="nozzleno" property="nozzleno" jdbcType="VARCHAR" />
+    <result column="ystotal" property="ystotal" jdbcType="BIGINT" />
+    <result column="ssTotal" property="sstotal" jdbcType="BIGINT" />
+    <result column="yhTotal" property="yhtotal" jdbcType="BIGINT" />
+    <result column="paytypecode" property="paytypecode" jdbcType="VARCHAR" />
+    <result column="paytypename" property="paytypename" jdbcType="VARCHAR" />
+    <result column="accountid" property="accountid" jdbcType="VARCHAR" />
+    <result column="payorderno" property="payorderno" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="SORTS" property="sorts" jdbcType="BIGINT" />
+    <result column="CREATOR" property="creator" jdbcType="VARCHAR" />
+    <result column="UPDATEUSER" property="updateuser" jdbcType="VARCHAR" />
+    <result column="UPDATETIME" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="CREATEDATE" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <!--   SellOrderView -->
+  <resultMap id="sellOrderView_ResultMap" type="com.pcitc.oilmachine.model.SellOrderView" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="tenantid" property="tenantid" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="stncode" property="stncode" jdbcType="VARCHAR" />
+    <result column="stnname" property="stnname" jdbcType="VARCHAR" />
+    <result column="saleno" property="saleno" jdbcType="VARCHAR" />
+    <result column="opetime" property="opetime" jdbcType="TIMESTAMP" />
+    <result column="deviceid" property="deviceid" jdbcType="VARCHAR" />
+    <result column="nozzleno" property="nozzleno" jdbcType="VARCHAR" />
+    <result column="ystotal" property="ystotal" jdbcType="BIGINT" />
+    <result column="ssTotal" property="sstotal" jdbcType="BIGINT" />
+    <result column="yhTotal" property="yhtotal" jdbcType="BIGINT" />
+    <result column="paytypecode" property="paytypecode" jdbcType="VARCHAR" />
+    <result column="paytypename" property="paytypename" jdbcType="VARCHAR" />
+    <result column="accountid" property="accountid" jdbcType="VARCHAR" />
+    <result column="payorderno" property="payorderno" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="SORTS" property="sorts" jdbcType="BIGINT" />
+    <result column="CREATOR" property="creator" jdbcType="VARCHAR" />
+    <result column="UPDATEUSER" property="updateuser" jdbcType="VARCHAR" />
+    <result column="UPDATETIME" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="CREATEDATE" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+ <!--   SellProduct -->
+ <resultMap id="sellProduct_ResultMap" type="com.pcitc.oilmachine.model.SellProduct" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="tenantid" property="tenantid" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="saleno" property="saleno" jdbcType="VARCHAR" />
+    <result column="productname" property="productname" jdbcType="VARCHAR" />
+    <result column="productcode" property="productcode" jdbcType="VARCHAR" />
+    <result column="productprice" property="productprice" jdbcType="BIGINT" />
+    <result column="volume" property="volume" jdbcType="DECIMAL" />
+    <result column="ystotal" property="ystotal" jdbcType="BIGINT" />
+    <result column="ssTotal" property="sstotal" jdbcType="BIGINT" />
+    <result column="yhTotal" property="yhtotal" jdbcType="BIGINT" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="SORTS" property="sorts" jdbcType="BIGINT" />
+    <result column="CREATOR" property="creator" jdbcType="VARCHAR" />
+    <result column="UPDATEUSER" property="updateuser" jdbcType="VARCHAR" />
+    <result column="UPDATETIME" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="CREATEDATE" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+   <!--   SellDiscounts -->
+  <resultMap id="sellDiscounts_ResultMap" type="com.pcitc.oilmachine.model.SellDiscounts" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="tenantid" property="tenantid" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="discountsbody" property="discountsbody" jdbcType="TINYINT" />
+    <result column="saleno" property="saleno" jdbcType="VARCHAR" />
+    <result column="sellproductid" property="sellproductid" jdbcType="VARCHAR" />
+    <result column="discountstype" property="discountstype" jdbcType="TINYINT" />
+    <result column="discountsamount" property="discountsamount" jdbcType="BIGINT" />
+    <result column="gist" property="gist" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="SORTS" property="sorts" jdbcType="BIGINT" />
+    <result column="CREATOR" property="creator" jdbcType="VARCHAR" />
+    <result column="UPDATEUSER" property="updateuser" jdbcType="VARCHAR" />
+    <result column="UPDATETIME" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="CREATEDATE" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <!-- PreAuthorization -->
+  <resultMap id="preAuthorization_ResultMap" type="com.pcitc.oilmachine.model.PreAuthorization" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="tenantid" property="tenantid" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="memcardnum" property="memcardnum" jdbcType="VARCHAR" />
+    <result column="accountid" property="accountid" jdbcType="VARCHAR" />
+    <result column="saleno" property="saleno" jdbcType="VARCHAR" />
+    <result column="approveId" property="approveid" jdbcType="VARCHAR" />
+    <result column="presqno" property="presqno" jdbcType="VARCHAR" />
+    <result column="preamount" property="preamount" jdbcType="BIGINT" />
+    <result column="prewcno" property="prewcno" jdbcType="VARCHAR" />
+    <result column="prewcqx" property="prewcqx" jdbcType="VARCHAR" />
+    <result column="sqopetime" property="sqopetime" jdbcType="TIMESTAMP" />
+    <result column="wcopetime" property="wcopetime" jdbcType="TIMESTAMP" />
+    <result column="qxopetime" property="qxopetime" jdbcType="TIMESTAMP" />
+    <result column="sqresult" property="sqresult" jdbcType="VARCHAR" />
+    <result column="qxresult" property="qxresult" jdbcType="VARCHAR" />
+    <result column="wcresult" property="wcresult" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="SORTS" property="sorts" jdbcType="BIGINT" />
+    <result column="CREATOR" property="creator" jdbcType="VARCHAR" />
+    <result column="UPDATEUSER" property="updateuser" jdbcType="VARCHAR" />
+    <result column="UPDATETIME" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="CREATEDATE" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <!-- UserLoginfo  -->
+  <resultMap id="userLoginfo_ResultMap" type="com.pcitc.oilmachine.model.UserLoginfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="tenantid" property="tenantid" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="userName" property="username" jdbcType="VARCHAR" />
+    <result column="stncode" property="stncode" jdbcType="VARCHAR" />
+    <result column="stnname" property="stnname" jdbcType="VARCHAR" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="deviceconnid" property="deviceconnid" jdbcType="VARCHAR" />
+    <result column="areacode" property="areacode" jdbcType="VARCHAR" />
+    <result column="oilcode" property="oilcode" jdbcType="VARCHAR" />
+    <result column="oilno" property="oilno" jdbcType="VARCHAR" />
+    <result column="carnum" property="carnum" jdbcType="VARCHAR" />
+    <result column="nozzleno" property="nozzleno" jdbcType="VARCHAR" />
+    <result column="sessionid" property="sessionid" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="BIGINT" />
+    <result column="step" property="step" jdbcType="VARCHAR" />
+    <result column="freepword" property="freepword" jdbcType="VARCHAR" />
+    <result column="loginTime" property="logintime" jdbcType="TIMESTAMP" />
+    <result column="logoutTime" property="logouttime" jdbcType="TIMESTAMP" />
+    <result column="lefttopx" property="lefttopx" jdbcType="BIGINT" />
+    <result column="lefttopy" property="lefttopy" jdbcType="BIGINT" />
+    <result column="rightbottomx" property="rightbottomx" jdbcType="BIGINT" />
+    <result column="rightbottomy" property="rightbottomy" jdbcType="BIGINT" />
+    <result column="carcolor" property="carcolor" jdbcType="VARCHAR" />
+    <result column="cameraid" property="cameraid" jdbcType="VARCHAR" />
+    <result column="cartype" property="cartype" jdbcType="VARCHAR" />
+    <result column="cleft" property="cleft" jdbcType="BIGINT" />
+    <result column="ctop" property="ctop" jdbcType="BIGINT" />
+    <result column="cright" property="cright" jdbcType="BIGINT" />
+    <result column="cbottom" property="cbottom" jdbcType="BIGINT" />
+    <result column="saleno" property="saleno" jdbcType="VARCHAR" />
+    <result column="accountid" property="accountid" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="BIGINT" />
+    <result column="useableamount" property="useableamount" jdbcType="BIGINT" />
+    <result column="avoidamount" property="avoidamount" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="sorts" property="sorts" jdbcType="BIGINT" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="updateuser" property="updateuser" jdbcType="VARCHAR" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="iot_mqsendexception_Column_List" >
+    b.mqsendexceptionid,b.userid,b.foreignkeyid,b.tenantid,b.typecode,b.sendmsg,b.exmsg,b.methodname,
+    b.STATUS,b.SORTS,b.CREATOR,b.UPDATEUSER,b.UPDATETIME,b.CREATEDATE
+  </sql>
+
+
+<select id="selectMqSendExceptionPageList" resultMap="mqSendException_ResultMap" parameterType="map">
+	select
+	 mqsendexceptionid, userid, foreignkeyid, tenantid, typecode, sendmsg, exmsg, methodname, 
+     STATUS, SORTS, CREATOR, UPDATEUSER, UPDATETIME, CREATEDATE
+	from iot_mqsendexception
+	where 1=1
+    <if test="foreignkeyid != null and foreignkeyid != ''">
+            and foreignkeyid = #{foreignkeyid}
+    </if>
+    <if test="typecode != null and typecode !=''">
+            and typecode = #{typecode}
+    </if>  
+    AND STATUS = 0 
+	order by createdate desc 
+	<if test="limit != null and limit != ''">
+		limit #{start},#{limit}
+    </if>
+</select>
+<select id="selectAdInfoPageList" resultMap="adInfo_ResultMap" parameterType="map">
+	select
+	 adInfoId, TENANTID, buid, bucode, buname, adName, expiryDate, isUse, version, STATUS, 
+    SORTS, CREATOR, UPDATEUSER, UPDATETIME, CREATEDATE, SINOPECNODENO, ISREVIEW, CUSTTYPE, 
+    CONFIDENCE
+	from iot_adinfo
+	where 1=1
+    <if test="adname != null and adname != ''">
+            and adname like #{adname}
+    </if>
+    <if test="buname != null and buname !=''">
+            and buname like #{buname}
+    </if>  
+    <if test="isUse != null and isUse !=''">
+            and isUse = #{isUse}
+    </if>  
+    AND STATUS = 0 
+	order by createdate desc 
+	<if test="limit != null and limit != ''">
+		limit #{start},#{limit}
+    </if>
+</select>
+<select id="selectAdInfoDetailPageList" resultMap="adInfoDetail_ResultMap" parameterType="map">
+	select
+	 adInfodetailId, adInfoId, tenantid, url, adType, fileName, STATUS, SORTS, CREATOR, 
+    UPDATEUSER, UPDATETIME, CREATEDATE
+	from iot_adinfodetail
+	where 1=1
+    <if test="adinfoid != null and adinfoid != ''">
+            and adinfoid = #{adinfoid}
+    </if>
+    AND STATUS = 0 
+	order by createdate desc 
+	<if test="limit != null and limit != ''">
+		limit #{start},#{limit}
+    </if>
+</select>
+<select id="selectAdTagsPageList" resultMap="adTags_ResultMap" parameterType="map">
+	select
+	 adTagsId, tenantid, adTagCode, tagName, STATUS, SORTS, CREATOR, UPDATEUSER, UPDATETIME, 
+    CREATEDATE
+	from iot_adtags
+	where 1=1
+    <if test="adtagcode != null and adtagcode != ''">
+            and adtagcode in
+           <foreach item="item" index="index" collection="adtagcode.split(',')" open="(" separator="," close=")">#{item}</foreach>  
+    </if>
+    <if test="tenantid != null and tenantid != ''">
+            and tenantid = #{tenantid}
+    </if>
+    AND STATUS = 0 
+	order by createdate desc 
+	<if test="limit != null and limit != ''">
+		limit #{start},#{limit}
+    </if>
+</select>
+<select id="selectUserTagsPageList" resultMap="userTags_ResultMap" parameterType="map">
+	select
+	 userTagsId, userTagsName, usertag, tagValue, tagValueType, STATUS, SORTS, CREATOR, 
+    UPDATEUSER, UPDATETIME, CREATEDATE
+	from iot_usertags
+	where 1=1
+    AND STATUS = 0 
+	order by createdate desc 
+	<if test="limit != null and limit != ''">
+		limit #{start},#{limit}
+    </if>
+</select>
+<select id="selectDevicesPageList" resultMap="devices_ResultMap" parameterType="map">
+	select
+	 devicesID, nodecode, nodetag, TENANTID, devicestypecode, devicestypename, buid, BUCODE, 
+    BUNAME, connstatus, connid, conname, xlength, ylength, STATUS, SORTS, CREATOR, 
+    UPDATEUSER, UPDATETIME, CREATEDATE
+	from iot_devices
+	where  STATUS = 0 
+	<if test="stncode != null and stncode != ''">
+            and nodecode = #{stncode}
+    </if>
+	<if test="nodetag != null and nodetag != ''">
+            and nodetag like #{nodetag}
+    </if>
+	<if test="TENANTID != null and TENANTID != ''">
+            and TENANTID = #{TENANTID}
+    </if>
+	<if test="devicestypename != null and devicestypename != ''">
+            and devicestypename like #{devicestypename}
+    </if>
+	<if test="BUNAME != null and BUNAME != ''">
+            and BUNAME like #{BUNAME}
+    </if>
+	<if test="conname != null and conname != ''">
+            and conname like #{conname}
+    </if>
+	<if test="connstatus != null and connstatus != ''">
+            and connstatus = #{connstatus}
+    </if>
+	order by createdate desc 
+	<if test="limit != null and limit != ''">
+		limit #{start},#{limit}
+    </if>
+</select>
+<select id="selectDevicesAreaPageList" resultMap="devicesArea_ResultMap" parameterType="map">
+	select
+	 devicesareaid, oilid, cameraid, lefttopx, lefttopy, rightbottomx, rightbottomy, areacode, 
+    STATUS, SORTS, CREATOR, UPDATEUSER, UPDATETIME, CREATEDATE
+	from iot_devicesarea
+	where  STATUS = 0 
+	<if test="oilid != null and oilid != ''">
+            and oilid = #{oilid}
+    </if>
+    <if test="cameraid != null and cameraid != ''">
+            and cameraid = #{cameraid}
+    </if>
+	order by createdate desc 
+	<if test="limit != null and limit != ''">
+		limit #{start},#{limit}
+    </if>
+</select>
+<select id="selectDictionaryPageList" resultMap="dictionary_ResultMap" parameterType="map">
+	select
+	 dictionaryid, tenantid, iscache, dic_name, dic_code, status, sorts, creator, updateuser, 
+    updatetime, createdate
+	from iot_dictionary
+	where  STATUS = 0 
+	<if test="dicname != null and dicname != ''">
+            and dic_name like #{dicname}
+    </if>
+	<if test="diccode != null and diccode != ''">
+            and dic_code = #{diccode}
+    </if>
+	<if test="tenantid != null and tenantid != ''">
+            and tenantid = #{tenantid}
+    </if>
+	order by createdate desc 
+	<if test="limit != null and limit != ''">
+		limit #{start},#{limit}
+    </if>
+</select>
+<select id="selectDictionaryDataPageList" resultMap="dictionaryData_ResultMap" parameterType="map">
+	select
+	 dictionarydataid, dict_id, item_name, item_code, item_value, status, sorts, creator, updateuser, 
+    updatetime, createdate
+	from iot_dictionarydata
+	where  STATUS = 0 
+	<if test="dictid != null and dictid != ''">
+            and dict_id = #{dictid}
+    </if>
+	<if test="itemname != null and itemname != ''">
+            and item_name like #{itemname}
+    </if>
+	<if test="itemcode != null and itemcode != ''">
+            and item_code = #{itemcode}
+    </if>
+	order by createdate desc 
+	<if test="limit != null and limit != ''">
+		limit #{start},#{limit}
+    </if>
+</select>
+<select id="selectCameraDevicesAreaList" resultMap="cameraDevicesArea_ResultMap" parameterType="map">
+	select
+	t.conname,
+	i.devicesareaid,
+	i.oilid,
+	i.cameraid,
+	i.areacode,
+	i.lefttopx,
+	i.lefttopy,
+	i.rightbottomx,
+	i.rightbottomy,
+    i.STATUS, i.SORTS, i.CREATOR, i.UPDATEUSER, i.UPDATETIME, i.CREATEDATE
+	from 
+	iot_devicesarea i left join iot_devices t on i.oilid  =  t.devicesID
+	where  i.STATUS = 0 and t.STATUS = 0
+    <if test="cameraid != null and cameraid != ''">
+            and i.cameraid = #{cameraid}
+    </if>
+	order by i.createdate desc 
+	<if test="limit != null and limit != ''">
+		limit #{start},#{limit}
+    </if>
+</select>
+<select id="selectSellOrderList" resultMap="sellOrderView_ResultMap" parameterType="map">
+	select
+	id, tenantid, userid, stncode, stnname, saleno, opetime, deviceid, nozzleno, ystotal, 
+    ssTotal, yhTotal, paytypecode, paytypename, accountid, payorderno, STATUS, SORTS, 
+    CREATOR, UPDATEUSER, UPDATETIME, CREATEDATE
+	from 
+	iot_sellorder 
+	where  STATUS = 0 
+			and tenantid = #{tenantid}
+	<if test="stncode != null and stncode != ''">
+            and stncode = #{stncode}
+    </if>
+    <if test="saleno != null and saleno != ''">
+            and saleno = #{saleno}
+    </if>
+	order by createdate desc 
+	<if test="limit != null and limit != ''">
+		limit #{start},#{limit}
+    </if>
+</select>
+<select id="selectSellProductList" resultMap="sellProduct_ResultMap" parameterType="map">
+	select
+	id, tenantid, userid, saleno, productname, productcode, productprice, volume, ystotal, 
+    ssTotal, yhTotal, STATUS, SORTS, CREATOR, UPDATEUSER, UPDATETIME, CREATEDATE
+	from 
+	iot_sellproduct
+	where  STATUS = 0 
+    <if test="saleno != null and saleno != ''">
+            and saleno = #{saleno}
+    </if>
+	order by createdate desc 
+	<if test="limit != null and limit != ''">
+		limit #{start},#{limit}
+    </if>
+</select>
+<select id="selectSellDiscountsList" resultMap="sellDiscounts_ResultMap" parameterType="map">
+	select
+	 id, tenantid, userid, discountsbody, saleno, sellproductid, discountstype, discountsamount, 
+    gist, STATUS, SORTS, CREATOR, UPDATEUSER, UPDATETIME, CREATEDATE
+	from 
+	iot_selldiscounts
+	where  STATUS = 0 
+    <if test="saleno != null and saleno != ''">
+            and saleno = #{saleno}
+    </if>
+	order by createdate desc 
+	<if test="limit != null and limit != ''">
+		limit #{start},#{limit}
+    </if>
+</select>
+<select id="selectPreAuthorizationList" resultMap="preAuthorization_ResultMap" parameterType="map">
+	select
+	  id, tenantid, userid, memcardnum, accountid, saleno, approveId, presqno, preamount, 
+    prewcno, prewcqx, sqopetime, wcopetime, qxopetime, sqresult, qxresult, wcresult, 
+    STATUS, SORTS, CREATOR, UPDATEUSER, UPDATETIME, CREATEDATE
+	from 
+	iot_preauthorization
+	where  STATUS = 0 
+	AND sqresult = '00'
+	AND (wcresult IS NULL OR  wcresult = '')  
+	AND (qxresult IS NULL OR  qxresult = '') 
+	AND DATE_SUB(now(), INTERVAL 30 minute) >= sqopetime  
+	order by createdate desc 
+</select>
+<select id="selectUserlogininfoPageList" resultMap="userLoginfo_ResultMap" parameterType="map">
+	select
+	 id, tenantid, userid, userName, stncode, stnname, ip, deviceconnid, areacode, oilcode, 
+    oilno, carnum, nozzleno, sessionid, price, step, freepword, loginTime, logoutTime, 
+    lefttopx, lefttopy, rightbottomx, rightbottomy, carcolor, cameraid, cartype, cleft, 
+    ctop, cright, cbottom, saleno, accountid, amount, useableamount, avoidamount, status, 
+    sorts, creator, updateuser, updatetime, createdate
+	from 
+	iot_userlogininfo
+	where  1 = 1
+	<if test="saleno != null and saleno != ''">
+            and saleno = #{saleno}
+    </if> 
+	<if test="status != null and (status==0 ? '0' : status)">
+            and status = #{status}
+    </if>
+	<if test="stncode != null and stncode != ''">
+            and stncode = #{stncode}
+    </if>
+    <if test="stnname != null and stnname != ''">
+            and stnname = #{stnname}
+    </if> 
+    <if test="tenantid != null and tenantid != ''">
+            and tenantid = #{tenantid}
+    </if> 
+    <if test="userName != null and userName != ''">
+            and userName = #{userName}
+    </if> 
+    <if test="deviceconnid != null and deviceconnid != ''">
+            and deviceconnid = #{deviceconnid}
+    </if> 
+    <if test="oilcode != null and oilcode != ''">
+            and oilcode = #{oilcode}
+    </if> 
+    <if test="carnum != null and carnum != ''">
+            and carnum = #{carnum}
+    </if>  
+	order by createdate desc 
+	<if test="limit != null and limit != ''">
+		limit #{start},#{limit}
+    </if>
+</select>
+</mapper>

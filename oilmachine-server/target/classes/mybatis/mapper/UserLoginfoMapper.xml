@@ -1,0 +1,779 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pcitc.oilmachine.dao.UserLoginfoMapper" >
+  <resultMap id="BaseResultMap" type="com.pcitc.oilmachine.model.UserLoginfo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="tenantid" property="tenantid" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="userName" property="username" jdbcType="VARCHAR" />
+    <result column="stncode" property="stncode" jdbcType="VARCHAR" />
+    <result column="stnname" property="stnname" jdbcType="VARCHAR" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="deviceconnid" property="deviceconnid" jdbcType="VARCHAR" />
+    <result column="areacode" property="areacode" jdbcType="VARCHAR" />
+    <result column="oilcode" property="oilcode" jdbcType="VARCHAR" />
+    <result column="oilno" property="oilno" jdbcType="VARCHAR" />
+    <result column="carnum" property="carnum" jdbcType="VARCHAR" />
+    <result column="nozzleno" property="nozzleno" jdbcType="VARCHAR" />
+    <result column="sessionid" property="sessionid" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="BIGINT" />
+    <result column="step" property="step" jdbcType="VARCHAR" />
+    <result column="freepword" property="freepword" jdbcType="VARCHAR" />
+    <result column="loginTime" property="logintime" jdbcType="TIMESTAMP" />
+    <result column="logoutTime" property="logouttime" jdbcType="TIMESTAMP" />
+    <result column="lefttopx" property="lefttopx" jdbcType="BIGINT" />
+    <result column="lefttopy" property="lefttopy" jdbcType="BIGINT" />
+    <result column="rightbottomx" property="rightbottomx" jdbcType="BIGINT" />
+    <result column="rightbottomy" property="rightbottomy" jdbcType="BIGINT" />
+    <result column="carcolor" property="carcolor" jdbcType="VARCHAR" />
+    <result column="cameraid" property="cameraid" jdbcType="VARCHAR" />
+    <result column="cartype" property="cartype" jdbcType="VARCHAR" />
+    <result column="cleft" property="cleft" jdbcType="BIGINT" />
+    <result column="ctop" property="ctop" jdbcType="BIGINT" />
+    <result column="cright" property="cright" jdbcType="BIGINT" />
+    <result column="cbottom" property="cbottom" jdbcType="BIGINT" />
+    <result column="saleno" property="saleno" jdbcType="VARCHAR" />
+    <result column="accountid" property="accountid" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="BIGINT" />
+    <result column="useableamount" property="useableamount" jdbcType="BIGINT" />
+    <result column="avoidamount" property="avoidamount" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="sorts" property="sorts" jdbcType="BIGINT" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="updateuser" property="updateuser" jdbcType="VARCHAR" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, tenantid, userid, userName, stncode, stnname, ip, deviceconnid, areacode, oilcode, 
+    oilno, carnum, nozzleno, sessionid, price, step, freepword, loginTime, logoutTime, 
+    lefttopx, lefttopy, rightbottomx, rightbottomy, carcolor, cameraid, cartype, cleft, 
+    ctop, cright, cbottom, saleno, accountid, amount, useableamount, avoidamount, status, 
+    sorts, creator, updateuser, updatetime, createdate
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pcitc.oilmachine.model.UserLoginfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from iot_userlogininfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from iot_userlogininfo
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from iot_userlogininfo
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pcitc.oilmachine.model.UserLoginfoExample" >
+    delete from iot_userlogininfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pcitc.oilmachine.model.UserLoginfo" >
+    insert into iot_userlogininfo (id, tenantid, userid, 
+      userName, stncode, stnname, 
+      ip, deviceconnid, areacode, 
+      oilcode, oilno, carnum, 
+      nozzleno, sessionid, price, 
+      step, freepword, loginTime, 
+      logoutTime, lefttopx, lefttopy, 
+      rightbottomx, rightbottomy, carcolor, 
+      cameraid, cartype, cleft, 
+      ctop, cright, cbottom, 
+      saleno, accountid, amount, 
+      useableamount, avoidamount, status, 
+      sorts, creator, updateuser, 
+      updatetime, createdate)
+    values (#{id,jdbcType=VARCHAR}, #{tenantid,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, 
+      #{username,jdbcType=VARCHAR}, #{stncode,jdbcType=VARCHAR}, #{stnname,jdbcType=VARCHAR}, 
+      #{ip,jdbcType=VARCHAR}, #{deviceconnid,jdbcType=VARCHAR}, #{areacode,jdbcType=VARCHAR}, 
+      #{oilcode,jdbcType=VARCHAR}, #{oilno,jdbcType=VARCHAR}, #{carnum,jdbcType=VARCHAR}, 
+      #{nozzleno,jdbcType=VARCHAR}, #{sessionid,jdbcType=VARCHAR}, #{price,jdbcType=BIGINT}, 
+      #{step,jdbcType=VARCHAR}, #{freepword,jdbcType=VARCHAR}, #{logintime,jdbcType=TIMESTAMP}, 
+      #{logouttime,jdbcType=TIMESTAMP}, #{lefttopx,jdbcType=BIGINT}, #{lefttopy,jdbcType=BIGINT}, 
+      #{rightbottomx,jdbcType=BIGINT}, #{rightbottomy,jdbcType=BIGINT}, #{carcolor,jdbcType=VARCHAR}, 
+      #{cameraid,jdbcType=VARCHAR}, #{cartype,jdbcType=VARCHAR}, #{cleft,jdbcType=BIGINT}, 
+      #{ctop,jdbcType=BIGINT}, #{cright,jdbcType=BIGINT}, #{cbottom,jdbcType=BIGINT}, 
+      #{saleno,jdbcType=VARCHAR}, #{accountid,jdbcType=VARCHAR}, #{amount,jdbcType=BIGINT}, 
+      #{useableamount,jdbcType=BIGINT}, #{avoidamount,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, 
+      #{sorts,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{updateuser,jdbcType=VARCHAR}, 
+      #{updatetime,jdbcType=TIMESTAMP}, #{createdate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pcitc.oilmachine.model.UserLoginfo" >
+    insert into iot_userlogininfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="tenantid != null" >
+        tenantid,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="username != null" >
+        userName,
+      </if>
+      <if test="stncode != null" >
+        stncode,
+      </if>
+      <if test="stnname != null" >
+        stnname,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="deviceconnid != null" >
+        deviceconnid,
+      </if>
+      <if test="areacode != null" >
+        areacode,
+      </if>
+      <if test="oilcode != null" >
+        oilcode,
+      </if>
+      <if test="oilno != null" >
+        oilno,
+      </if>
+      <if test="carnum != null" >
+        carnum,
+      </if>
+      <if test="nozzleno != null" >
+        nozzleno,
+      </if>
+      <if test="sessionid != null" >
+        sessionid,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="step != null" >
+        step,
+      </if>
+      <if test="freepword != null" >
+        freepword,
+      </if>
+      <if test="logintime != null" >
+        loginTime,
+      </if>
+      <if test="logouttime != null" >
+        logoutTime,
+      </if>
+      <if test="lefttopx != null" >
+        lefttopx,
+      </if>
+      <if test="lefttopy != null" >
+        lefttopy,
+      </if>
+      <if test="rightbottomx != null" >
+        rightbottomx,
+      </if>
+      <if test="rightbottomy != null" >
+        rightbottomy,
+      </if>
+      <if test="carcolor != null" >
+        carcolor,
+      </if>
+      <if test="cameraid != null" >
+        cameraid,
+      </if>
+      <if test="cartype != null" >
+        cartype,
+      </if>
+      <if test="cleft != null" >
+        cleft,
+      </if>
+      <if test="ctop != null" >
+        ctop,
+      </if>
+      <if test="cright != null" >
+        cright,
+      </if>
+      <if test="cbottom != null" >
+        cbottom,
+      </if>
+      <if test="saleno != null" >
+        saleno,
+      </if>
+      <if test="accountid != null" >
+        accountid,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="useableamount != null" >
+        useableamount,
+      </if>
+      <if test="avoidamount != null" >
+        avoidamount,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="sorts != null" >
+        sorts,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="updateuser != null" >
+        updateuser,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+      <if test="createdate != null" >
+        createdate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="tenantid != null" >
+        #{tenantid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="stncode != null" >
+        #{stncode,jdbcType=VARCHAR},
+      </if>
+      <if test="stnname != null" >
+        #{stnname,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceconnid != null" >
+        #{deviceconnid,jdbcType=VARCHAR},
+      </if>
+      <if test="areacode != null" >
+        #{areacode,jdbcType=VARCHAR},
+      </if>
+      <if test="oilcode != null" >
+        #{oilcode,jdbcType=VARCHAR},
+      </if>
+      <if test="oilno != null" >
+        #{oilno,jdbcType=VARCHAR},
+      </if>
+      <if test="carnum != null" >
+        #{carnum,jdbcType=VARCHAR},
+      </if>
+      <if test="nozzleno != null" >
+        #{nozzleno,jdbcType=VARCHAR},
+      </if>
+      <if test="sessionid != null" >
+        #{sessionid,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=BIGINT},
+      </if>
+      <if test="step != null" >
+        #{step,jdbcType=VARCHAR},
+      </if>
+      <if test="freepword != null" >
+        #{freepword,jdbcType=VARCHAR},
+      </if>
+      <if test="logintime != null" >
+        #{logintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logouttime != null" >
+        #{logouttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lefttopx != null" >
+        #{lefttopx,jdbcType=BIGINT},
+      </if>
+      <if test="lefttopy != null" >
+        #{lefttopy,jdbcType=BIGINT},
+      </if>
+      <if test="rightbottomx != null" >
+        #{rightbottomx,jdbcType=BIGINT},
+      </if>
+      <if test="rightbottomy != null" >
+        #{rightbottomy,jdbcType=BIGINT},
+      </if>
+      <if test="carcolor != null" >
+        #{carcolor,jdbcType=VARCHAR},
+      </if>
+      <if test="cameraid != null" >
+        #{cameraid,jdbcType=VARCHAR},
+      </if>
+      <if test="cartype != null" >
+        #{cartype,jdbcType=VARCHAR},
+      </if>
+      <if test="cleft != null" >
+        #{cleft,jdbcType=BIGINT},
+      </if>
+      <if test="ctop != null" >
+        #{ctop,jdbcType=BIGINT},
+      </if>
+      <if test="cright != null" >
+        #{cright,jdbcType=BIGINT},
+      </if>
+      <if test="cbottom != null" >
+        #{cbottom,jdbcType=BIGINT},
+      </if>
+      <if test="saleno != null" >
+        #{saleno,jdbcType=VARCHAR},
+      </if>
+      <if test="accountid != null" >
+        #{accountid,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=BIGINT},
+      </if>
+      <if test="useableamount != null" >
+        #{useableamount,jdbcType=BIGINT},
+      </if>
+      <if test="avoidamount != null" >
+        #{avoidamount,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="sorts != null" >
+        #{sorts,jdbcType=BIGINT},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updateuser != null" >
+        #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pcitc.oilmachine.model.UserLoginfoExample" resultType="java.lang.Integer" >
+    select count(*) from iot_userlogininfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update iot_userlogininfo
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tenantid != null" >
+        tenantid = #{record.tenantid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userid != null" >
+        userid = #{record.userid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.username != null" >
+        userName = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stncode != null" >
+        stncode = #{record.stncode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stnname != null" >
+        stnname = #{record.stnname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ip != null" >
+        ip = #{record.ip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deviceconnid != null" >
+        deviceconnid = #{record.deviceconnid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.areacode != null" >
+        areacode = #{record.areacode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.oilcode != null" >
+        oilcode = #{record.oilcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.oilno != null" >
+        oilno = #{record.oilno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carnum != null" >
+        carnum = #{record.carnum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nozzleno != null" >
+        nozzleno = #{record.nozzleno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sessionid != null" >
+        sessionid = #{record.sessionid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=BIGINT},
+      </if>
+      <if test="record.step != null" >
+        step = #{record.step,jdbcType=VARCHAR},
+      </if>
+      <if test="record.freepword != null" >
+        freepword = #{record.freepword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.logintime != null" >
+        loginTime = #{record.logintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.logouttime != null" >
+        logoutTime = #{record.logouttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lefttopx != null" >
+        lefttopx = #{record.lefttopx,jdbcType=BIGINT},
+      </if>
+      <if test="record.lefttopy != null" >
+        lefttopy = #{record.lefttopy,jdbcType=BIGINT},
+      </if>
+      <if test="record.rightbottomx != null" >
+        rightbottomx = #{record.rightbottomx,jdbcType=BIGINT},
+      </if>
+      <if test="record.rightbottomy != null" >
+        rightbottomy = #{record.rightbottomy,jdbcType=BIGINT},
+      </if>
+      <if test="record.carcolor != null" >
+        carcolor = #{record.carcolor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cameraid != null" >
+        cameraid = #{record.cameraid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cartype != null" >
+        cartype = #{record.cartype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cleft != null" >
+        cleft = #{record.cleft,jdbcType=BIGINT},
+      </if>
+      <if test="record.ctop != null" >
+        ctop = #{record.ctop,jdbcType=BIGINT},
+      </if>
+      <if test="record.cright != null" >
+        cright = #{record.cright,jdbcType=BIGINT},
+      </if>
+      <if test="record.cbottom != null" >
+        cbottom = #{record.cbottom,jdbcType=BIGINT},
+      </if>
+      <if test="record.saleno != null" >
+        saleno = #{record.saleno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accountid != null" >
+        accountid = #{record.accountid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=BIGINT},
+      </if>
+      <if test="record.useableamount != null" >
+        useableamount = #{record.useableamount,jdbcType=BIGINT},
+      </if>
+      <if test="record.avoidamount != null" >
+        avoidamount = #{record.avoidamount,jdbcType=BIGINT},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.sorts != null" >
+        sorts = #{record.sorts,jdbcType=BIGINT},
+      </if>
+      <if test="record.creator != null" >
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateuser != null" >
+        updateuser = #{record.updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updatetime != null" >
+        updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdate != null" >
+        createdate = #{record.createdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update iot_userlogininfo
+    set id = #{record.id,jdbcType=VARCHAR},
+      tenantid = #{record.tenantid,jdbcType=VARCHAR},
+      userid = #{record.userid,jdbcType=VARCHAR},
+      userName = #{record.username,jdbcType=VARCHAR},
+      stncode = #{record.stncode,jdbcType=VARCHAR},
+      stnname = #{record.stnname,jdbcType=VARCHAR},
+      ip = #{record.ip,jdbcType=VARCHAR},
+      deviceconnid = #{record.deviceconnid,jdbcType=VARCHAR},
+      areacode = #{record.areacode,jdbcType=VARCHAR},
+      oilcode = #{record.oilcode,jdbcType=VARCHAR},
+      oilno = #{record.oilno,jdbcType=VARCHAR},
+      carnum = #{record.carnum,jdbcType=VARCHAR},
+      nozzleno = #{record.nozzleno,jdbcType=VARCHAR},
+      sessionid = #{record.sessionid,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=BIGINT},
+      step = #{record.step,jdbcType=VARCHAR},
+      freepword = #{record.freepword,jdbcType=VARCHAR},
+      loginTime = #{record.logintime,jdbcType=TIMESTAMP},
+      logoutTime = #{record.logouttime,jdbcType=TIMESTAMP},
+      lefttopx = #{record.lefttopx,jdbcType=BIGINT},
+      lefttopy = #{record.lefttopy,jdbcType=BIGINT},
+      rightbottomx = #{record.rightbottomx,jdbcType=BIGINT},
+      rightbottomy = #{record.rightbottomy,jdbcType=BIGINT},
+      carcolor = #{record.carcolor,jdbcType=VARCHAR},
+      cameraid = #{record.cameraid,jdbcType=VARCHAR},
+      cartype = #{record.cartype,jdbcType=VARCHAR},
+      cleft = #{record.cleft,jdbcType=BIGINT},
+      ctop = #{record.ctop,jdbcType=BIGINT},
+      cright = #{record.cright,jdbcType=BIGINT},
+      cbottom = #{record.cbottom,jdbcType=BIGINT},
+      saleno = #{record.saleno,jdbcType=VARCHAR},
+      accountid = #{record.accountid,jdbcType=VARCHAR},
+      amount = #{record.amount,jdbcType=BIGINT},
+      useableamount = #{record.useableamount,jdbcType=BIGINT},
+      avoidamount = #{record.avoidamount,jdbcType=BIGINT},
+      status = #{record.status,jdbcType=TINYINT},
+      sorts = #{record.sorts,jdbcType=BIGINT},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      updateuser = #{record.updateuser,jdbcType=VARCHAR},
+      updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
+      createdate = #{record.createdate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pcitc.oilmachine.model.UserLoginfo" >
+    update iot_userlogininfo
+    <set >
+      <if test="tenantid != null" >
+        tenantid = #{tenantid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        userName = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="stncode != null" >
+        stncode = #{stncode,jdbcType=VARCHAR},
+      </if>
+      <if test="stnname != null" >
+        stnname = #{stnname,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceconnid != null" >
+        deviceconnid = #{deviceconnid,jdbcType=VARCHAR},
+      </if>
+      <if test="areacode != null" >
+        areacode = #{areacode,jdbcType=VARCHAR},
+      </if>
+      <if test="oilcode != null" >
+        oilcode = #{oilcode,jdbcType=VARCHAR},
+      </if>
+      <if test="oilno != null" >
+        oilno = #{oilno,jdbcType=VARCHAR},
+      </if>
+      <if test="carnum != null" >
+        carnum = #{carnum,jdbcType=VARCHAR},
+      </if>
+      <if test="nozzleno != null" >
+        nozzleno = #{nozzleno,jdbcType=VARCHAR},
+      </if>
+      <if test="sessionid != null" >
+        sessionid = #{sessionid,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=BIGINT},
+      </if>
+      <if test="step != null" >
+        step = #{step,jdbcType=VARCHAR},
+      </if>
+      <if test="freepword != null" >
+        freepword = #{freepword,jdbcType=VARCHAR},
+      </if>
+      <if test="logintime != null" >
+        loginTime = #{logintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logouttime != null" >
+        logoutTime = #{logouttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lefttopx != null" >
+        lefttopx = #{lefttopx,jdbcType=BIGINT},
+      </if>
+      <if test="lefttopy != null" >
+        lefttopy = #{lefttopy,jdbcType=BIGINT},
+      </if>
+      <if test="rightbottomx != null" >
+        rightbottomx = #{rightbottomx,jdbcType=BIGINT},
+      </if>
+      <if test="rightbottomy != null" >
+        rightbottomy = #{rightbottomy,jdbcType=BIGINT},
+      </if>
+      <if test="carcolor != null" >
+        carcolor = #{carcolor,jdbcType=VARCHAR},
+      </if>
+      <if test="cameraid != null" >
+        cameraid = #{cameraid,jdbcType=VARCHAR},
+      </if>
+      <if test="cartype != null" >
+        cartype = #{cartype,jdbcType=VARCHAR},
+      </if>
+      <if test="cleft != null" >
+        cleft = #{cleft,jdbcType=BIGINT},
+      </if>
+      <if test="ctop != null" >
+        ctop = #{ctop,jdbcType=BIGINT},
+      </if>
+      <if test="cright != null" >
+        cright = #{cright,jdbcType=BIGINT},
+      </if>
+      <if test="cbottom != null" >
+        cbottom = #{cbottom,jdbcType=BIGINT},
+      </if>
+      <if test="saleno != null" >
+        saleno = #{saleno,jdbcType=VARCHAR},
+      </if>
+      <if test="accountid != null" >
+        accountid = #{accountid,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=BIGINT},
+      </if>
+      <if test="useableamount != null" >
+        useableamount = #{useableamount,jdbcType=BIGINT},
+      </if>
+      <if test="avoidamount != null" >
+        avoidamount = #{avoidamount,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="sorts != null" >
+        sorts = #{sorts,jdbcType=BIGINT},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updateuser != null" >
+        updateuser = #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdate != null" >
+        createdate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pcitc.oilmachine.model.UserLoginfo" >
+    update iot_userlogininfo
+    set tenantid = #{tenantid,jdbcType=VARCHAR},
+      userid = #{userid,jdbcType=VARCHAR},
+      userName = #{username,jdbcType=VARCHAR},
+      stncode = #{stncode,jdbcType=VARCHAR},
+      stnname = #{stnname,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      deviceconnid = #{deviceconnid,jdbcType=VARCHAR},
+      areacode = #{areacode,jdbcType=VARCHAR},
+      oilcode = #{oilcode,jdbcType=VARCHAR},
+      oilno = #{oilno,jdbcType=VARCHAR},
+      carnum = #{carnum,jdbcType=VARCHAR},
+      nozzleno = #{nozzleno,jdbcType=VARCHAR},
+      sessionid = #{sessionid,jdbcType=VARCHAR},
+      price = #{price,jdbcType=BIGINT},
+      step = #{step,jdbcType=VARCHAR},
+      freepword = #{freepword,jdbcType=VARCHAR},
+      loginTime = #{logintime,jdbcType=TIMESTAMP},
+      logoutTime = #{logouttime,jdbcType=TIMESTAMP},
+      lefttopx = #{lefttopx,jdbcType=BIGINT},
+      lefttopy = #{lefttopy,jdbcType=BIGINT},
+      rightbottomx = #{rightbottomx,jdbcType=BIGINT},
+      rightbottomy = #{rightbottomy,jdbcType=BIGINT},
+      carcolor = #{carcolor,jdbcType=VARCHAR},
+      cameraid = #{cameraid,jdbcType=VARCHAR},
+      cartype = #{cartype,jdbcType=VARCHAR},
+      cleft = #{cleft,jdbcType=BIGINT},
+      ctop = #{ctop,jdbcType=BIGINT},
+      cright = #{cright,jdbcType=BIGINT},
+      cbottom = #{cbottom,jdbcType=BIGINT},
+      saleno = #{saleno,jdbcType=VARCHAR},
+      accountid = #{accountid,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=BIGINT},
+      useableamount = #{useableamount,jdbcType=BIGINT},
+      avoidamount = #{avoidamount,jdbcType=BIGINT},
+      status = #{status,jdbcType=TINYINT},
+      sorts = #{sorts,jdbcType=BIGINT},
+      creator = #{creator,jdbcType=VARCHAR},
+      updateuser = #{updateuser,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      createdate = #{createdate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

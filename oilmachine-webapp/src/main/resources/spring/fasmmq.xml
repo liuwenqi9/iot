@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd" default-lazy-init="false">
+	<context:annotation-config />
+	<context:component-scan base-package="com.afs" />
+		<!-- Connection Factory 只声明一次-->
+		<bean id="connFactory" 
+			class="com.rabbitmq.client.ConnectionFactory">
+			<!-- <property name="host" value="192.168.159.135" />
+			<property name="username" value="admin" />
+			<property name="password" value="admin" />
+			<property name="port" value="5672" /> -->
+			<property name="host" value="10.248.245.116" />
+			<property name="username" value="shouji" />
+			<property name="password" value="shouji" />
+			<property name="port" value="5672" /> 
+		</bean>
+		
+		<!-- fasmSendToMQ发送者 -->
+		<bean id="fasmSendToMQService"  class="com.afs.base.mq.MessageSendService" destroy-method="close">
+			<property name="factory" ref="connFactory" />
+			<property name="exchangeName" value="${queueName}" />
+		</bean>
+		
+		<!--消费者配置
+		<bean id="messageReceiveSample" class="com.afs.fasm.mcp.mq.DownMessageReceiveService" init-method="startDownMessageConsumer" >
+			<property name="factory" ref="connFactory"></property>
+			<property name="messageHandlerId" value="MessageHandlerSample"></property>
+			<property name="queueName" value="${queueName}"></property>
+			<property name="consumerCount" value="1"></property>
+		</bean>
+		<bean id="MessageHandlerSample" class="com.afs.fasm.mcp.mq.DownMessageConsumer" scope="prototype"/>-->
+		
+		
+		<!-- 消息入库的消费者 queueNameforMove
+		<bean  class="com.afs.base.mq.MessageReceiveService"  init-method="run">
+			<property name="factory" ref="connFactory"></property>
+			<property name="messageHandlerId" value="MessageToDBConsumer"></property>
+			<property name="queueName" value="mem_es"></property>
+			<property name="consumerCount" value="10"></property>
+		</bean>
+		<bean id="MessageToDBConsumer" class="com.afs.fasm.mqconsumer.MessageToDBConsumer" scope="prototype"/>-->
+</beans>

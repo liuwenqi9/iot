@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pcitc.oilmachine.dao.PreAuthorizationMapper" >
+  <resultMap id="BaseResultMap" type="com.pcitc.oilmachine.model.PreAuthorization" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="tenantid" property="tenantid" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="memcardnum" property="memcardnum" jdbcType="VARCHAR" />
+    <result column="accountid" property="accountid" jdbcType="VARCHAR" />
+    <result column="saleno" property="saleno" jdbcType="VARCHAR" />
+    <result column="approveId" property="approveid" jdbcType="VARCHAR" />
+    <result column="presqno" property="presqno" jdbcType="VARCHAR" />
+    <result column="preamount" property="preamount" jdbcType="BIGINT" />
+    <result column="prewcno" property="prewcno" jdbcType="VARCHAR" />
+    <result column="prewcqx" property="prewcqx" jdbcType="VARCHAR" />
+    <result column="sqopetime" property="sqopetime" jdbcType="TIMESTAMP" />
+    <result column="wcopetime" property="wcopetime" jdbcType="TIMESTAMP" />
+    <result column="qxopetime" property="qxopetime" jdbcType="TIMESTAMP" />
+    <result column="sqresult" property="sqresult" jdbcType="VARCHAR" />
+    <result column="qxresult" property="qxresult" jdbcType="VARCHAR" />
+    <result column="wcresult" property="wcresult" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="SORTS" property="sorts" jdbcType="BIGINT" />
+    <result column="CREATOR" property="creator" jdbcType="VARCHAR" />
+    <result column="UPDATEUSER" property="updateuser" jdbcType="VARCHAR" />
+    <result column="UPDATETIME" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="CREATEDATE" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, tenantid, userid, memcardnum, accountid, saleno, approveId, presqno, preamount, 
+    prewcno, prewcqx, sqopetime, wcopetime, qxopetime, sqresult, qxresult, wcresult, 
+    STATUS, SORTS, CREATOR, UPDATEUSER, UPDATETIME, CREATEDATE
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pcitc.oilmachine.model.PreAuthorizationExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from iot_preauthorization
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from iot_preauthorization
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from iot_preauthorization
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pcitc.oilmachine.model.PreAuthorizationExample" >
+    delete from iot_preauthorization
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pcitc.oilmachine.model.PreAuthorization" >
+    insert into iot_preauthorization (id, tenantid, userid, 
+      memcardnum, accountid, saleno, 
+      approveId, presqno, preamount, 
+      prewcno, prewcqx, sqopetime, 
+      wcopetime, qxopetime, sqresult, 
+      qxresult, wcresult, STATUS, 
+      SORTS, CREATOR, UPDATEUSER, 
+      UPDATETIME, CREATEDATE)
+    values (#{id,jdbcType=VARCHAR}, #{tenantid,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, 
+      #{memcardnum,jdbcType=VARCHAR}, #{accountid,jdbcType=VARCHAR}, #{saleno,jdbcType=VARCHAR}, 
+      #{approveid,jdbcType=VARCHAR}, #{presqno,jdbcType=VARCHAR}, #{preamount,jdbcType=BIGINT}, 
+      #{prewcno,jdbcType=VARCHAR}, #{prewcqx,jdbcType=VARCHAR}, #{sqopetime,jdbcType=TIMESTAMP}, 
+      #{wcopetime,jdbcType=TIMESTAMP}, #{qxopetime,jdbcType=TIMESTAMP}, #{sqresult,jdbcType=VARCHAR}, 
+      #{qxresult,jdbcType=VARCHAR}, #{wcresult,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{sorts,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{updateuser,jdbcType=VARCHAR}, 
+      #{updatetime,jdbcType=TIMESTAMP}, #{createdate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pcitc.oilmachine.model.PreAuthorization" >
+    insert into iot_preauthorization
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="tenantid != null" >
+        tenantid,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="memcardnum != null" >
+        memcardnum,
+      </if>
+      <if test="accountid != null" >
+        accountid,
+      </if>
+      <if test="saleno != null" >
+        saleno,
+      </if>
+      <if test="approveid != null" >
+        approveId,
+      </if>
+      <if test="presqno != null" >
+        presqno,
+      </if>
+      <if test="preamount != null" >
+        preamount,
+      </if>
+      <if test="prewcno != null" >
+        prewcno,
+      </if>
+      <if test="prewcqx != null" >
+        prewcqx,
+      </if>
+      <if test="sqopetime != null" >
+        sqopetime,
+      </if>
+      <if test="wcopetime != null" >
+        wcopetime,
+      </if>
+      <if test="qxopetime != null" >
+        qxopetime,
+      </if>
+      <if test="sqresult != null" >
+        sqresult,
+      </if>
+      <if test="qxresult != null" >
+        qxresult,
+      </if>
+      <if test="wcresult != null" >
+        wcresult,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="sorts != null" >
+        SORTS,
+      </if>
+      <if test="creator != null" >
+        CREATOR,
+      </if>
+      <if test="updateuser != null" >
+        UPDATEUSER,
+      </if>
+      <if test="updatetime != null" >
+        UPDATETIME,
+      </if>
+      <if test="createdate != null" >
+        CREATEDATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="tenantid != null" >
+        #{tenantid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="memcardnum != null" >
+        #{memcardnum,jdbcType=VARCHAR},
+      </if>
+      <if test="accountid != null" >
+        #{accountid,jdbcType=VARCHAR},
+      </if>
+      <if test="saleno != null" >
+        #{saleno,jdbcType=VARCHAR},
+      </if>
+      <if test="approveid != null" >
+        #{approveid,jdbcType=VARCHAR},
+      </if>
+      <if test="presqno != null" >
+        #{presqno,jdbcType=VARCHAR},
+      </if>
+      <if test="preamount != null" >
+        #{preamount,jdbcType=BIGINT},
+      </if>
+      <if test="prewcno != null" >
+        #{prewcno,jdbcType=VARCHAR},
+      </if>
+      <if test="prewcqx != null" >
+        #{prewcqx,jdbcType=VARCHAR},
+      </if>
+      <if test="sqopetime != null" >
+        #{sqopetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="wcopetime != null" >
+        #{wcopetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="qxopetime != null" >
+        #{qxopetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sqresult != null" >
+        #{sqresult,jdbcType=VARCHAR},
+      </if>
+      <if test="qxresult != null" >
+        #{qxresult,jdbcType=VARCHAR},
+      </if>
+      <if test="wcresult != null" >
+        #{wcresult,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="sorts != null" >
+        #{sorts,jdbcType=BIGINT},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updateuser != null" >
+        #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pcitc.oilmachine.model.PreAuthorizationExample" resultType="java.lang.Integer" >
+    select count(*) from iot_preauthorization
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update iot_preauthorization
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tenantid != null" >
+        tenantid = #{record.tenantid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userid != null" >
+        userid = #{record.userid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memcardnum != null" >
+        memcardnum = #{record.memcardnum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accountid != null" >
+        accountid = #{record.accountid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.saleno != null" >
+        saleno = #{record.saleno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.approveid != null" >
+        approveId = #{record.approveid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.presqno != null" >
+        presqno = #{record.presqno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.preamount != null" >
+        preamount = #{record.preamount,jdbcType=BIGINT},
+      </if>
+      <if test="record.prewcno != null" >
+        prewcno = #{record.prewcno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.prewcqx != null" >
+        prewcqx = #{record.prewcqx,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sqopetime != null" >
+        sqopetime = #{record.sqopetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.wcopetime != null" >
+        wcopetime = #{record.wcopetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.qxopetime != null" >
+        qxopetime = #{record.qxopetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.sqresult != null" >
+        sqresult = #{record.sqresult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qxresult != null" >
+        qxresult = #{record.qxresult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wcresult != null" >
+        wcresult = #{record.wcresult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.sorts != null" >
+        SORTS = #{record.sorts,jdbcType=BIGINT},
+      </if>
+      <if test="record.creator != null" >
+        CREATOR = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateuser != null" >
+        UPDATEUSER = #{record.updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updatetime != null" >
+        UPDATETIME = #{record.updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdate != null" >
+        CREATEDATE = #{record.createdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update iot_preauthorization
+    set id = #{record.id,jdbcType=VARCHAR},
+      tenantid = #{record.tenantid,jdbcType=VARCHAR},
+      userid = #{record.userid,jdbcType=VARCHAR},
+      memcardnum = #{record.memcardnum,jdbcType=VARCHAR},
+      accountid = #{record.accountid,jdbcType=VARCHAR},
+      saleno = #{record.saleno,jdbcType=VARCHAR},
+      approveId = #{record.approveid,jdbcType=VARCHAR},
+      presqno = #{record.presqno,jdbcType=VARCHAR},
+      preamount = #{record.preamount,jdbcType=BIGINT},
+      prewcno = #{record.prewcno,jdbcType=VARCHAR},
+      prewcqx = #{record.prewcqx,jdbcType=VARCHAR},
+      sqopetime = #{record.sqopetime,jdbcType=TIMESTAMP},
+      wcopetime = #{record.wcopetime,jdbcType=TIMESTAMP},
+      qxopetime = #{record.qxopetime,jdbcType=TIMESTAMP},
+      sqresult = #{record.sqresult,jdbcType=VARCHAR},
+      qxresult = #{record.qxresult,jdbcType=VARCHAR},
+      wcresult = #{record.wcresult,jdbcType=VARCHAR},
+      STATUS = #{record.status,jdbcType=TINYINT},
+      SORTS = #{record.sorts,jdbcType=BIGINT},
+      CREATOR = #{record.creator,jdbcType=VARCHAR},
+      UPDATEUSER = #{record.updateuser,jdbcType=VARCHAR},
+      UPDATETIME = #{record.updatetime,jdbcType=TIMESTAMP},
+      CREATEDATE = #{record.createdate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pcitc.oilmachine.model.PreAuthorization" >
+    update iot_preauthorization
+    <set >
+      <if test="tenantid != null" >
+        tenantid = #{tenantid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="memcardnum != null" >
+        memcardnum = #{memcardnum,jdbcType=VARCHAR},
+      </if>
+      <if test="accountid != null" >
+        accountid = #{accountid,jdbcType=VARCHAR},
+      </if>
+      <if test="saleno != null" >
+        saleno = #{saleno,jdbcType=VARCHAR},
+      </if>
+      <if test="approveid != null" >
+        approveId = #{approveid,jdbcType=VARCHAR},
+      </if>
+      <if test="presqno != null" >
+        presqno = #{presqno,jdbcType=VARCHAR},
+      </if>
+      <if test="preamount != null" >
+        preamount = #{preamount,jdbcType=BIGINT},
+      </if>
+      <if test="prewcno != null" >
+        prewcno = #{prewcno,jdbcType=VARCHAR},
+      </if>
+      <if test="prewcqx != null" >
+        prewcqx = #{prewcqx,jdbcType=VARCHAR},
+      </if>
+      <if test="sqopetime != null" >
+        sqopetime = #{sqopetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="wcopetime != null" >
+        wcopetime = #{wcopetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="qxopetime != null" >
+        qxopetime = #{qxopetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sqresult != null" >
+        sqresult = #{sqresult,jdbcType=VARCHAR},
+      </if>
+      <if test="qxresult != null" >
+        qxresult = #{qxresult,jdbcType=VARCHAR},
+      </if>
+      <if test="wcresult != null" >
+        wcresult = #{wcresult,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="sorts != null" >
+        SORTS = #{sorts,jdbcType=BIGINT},
+      </if>
+      <if test="creator != null" >
+        CREATOR = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updateuser != null" >
+        UPDATEUSER = #{updateuser,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null" >
+        UPDATETIME = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdate != null" >
+        CREATEDATE = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pcitc.oilmachine.model.PreAuthorization" >
+    update iot_preauthorization
+    set tenantid = #{tenantid,jdbcType=VARCHAR},
+      userid = #{userid,jdbcType=VARCHAR},
+      memcardnum = #{memcardnum,jdbcType=VARCHAR},
+      accountid = #{accountid,jdbcType=VARCHAR},
+      saleno = #{saleno,jdbcType=VARCHAR},
+      approveId = #{approveid,jdbcType=VARCHAR},
+      presqno = #{presqno,jdbcType=VARCHAR},
+      preamount = #{preamount,jdbcType=BIGINT},
+      prewcno = #{prewcno,jdbcType=VARCHAR},
+      prewcqx = #{prewcqx,jdbcType=VARCHAR},
+      sqopetime = #{sqopetime,jdbcType=TIMESTAMP},
+      wcopetime = #{wcopetime,jdbcType=TIMESTAMP},
+      qxopetime = #{qxopetime,jdbcType=TIMESTAMP},
+      sqresult = #{sqresult,jdbcType=VARCHAR},
+      qxresult = #{qxresult,jdbcType=VARCHAR},
+      wcresult = #{wcresult,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=TINYINT},
+      SORTS = #{sorts,jdbcType=BIGINT},
+      CREATOR = #{creator,jdbcType=VARCHAR},
+      UPDATEUSER = #{updateuser,jdbcType=VARCHAR},
+      UPDATETIME = #{updatetime,jdbcType=TIMESTAMP},
+      CREATEDATE = #{createdate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
