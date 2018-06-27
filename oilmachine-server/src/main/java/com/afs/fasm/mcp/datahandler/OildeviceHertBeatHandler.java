@@ -46,21 +46,22 @@ public class OildeviceHertBeatHandler extends CommonMessageHandler {
 				session.getChannel().close();
 				session.setChannel(ch);
 			}
-			session.setChannel(ch);
-			if(!SessionManager.channelGroup.contains(ch)){
-				SessionManager.channelGroup.add(ch);
-			}
 		}
 		//根据加油机找摄像头,并获取当前摄像头下的所有车牌 
 		CommonService commonService = (CommonService) MySpringContextUtil.getBean("commonService");
 		//根据加油机,找到其绑定的所有的车辆信息
 		List<Vehicle> vehicles = new ArrayList<Vehicle>();
+		List<Vehicle> vehiclesnoUser = new ArrayList<Vehicle>();
 		try {
 			vehicles = commonService.getCurrentVehicles(oilconnid);
+			vehiclesnoUser = commonService.getCurrentVehiclesHasnouser(oilconnid);
 		} catch (PTPECAppException e) {
 			e.printStackTrace();
 		}
-		log.info(String.valueOf(odh.getOildeviceid())+":"+JSONObject.toJSONString(vehicles));
+		log.info("加油机"+oilconnid+",未绑定会员的车牌数据："+JSONObject.toJSONString(vehiclesnoUser));
+		log.info("加油机"+oilconnid+",绑定会员的车牌数据："+JSONObject.toJSONString(vehicles));
+		//vehicles.addAll(vehiclesnoUser);
+		//log.info("加油机"+oilconnid+",所有绑定当前油机的车牌数据："+JSONObject.toJSONString(vehicles));
 		commonService.sendCarNumToOilDevice(vehicles, String.valueOf(odh.getOildeviceid()));
 		return message;
 	}

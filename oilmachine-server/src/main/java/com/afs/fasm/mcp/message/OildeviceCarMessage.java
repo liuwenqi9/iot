@@ -101,6 +101,9 @@ public class OildeviceCarMessage extends FasmAbstractMessage {
 				out.writeBytes(ByteUtil.long2byte(sc,1));//屏幕号
 				//油品型号
 				String oiltypecode = vehicle.getOiltypecode();
+				if(StringUtils.isBlank(oiltypecode)){
+					oiltypecode = "92";
+				}
 				int oc = Integer.parseInt(oiltypecode);
 				out.writeBytes(ByteUtil.long2byte(oc,4));
 			}

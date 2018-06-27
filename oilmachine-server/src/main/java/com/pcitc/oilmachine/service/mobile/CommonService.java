@@ -698,7 +698,7 @@ public class CommonService extends BaseService{
 			return "00100111";
 			//return "01000110";
 		}else{
-			return "01000110";
+			return "01100110";
 		}
 	}
 	
@@ -740,7 +740,7 @@ public class CommonService extends BaseService{
 		boolean sendresult = true;
 		try {
 			sendVerificationCode(memcardnum, devices);
-			String msg = "【中石化北分】赠送您一张优惠券(低于10元减1元),当前油站使用有效,快来使用吧~";
+			String msg = "【中石化北分】赠送您一张优惠券(满10元减1元),当前油站使用有效,快来使用吧~";
 			sendMobilecode(phoneno, msg, devices.getTenantid());
 			log.info("*************车辆首次进站发送验证码成功**");
 		}catch (Exception e) {
@@ -1290,6 +1290,8 @@ public class CommonService extends BaseService{
 		if(oildevice == null){
 			return vehicles;
 		}
+		
+		//此处有问题，加油位如果没有被摄像头管理？
 		List<DevicesArea> das = findAreanumListByDevicesids(oildevice.getDevicesid(), Constant.OILMACH_CODE);
 		if(das == null || das.size() == 0){
 			return vehicles;
@@ -1308,6 +1310,7 @@ public class CommonService extends BaseService{
 			for(Devices cameradevice : cameras){
 				BoundHashOperations<String, String, String> cameraOpertions = stringRedisTemplate.boundHashOps(cameradevice.getTenantid()+cameradevice.getConnid());
 				String carnums = cameraOpertions.get("carnums");
+				System.out.println("oilconnid:"+oilconnid+":cameraid"+cameradevice.getConnid()+":carnumshasuser"+carnums);
 				if(StringUtils.isNotBlank(carnums)){
 					String[] carnumarr = carnums.split("&");
 					for(String carnum : carnumarr){
@@ -1321,8 +1324,8 @@ public class CommonService extends BaseService{
 							}
 						}else{
 							String gasstatus = hashOpertions.get(VehicleEnum.GASSTATUS.toString());
-							System.out.println(gasstatus);
-							/*if("1".equals(gasstatus)){
+							/*System.out.println(gasstatus);
+							if("1".equals(gasstatus)){
 								continue;
 							}*/
 							//获取该车牌的坐标信息并与当前加油位的坐标计算
@@ -1338,6 +1341,7 @@ public class CommonService extends BaseService{
 							long rightbottomx = da.getRightbottomx().multiply(cm).longValue();
 							long rightbottomy = da.getRightbottomy().multiply(cm).longValue();
 							boolean rate = InMatrix.inside(left, top, right, bottom, lefttopx, lefttopy, rightbottomx, rightbottomy);
+							System.out.println("oilconnid:"+oilconnid+":carnumshasuser:carnum"+carnum+":"+rate);
 							if(rate){
 								//获取当前车牌的所有用户信息
 								Vehicle vehicle = new Vehicle();
@@ -1345,16 +1349,95 @@ public class CommonService extends BaseService{
 								String needpassword = hashOpertions.get("needpassword");
 								String pwtype = hashOpertions.get("pwtype");
 								String oiltypecode = hashOpertions.get("oiltypecode");//油品型号
+								String userid = hashOpertions.get("userid");//油品型号
+								String username = hashOpertions.get("username");//油品型号
 								vehicle.setAreacode(showcode);
 								vehicle.setNeedpassword(needpassword);
 								vehicle.setPwtype(pwtype);
 								vehicle.setOiltypecode(oiltypecode);
 								vehicle.setCarnum(carnumcache);
+								vehicle.setUserid(userid);
+								vehicle.setUsername(username);
 								vehicles.add(vehicle);
 							}
 						}
 					}
 					cameraOpertions.put("carnums", carnums);
+				}
+			}
+		}
+		return vehicles;
+	}
+	
+	
+	/**
+	 * 获取当前油机下的所有已绑定的车牌信息
+	 * @param oilconnid
+	 * @return
+	 * @throws PTPECAppException 
+	 */
+	public List<Vehicle> getCurrentVehiclesHasnouser(String oilconnid) throws PTPECAppException{
+		List<Vehicle> vehicles = new ArrayList<Vehicle>();
+		Devices oildevice = devicesService.findByConnid(oilconnid, Constant.OILMACH_CODE);
+		if(oildevice == null){
+			return vehicles;
+		}
+		List<DevicesArea> das = findAreanumListByDevicesids(oildevice.getDevicesid(), Constant.OILMACH_CODE);
+		if(das == null || das.size() == 0){
+			return vehicles;
+		}
+		//根据加油位找到所有的摄像头
+		List<String> ids = new ArrayList<String>();
+		for(DevicesArea da : das){
+			ids.add(da.getCameraid());
+		}
+		List<Devices> cameras = queryDevicesListByIds(ids);
+		if(cameras == null || cameras.size() == 0){
+			return vehicles;
+		}
+		//获取摄像头下所有的车牌集合
+		for(DevicesArea da : das){
+			for(Devices cameradevice : cameras){
+				BoundHashOperations<String, String, String> cameraOpertions = stringRedisTemplate.boundHashOps(cameradevice.getTenantid()+cameradevice.getConnid());
+				String carnums = cameraOpertions.get("carnumsnouser");
+				System.out.println("oilconnid:"+oilconnid+":cameraid"+cameradevice.getConnid()+":carnumsnouser"+carnums);
+				if(StringUtils.isNotBlank(carnums)){
+					String[] carnumarr = carnums.split("&");
+					for(String carnum : carnumarr){
+						BoundHashOperations<String, String, String> hashOpertions = stringRedisTemplate.boundHashOps(carnum);
+						String carnumcache = hashOpertions.get(VehicleEnum.CARNUM.toString());
+						if(StringUtils.isBlank(carnumcache)){
+							if(carnums.contains(carnum+"&")){
+								carnums = carnums.replace(carnum+"&", "");
+							}else{
+								carnums = carnums.replace(carnum, "");
+							}
+						}else{
+							//获取该车牌的坐标信息并与当前加油位的坐标计算
+							long left = Long.valueOf(hashOpertions.get(VehicleEnum.LEFT.toString()));
+							long top = Long.valueOf(hashOpertions.get(VehicleEnum.TOP.toString()));
+							long right = Long.valueOf(hashOpertions.get(VehicleEnum.RIGHT.toString()));
+							long bottom = Long.valueOf(hashOpertions.get(VehicleEnum.BOTTOM.toString()));
+							//计算坐标
+							BigDecimal cm = new BigDecimal("100"); 
+							byte areacode = da.getAreacode();
+							long lefttopx = da.getLefttopx().multiply(cm).longValue();
+							long lefttopy = da.getLefttopy().multiply(cm).longValue();
+							long rightbottomx = da.getRightbottomx().multiply(cm).longValue();
+							long rightbottomy = da.getRightbottomy().multiply(cm).longValue();
+							boolean rate = InMatrix.inside(left, top, right, bottom, lefttopx, lefttopy, rightbottomx, rightbottomy);
+							System.out.println("oilconnid:"+oilconnid+":carnumsnouser:carnum"+carnum+":"+rate);
+							if(rate){
+								//获取当前车牌的所有用户信息
+								Vehicle vehicle = new Vehicle();
+								vehicle.setCarnum(carnumcache);
+								String showcode = carnumShowOnScreen(String.valueOf(areacode));
+								vehicle.setAreacode(String.valueOf(showcode));
+								vehicles.add(vehicle);
+							}
+						}
+					}
+					cameraOpertions.put("carnumsnouser", carnums);
 				}
 			}
 		}
@@ -1413,7 +1496,6 @@ public class CommonService extends BaseService{
 		
 		byte[] ctc = new byte[2];
 		System.arraycopy(posrecordbyte, 29, ctc, 0, 2);
-		System.out.println("ctc:"+ByteUtil.getLongBy4BytesR(ctc));
 		posRecord.setCtc(ByteUtil.getLongBy4BytesR(ctc));
 		
 		byte[] tac = new byte[4];
@@ -1492,6 +1574,21 @@ public class CommonService extends BaseService{
 		System.arraycopy(posrecordbyte, 91, tmac, 0, 4);
 		posRecord.setTmac(ByteUtil.getLongBy4BytesR(tmac));
 		posRecord = posRecordService.insertPosRecord(posRecord);
+		String ttypeStr = posRecord.getTtype();
+		ttypeStr = ttypeStr.substring(ttypeStr.length()-4, ttypeStr.length());
+		if("0000".equals(ttypeStr)){
+			//同步成交记录至室内大屏
+			List<Vehicle> vehicles = getCurrentVehiclesHasnouser(devices.getConnid());
+			Vehicle ve = new Vehicle();
+			ve.setCarnum("京A12345");
+			ve.setAreacode("1100");
+			vehicles.add(ve);
+			JSONObject temp = new JSONObject();
+			temp.put("posRecord", posRecord);
+			temp.put("vehicles", vehicles);
+			System.out.println(temp.toJSONString());
+		}
+		
 		return posRecord;
 	}
 	

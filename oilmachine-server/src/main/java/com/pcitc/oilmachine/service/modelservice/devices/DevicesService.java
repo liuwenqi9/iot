@@ -15,9 +15,6 @@ import javax.annotation.Resource;
 import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.afs.base.util.MySpringContextUtil;
 import com.afs.tupeasy.session.Session;
 import com.afs.tupeasy.session.SessionManager;
@@ -568,10 +565,6 @@ public class DevicesService extends BaseService {
 				}else{
 					vehicle.setCartypename("未知");
 				}
-				vehicle.setLeft(String.valueOf(Double.parseDouble(vehicle.getLeft())/100.00));
-				vehicle.setRight(String.valueOf(Double.parseDouble(vehicle.getRight())/100.00));
-				vehicle.setBottom(String.valueOf(Double.parseDouble(vehicle.getBottom())/100.00));
-				vehicle.setTop(String.valueOf(Double.parseDouble(vehicle.getTop())/100.00));
 			}
 		}
 	}
@@ -584,7 +577,10 @@ public class DevicesService extends BaseService {
 	 * @throws Exception 
 	 */
 	public List<Vehicle> getCurrentVehicle(String tenatid,String stncode, String connid) throws Exception{
-		return commonService.getCurrentVehicles(connid);
+		List<Vehicle> hasnouser = commonService.getCurrentVehiclesHasnouser(connid);
+		List<Vehicle> hasuser = commonService.getCurrentVehicles(connid);
+		hasuser.addAll(hasnouser);
+		return hasuser;
 	}
 
 	/**
