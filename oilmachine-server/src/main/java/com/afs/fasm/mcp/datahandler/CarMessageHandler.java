@@ -158,7 +158,7 @@ public class CarMessageHandler extends CommonMessageHandler {
 							cameraOpertions.put("carnumsnouser", carnums);
 						}else{
 							//可认为是车辆首次进站
-							commonService.sendMobilecode(carnum, userinfo.getMemcardnum(), userinfo.getMobilephone(), devices);
+							//commonService.sendMobilecode(carnum, userinfo.getMemcardnum(), userinfo.getMobilephone(), devices);
 							hashOpertions.put("userid", userinfo.getUserid());
 							hashOpertions.put("username", userinfo.getUsername());
 							hashOpertions.put("accountid", String.valueOf(eaccountinfo.getAccountid()));

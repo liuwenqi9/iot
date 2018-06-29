@@ -646,6 +646,66 @@ public class SellProductExample {
             return (Criteria) this;
         }
 
+        public Criteria andMeasureIsNull() {
+            addCriterion("measure is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMeasureIsNotNull() {
+            addCriterion("measure is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMeasureEqualTo(Byte value) {
+            addCriterion("measure =", value, "measure");
+            return (Criteria) this;
+        }
+
+        public Criteria andMeasureNotEqualTo(Byte value) {
+            addCriterion("measure <>", value, "measure");
+            return (Criteria) this;
+        }
+
+        public Criteria andMeasureGreaterThan(Byte value) {
+            addCriterion("measure >", value, "measure");
+            return (Criteria) this;
+        }
+
+        public Criteria andMeasureGreaterThanOrEqualTo(Byte value) {
+            addCriterion("measure >=", value, "measure");
+            return (Criteria) this;
+        }
+
+        public Criteria andMeasureLessThan(Byte value) {
+            addCriterion("measure <", value, "measure");
+            return (Criteria) this;
+        }
+
+        public Criteria andMeasureLessThanOrEqualTo(Byte value) {
+            addCriterion("measure <=", value, "measure");
+            return (Criteria) this;
+        }
+
+        public Criteria andMeasureIn(List<Byte> values) {
+            addCriterion("measure in", values, "measure");
+            return (Criteria) this;
+        }
+
+        public Criteria andMeasureNotIn(List<Byte> values) {
+            addCriterion("measure not in", values, "measure");
+            return (Criteria) this;
+        }
+
+        public Criteria andMeasureBetween(Byte value1, Byte value2) {
+            addCriterion("measure between", value1, value2, "measure");
+            return (Criteria) this;
+        }
+
+        public Criteria andMeasureNotBetween(Byte value1, Byte value2) {
+            addCriterion("measure not between", value1, value2, "measure");
+            return (Criteria) this;
+        }
+
         public Criteria andYstotalIsNull() {
             addCriterion("ystotal is null");
             return (Criteria) this;

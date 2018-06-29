@@ -42,6 +42,18 @@ public class MQClientSenderService{
 	@Value("${mq_pass}")
 	private String password;
 	
+	@Value("${mq_ipordercenter}")
+	private String ipordercenter;
+	
+	@Value("${mq_portordercenter}")
+	private String portordercenter;
+	
+	@Value("${mq_nameordercenter}")
+	private String usernameordercenter;
+	
+	@Value("${mq_passordercenter}")
+	private String passwordordercenter;
+	
 	@Resource
 	private MqSendExceptionService mqSendExceptionService;
 	
@@ -148,6 +160,26 @@ public class MQClientSenderService{
 			channel.close();
 			connection.close(); 
         } catch (Exception e) {
+        	e.printStackTrace();
+        }
+	}
+
+	//ordercenter
+	public void ntranSendPosrecord(JSONObject jop) {
+		try { 
+			ConnectionFactory factory = new ConnectionFactory();
+			factory.setHost(ipordercenter);
+			factory.setPort(Integer.parseInt(portordercenter));
+			factory.setUsername(usernameordercenter);
+			factory.setPassword(passwordordercenter);
+			String queueName="oiltrade";
+			Connection connection = factory.newConnection();
+			Channel channel = connection.createChannel();
+			channel.queueDeclare(queueName, true, false, false, null);
+			channel.basicPublish(queueName, "sanyingOilTrade", null, JSONObject.toJSONBytes(jop));
+			channel.close();
+			connection.close();
+		} catch (Exception e) {
         	e.printStackTrace();
         }
 	}

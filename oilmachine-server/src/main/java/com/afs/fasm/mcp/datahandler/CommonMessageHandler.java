@@ -24,13 +24,12 @@ import com.alibaba.fastjson.JSONObject;
 public class CommonMessageHandler implements DataHandlerBase {
 	private static Logger log = LoggerFactory.getLogger(CommonMessageHandler.class);
 	
-	protected int sendMessageToMQ(AbstractMcpEasyMessage message,String routingKey){
+	protected int sendMessageToMQ(AbstractMcpEasyMessage message,String routingKey,int messageType){
 		Gson gson =  new GsonBuilder().setDateFormat(TimeFormatConstant.YYYYMMDDHHMMSS).create();
 		JSONObject jsonO = new JSONObject();
-		jsonO.put("index", "vehicle");
-		jsonO.put("type", "vehicle");
+		jsonO.put("type", messageType);
 		String json = gson.toJson(message);
-		jsonO.put("document", json);
+		jsonO.put("message", json);
 		MessageSendService mss = (MessageSendService) MySpringContextUtil.getBean("fasmSendToMQService");
 		int cnt = 0 ;
 		try {

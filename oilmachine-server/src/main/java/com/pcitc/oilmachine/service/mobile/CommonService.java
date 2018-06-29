@@ -73,6 +73,7 @@ import com.pcitc.saas.api.NcmiService;
 import com.pcitc.saas.api.WmaService;
 import com.pcitc.saas.util.DESEncrypt;
 import com.pcitc.oilmachine.service.modelservice.UserLoginfoService;
+import com.pcitc.oilmachine.service.system.SystemParamService;
 
 @Service
 public class CommonService extends BaseService{
@@ -103,6 +104,8 @@ public class CommonService extends BaseService{
 	private SharedClient sharedClient;
 	@Resource
 	private PosRecordService posRecordService;
+	@Resource
+	private SystemParamService systemParamService;
 	
 	private static Logger log = LoggerFactory.getLogger(CommonService.class);
 	
@@ -1308,6 +1311,9 @@ public class CommonService extends BaseService{
 		//获取摄像头下所有的车牌集合
 		for(DevicesArea da : das){
 			for(Devices cameradevice : cameras){
+				if(!da.getCameraid().equals(cameradevice.getDevicesid())){
+					continue;
+				}
 				BoundHashOperations<String, String, String> cameraOpertions = stringRedisTemplate.boundHashOps(cameradevice.getTenantid()+cameradevice.getConnid());
 				String carnums = cameraOpertions.get("carnums");
 				System.out.println("oilconnid:"+oilconnid+":cameraid"+cameradevice.getConnid()+":carnumshasuser"+carnums);
@@ -1328,37 +1334,40 @@ public class CommonService extends BaseService{
 							if("1".equals(gasstatus)){
 								continue;
 							}*/
-							//获取该车牌的坐标信息并与当前加油位的坐标计算
-							long left = Long.valueOf(hashOpertions.get(VehicleEnum.LEFT.toString()));
-							long top = Long.valueOf(hashOpertions.get(VehicleEnum.TOP.toString()));
-							long right = Long.valueOf(hashOpertions.get(VehicleEnum.RIGHT.toString()));
-							long bottom = Long.valueOf(hashOpertions.get(VehicleEnum.BOTTOM.toString()));
-							//计算坐标
-							BigDecimal cm = new BigDecimal("100"); 
-							byte areacode = da.getAreacode();
-							long lefttopx = da.getLefttopx().multiply(cm).longValue();
-							long lefttopy = da.getLefttopy().multiply(cm).longValue();
-							long rightbottomx = da.getRightbottomx().multiply(cm).longValue();
-							long rightbottomy = da.getRightbottomy().multiply(cm).longValue();
-							boolean rate = InMatrix.inside(left, top, right, bottom, lefttopx, lefttopy, rightbottomx, rightbottomy);
-							System.out.println("oilconnid:"+oilconnid+":carnumshasuser:carnum"+carnum+":"+rate);
-							if(rate){
-								//获取当前车牌的所有用户信息
-								Vehicle vehicle = new Vehicle();
-								String showcode = carnumShowOnScreen(String.valueOf(areacode));
-								String needpassword = hashOpertions.get("needpassword");
-								String pwtype = hashOpertions.get("pwtype");
-								String oiltypecode = hashOpertions.get("oiltypecode");//油品型号
-								String userid = hashOpertions.get("userid");//油品型号
-								String username = hashOpertions.get("username");//油品型号
-								vehicle.setAreacode(showcode);
-								vehicle.setNeedpassword(needpassword);
-								vehicle.setPwtype(pwtype);
-								vehicle.setOiltypecode(oiltypecode);
-								vehicle.setCarnum(carnumcache);
-								vehicle.setUserid(userid);
-								vehicle.setUsername(username);
-								vehicles.add(vehicle);
+							String cameraid = hashOpertions.get(VehicleEnum.CAMERAID.toString());
+							if(cameradevice.getConnid().equals(cameraid)){
+								//获取该车牌的坐标信息并与当前加油位的坐标计算
+								long left = Long.valueOf(hashOpertions.get(VehicleEnum.LEFT.toString()));
+								long top = Long.valueOf(hashOpertions.get(VehicleEnum.TOP.toString()));
+								long right = Long.valueOf(hashOpertions.get(VehicleEnum.RIGHT.toString()));
+								long bottom = Long.valueOf(hashOpertions.get(VehicleEnum.BOTTOM.toString()));
+								//计算坐标
+								BigDecimal cm = new BigDecimal("100"); 
+								byte areacode = da.getAreacode();
+								long lefttopx = da.getLefttopx().multiply(cm).longValue();
+								long lefttopy = da.getLefttopy().multiply(cm).longValue();
+								long rightbottomx = da.getRightbottomx().multiply(cm).longValue();
+								long rightbottomy = da.getRightbottomy().multiply(cm).longValue();
+								boolean rate = InMatrix.inside(left, top, right, bottom, lefttopx, lefttopy, rightbottomx, rightbottomy);
+								System.out.println("oilconnid:"+oilconnid+":carnumshasuser:carnum"+carnum+":"+rate);
+								if(rate){
+									//获取当前车牌的所有用户信息
+									Vehicle vehicle = new Vehicle();
+									String showcode = carnumShowOnScreen(String.valueOf(areacode));
+									String needpassword = hashOpertions.get("needpassword");
+									String pwtype = hashOpertions.get("pwtype");
+									String oiltypecode = hashOpertions.get("oiltypecode");//油品型号
+									String userid = hashOpertions.get("userid");//油品型号
+									String username = hashOpertions.get("username");//油品型号
+									vehicle.setAreacode(showcode);
+									vehicle.setNeedpassword(needpassword);
+									vehicle.setPwtype(pwtype);
+									vehicle.setOiltypecode(oiltypecode);
+									vehicle.setCarnum(carnumcache);
+									vehicle.setUserid(userid);
+									vehicle.setUsername(username);
+									vehicles.add(vehicle);
+								}
 							}
 						}
 					}
@@ -1398,6 +1407,9 @@ public class CommonService extends BaseService{
 		//获取摄像头下所有的车牌集合
 		for(DevicesArea da : das){
 			for(Devices cameradevice : cameras){
+				if(!da.getCameraid().equals(cameradevice.getDevicesid())){
+					continue;
+				}
 				BoundHashOperations<String, String, String> cameraOpertions = stringRedisTemplate.boundHashOps(cameradevice.getTenantid()+cameradevice.getConnid());
 				String carnums = cameraOpertions.get("carnumsnouser");
 				System.out.println("oilconnid:"+oilconnid+":cameraid"+cameradevice.getConnid()+":carnumsnouser"+carnums);
@@ -1414,26 +1426,29 @@ public class CommonService extends BaseService{
 							}
 						}else{
 							//获取该车牌的坐标信息并与当前加油位的坐标计算
-							long left = Long.valueOf(hashOpertions.get(VehicleEnum.LEFT.toString()));
-							long top = Long.valueOf(hashOpertions.get(VehicleEnum.TOP.toString()));
-							long right = Long.valueOf(hashOpertions.get(VehicleEnum.RIGHT.toString()));
-							long bottom = Long.valueOf(hashOpertions.get(VehicleEnum.BOTTOM.toString()));
-							//计算坐标
-							BigDecimal cm = new BigDecimal("100"); 
-							byte areacode = da.getAreacode();
-							long lefttopx = da.getLefttopx().multiply(cm).longValue();
-							long lefttopy = da.getLefttopy().multiply(cm).longValue();
-							long rightbottomx = da.getRightbottomx().multiply(cm).longValue();
-							long rightbottomy = da.getRightbottomy().multiply(cm).longValue();
-							boolean rate = InMatrix.inside(left, top, right, bottom, lefttopx, lefttopy, rightbottomx, rightbottomy);
-							System.out.println("oilconnid:"+oilconnid+":carnumsnouser:carnum"+carnum+":"+rate);
-							if(rate){
-								//获取当前车牌的所有用户信息
-								Vehicle vehicle = new Vehicle();
-								vehicle.setCarnum(carnumcache);
-								String showcode = carnumShowOnScreen(String.valueOf(areacode));
-								vehicle.setAreacode(String.valueOf(showcode));
-								vehicles.add(vehicle);
+							String cameraid = hashOpertions.get(VehicleEnum.CAMERAID.toString());
+							if(cameradevice.getConnid().equals(cameraid)){
+								long left = Long.valueOf(hashOpertions.get(VehicleEnum.LEFT.toString()));
+								long top = Long.valueOf(hashOpertions.get(VehicleEnum.TOP.toString()));
+								long right = Long.valueOf(hashOpertions.get(VehicleEnum.RIGHT.toString()));
+								long bottom = Long.valueOf(hashOpertions.get(VehicleEnum.BOTTOM.toString()));
+								//计算坐标
+								BigDecimal cm = new BigDecimal("100"); 
+								byte areacode = da.getAreacode();
+								long lefttopx = da.getLefttopx().multiply(cm).longValue();
+								long lefttopy = da.getLefttopy().multiply(cm).longValue();
+								long rightbottomx = da.getRightbottomx().multiply(cm).longValue();
+								long rightbottomy = da.getRightbottomy().multiply(cm).longValue();
+								boolean rate = InMatrix.inside(left, top, right, bottom, lefttopx, lefttopy, rightbottomx, rightbottomy);
+								System.out.println("oilconnid:"+oilconnid+":carnumsnouser:carnum"+carnum+":"+rate);
+								if(rate){
+									//获取当前车牌的所有用户信息
+									Vehicle vehicle = new Vehicle();
+									vehicle.setCarnum(carnumcache);
+									String showcode = carnumShowOnScreen(String.valueOf(areacode));
+									vehicle.setAreacode(String.valueOf(showcode));
+									vehicles.add(vehicle);
+								}
 							}
 						}
 					}
@@ -1577,16 +1592,21 @@ public class CommonService extends BaseService{
 		String ttypeStr = posRecord.getTtype();
 		ttypeStr = ttypeStr.substring(ttypeStr.length()-4, ttypeStr.length());
 		if("0000".equals(ttypeStr)){
-			//同步成交记录至室内大屏
-			List<Vehicle> vehicles = getCurrentVehiclesHasnouser(devices.getConnid());
-			Vehicle ve = new Vehicle();
-			ve.setCarnum("京A12345");
-			ve.setAreacode("1100");
-			vehicles.add(ve);
-			JSONObject temp = new JSONObject();
-			temp.put("posRecord", posRecord);
-			temp.put("vehicles", vehicles);
-			System.out.println(temp.toJSONString());
+			String asnStr = String.valueOf(posRecord.getAsn());
+			String cartype = asnStr.substring(3, 5);
+			if("04".equals(cartype)){
+				//同步成交记录至室内大屏
+				List<Vehicle> vehicles = getCurrentVehiclesHasnouser(devices.getConnid());
+				Vehicle ve = new Vehicle();
+				ve.setCarnum("京A12345");
+				ve.setAreacode("1100");
+				vehicles.add(ve);
+				JSONObject temp = new JSONObject();
+				temp.put("posRecord", posRecord);
+				temp.put("vehicles", vehicles);
+				System.out.println(temp.toJSONString());
+				mqSenderService.ntranSendPosrecord(temp);
+			}
 		}
 		
 		return posRecord;
@@ -1685,5 +1705,9 @@ public class CommonService extends BaseService{
 		result.put("pre", pa);
 		result.put("uli", userLoginfo);
 		return result;
+	}
+	
+	public String getQueueName(){
+		return systemParamService.queueName;
 	}
 }

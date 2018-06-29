@@ -15,7 +15,7 @@
 		</commentGenerator>
 		<!-- 数据库链接URL、用户名、密码 -->
 <!-- 		<jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://10.248.245.87:8066/mycat?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull&amp;useOldAliasMetadataBehavior=true" userId="shouji" password="shouji">
- -->		<jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://10.248.245.87:8066/oilmachine?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull&amp;useOldAliasMetadataBehavior=true" userId="oilmachine" password="oilmachine">
+ -->		<jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://10.248.245.87:8066/oilmachinetest?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull&amp;useOldAliasMetadataBehavior=true" userId="oilmachinetest" password="oilmachinetest">
 		
 			<!--<jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver" connectionURL="jdbc:oracle:thin:@localhost:1521:orcl" userId="msa" password="msa"> -->
 		</jdbcConnection>
@@ -56,8 +56,10 @@
 		<table tableName="iot_selldiscounts" domainObjectName="SellDiscounts"/> 
 		<table tableName="iot_sellrefund" domainObjectName="SellRefund"/>
 		<table tableName="iot_sellOrder" domainObjectName="SellOrder"/>
-		<table tableName="iot_userlogininfo" domainObjectName="UserLoginfo"/> -->
-		<table tableName="iot_posrecord" domainObjectName="PosRecord"/>
+		<table tableName="iot_userlogininfo" domainObjectName="UserLoginfo"/> 
+		<table tableName="iot_posrecord" domainObjectName="PosRecord"/>-->
+		<table tableName="iot_sellproduct" domainObjectName="SellProduct"/>
+		<table tableName="iot_sellOrder" domainObjectName="SellOrder"/>
 		
 		 
 		

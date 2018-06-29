@@ -315,6 +315,76 @@ public class SellOrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andCarnumIsNull() {
+            addCriterion("carnum is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarnumIsNotNull() {
+            addCriterion("carnum is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarnumEqualTo(String value) {
+            addCriterion("carnum =", value, "carnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarnumNotEqualTo(String value) {
+            addCriterion("carnum <>", value, "carnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarnumGreaterThan(String value) {
+            addCriterion("carnum >", value, "carnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarnumGreaterThanOrEqualTo(String value) {
+            addCriterion("carnum >=", value, "carnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarnumLessThan(String value) {
+            addCriterion("carnum <", value, "carnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarnumLessThanOrEqualTo(String value) {
+            addCriterion("carnum <=", value, "carnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarnumLike(String value) {
+            addCriterion("carnum like", value, "carnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarnumNotLike(String value) {
+            addCriterion("carnum not like", value, "carnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarnumIn(List<String> values) {
+            addCriterion("carnum in", values, "carnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarnumNotIn(List<String> values) {
+            addCriterion("carnum not in", values, "carnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarnumBetween(String value1, String value2) {
+            addCriterion("carnum between", value1, value2, "carnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andCarnumNotBetween(String value1, String value2) {
+            addCriterion("carnum not between", value1, value2, "carnum");
+            return (Criteria) this;
+        }
+
         public Criteria andStncodeIsNull() {
             addCriterion("stncode is null");
             return (Criteria) this;

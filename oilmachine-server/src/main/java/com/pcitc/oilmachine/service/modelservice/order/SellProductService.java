@@ -45,10 +45,10 @@ public class SellProductService extends BaseService{
 			sp.setProductcode(userLoginInfo.getOilcode());
 			sp.setProductprice(userLoginInfo.getPrice());
 			sp.setVolume(new BigDecimal(liter));
+			sp.setMeasure((byte)0);
 			sp.setYhtotal(selldiscounts.getDiscountsamount());
 			sp.setYstotal(sellOrder.getYstotal());
 			sp.setSstotal(sellOrder.getYstotal() - selldiscounts.getDiscountsamount());
-			
 			sp.setStatus(Constant.DEFAULT_VALUE_BYTE);
 			sp.setSorts(Constant.DEFAULT_VALUE_LONG);
 			sp.setCreator(userLoginInfo.getUserid());

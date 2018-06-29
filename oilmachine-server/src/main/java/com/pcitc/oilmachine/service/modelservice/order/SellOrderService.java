@@ -46,6 +46,7 @@ public class SellOrderService extends BaseService{
 			sellOrder.setId(StringUtils.makeUUID());
 			sellOrder.setTenantid(userLoginInfo.getTenantid());
 			sellOrder.setUserid(userLoginInfo.getUserid());
+			sellOrder.setCarnum(userLoginInfo.getCarnum());
 			sellOrder.setStncode(userLoginInfo.getStncode());
 			sellOrder.setStnname(userLoginInfo.getStnname());
 			//获取预授申请单信息

@@ -54,11 +54,11 @@ public class OildeviceHertBeatHandler extends CommonMessageHandler {
 		List<Vehicle> vehiclesnoUser = new ArrayList<Vehicle>();
 		try {
 			vehicles = commonService.getCurrentVehicles(oilconnid);
-			vehiclesnoUser = commonService.getCurrentVehiclesHasnouser(oilconnid);
+			//vehiclesnoUser = commonService.getCurrentVehiclesHasnouser(oilconnid);
 		} catch (PTPECAppException e) {
 			e.printStackTrace();
 		}
-		log.info("加油机"+oilconnid+",未绑定会员的车牌数据："+JSONObject.toJSONString(vehiclesnoUser));
+		//log.info("加油机"+oilconnid+",未绑定会员的车牌数据："+JSONObject.toJSONString(vehiclesnoUser));
 		log.info("加油机"+oilconnid+",绑定会员的车牌数据："+JSONObject.toJSONString(vehicles));
 		//vehicles.addAll(vehiclesnoUser);
 		//log.info("加油机"+oilconnid+",所有绑定当前油机的车牌数据："+JSONObject.toJSONString(vehicles));

@@ -14,4 +14,8 @@ public class CusDruidSource extends DruidDataSource{
 		super.setUsername(username);
 	}
 	
+	public static void main(String[] args) throws Exception {
+		System.out.println(ConfigTools.encrypt("oilmachinetest"));
+	}
+	
 }

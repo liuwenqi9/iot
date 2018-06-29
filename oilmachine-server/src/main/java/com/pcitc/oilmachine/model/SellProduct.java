@@ -5,7 +5,7 @@ import java.util.Date;
 
 import com.pcitc.oilmachine.view.Page;
 
-public class SellProduct extends Page<SellProduct>{
+public class SellProduct  extends Page<SellProduct>{
     private String id;
 
     private String tenantid;
@@ -21,6 +21,8 @@ public class SellProduct extends Page<SellProduct>{
     private Long productprice;
 
     private BigDecimal volume;
+
+    private Byte measure;
 
     private Long ystotal;
 
@@ -102,6 +104,14 @@ public class SellProduct extends Page<SellProduct>{
 
     public void setVolume(BigDecimal volume) {
         this.volume = volume;
+    }
+
+    public Byte getMeasure() {
+        return measure;
+    }
+
+    public void setMeasure(Byte measure) {
+        this.measure = measure;
     }
 
     public Long getYstotal() {

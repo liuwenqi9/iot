@@ -11,6 +11,8 @@ public class SellOrder extends Page<SellOrder>{
 
     private String userid;
 
+    private String carnum;
+
     private String stncode;
 
     private String stnname;
@@ -71,6 +73,14 @@ public class SellOrder extends Page<SellOrder>{
 
     public void setUserid(String userid) {
         this.userid = userid == null ? null : userid.trim();
+    }
+
+    public String getCarnum() {
+        return carnum;
+    }
+
+    public void setCarnum(String carnum) {
+        this.carnum = carnum == null ? null : carnum.trim();
     }
 
     public String getStncode() {

@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="VARCHAR" />
     <result column="tenantid" property="tenantid" jdbcType="VARCHAR" />
     <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="carnum" property="carnum" jdbcType="VARCHAR" />
     <result column="stncode" property="stncode" jdbcType="VARCHAR" />
     <result column="stnname" property="stnname" jdbcType="VARCHAR" />
     <result column="saleno" property="saleno" jdbcType="VARCHAR" />
@@ -84,9 +85,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, tenantid, userid, stncode, stnname, saleno, opetime, deviceid, nozzleno, ystotal, 
-    ssTotal, yhTotal, paytypecode, paytypename, accountid, payorderno, STATUS, SORTS, 
-    CREATOR, UPDATEUSER, UPDATETIME, CREATEDATE
+    id, tenantid, userid, carnum, stncode, stnname, saleno, opetime, deviceid, nozzleno, 
+    ystotal, ssTotal, yhTotal, paytypecode, paytypename, accountid, payorderno, STATUS, 
+    SORTS, CREATOR, UPDATEUSER, UPDATETIME, CREATEDATE
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pcitc.oilmachine.model.SellOrderExample" >
     select
@@ -120,21 +121,21 @@
   </delete>
   <insert id="insert" parameterType="com.pcitc.oilmachine.model.SellOrder" >
     insert into iot_sellorder (id, tenantid, userid, 
-      stncode, stnname, saleno, 
-      opetime, deviceid, nozzleno, 
-      ystotal, ssTotal, yhTotal, 
-      paytypecode, paytypename, accountid, 
-      payorderno, STATUS, SORTS, 
-      CREATOR, UPDATEUSER, UPDATETIME, 
-      CREATEDATE)
+      carnum, stncode, stnname, 
+      saleno, opetime, deviceid, 
+      nozzleno, ystotal, ssTotal, 
+      yhTotal, paytypecode, paytypename, 
+      accountid, payorderno, STATUS, 
+      SORTS, CREATOR, UPDATEUSER, 
+      UPDATETIME, CREATEDATE)
     values (#{id,jdbcType=VARCHAR}, #{tenantid,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, 
-      #{stncode,jdbcType=VARCHAR}, #{stnname,jdbcType=VARCHAR}, #{saleno,jdbcType=VARCHAR}, 
-      #{opetime,jdbcType=TIMESTAMP}, #{deviceid,jdbcType=VARCHAR}, #{nozzleno,jdbcType=VARCHAR}, 
-      #{ystotal,jdbcType=BIGINT}, #{sstotal,jdbcType=BIGINT}, #{yhtotal,jdbcType=BIGINT}, 
-      #{paytypecode,jdbcType=VARCHAR}, #{paytypename,jdbcType=VARCHAR}, #{accountid,jdbcType=VARCHAR}, 
-      #{payorderno,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{sorts,jdbcType=BIGINT}, 
-      #{creator,jdbcType=VARCHAR}, #{updateuser,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, 
-      #{createdate,jdbcType=TIMESTAMP})
+      #{carnum,jdbcType=VARCHAR}, #{stncode,jdbcType=VARCHAR}, #{stnname,jdbcType=VARCHAR}, 
+      #{saleno,jdbcType=VARCHAR}, #{opetime,jdbcType=TIMESTAMP}, #{deviceid,jdbcType=VARCHAR}, 
+      #{nozzleno,jdbcType=VARCHAR}, #{ystotal,jdbcType=BIGINT}, #{sstotal,jdbcType=BIGINT}, 
+      #{yhtotal,jdbcType=BIGINT}, #{paytypecode,jdbcType=VARCHAR}, #{paytypename,jdbcType=VARCHAR}, 
+      #{accountid,jdbcType=VARCHAR}, #{payorderno,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{sorts,jdbcType=BIGINT}, #{creator,jdbcType=VARCHAR}, #{updateuser,jdbcType=VARCHAR}, 
+      #{updatetime,jdbcType=TIMESTAMP}, #{createdate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.pcitc.oilmachine.model.SellOrder" >
     insert into iot_sellorder
@@ -147,6 +148,9 @@
       </if>
       <if test="userid != null" >
         userid,
+      </if>
+      <if test="carnum != null" >
+        carnum,
       </if>
       <if test="stncode != null" >
         stncode,
@@ -215,6 +219,9 @@
       </if>
       <if test="userid != null" >
         #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="carnum != null" >
+        #{carnum,jdbcType=VARCHAR},
       </if>
       <if test="stncode != null" >
         #{stncode,jdbcType=VARCHAR},
@@ -293,6 +300,9 @@
       <if test="record.userid != null" >
         userid = #{record.userid,jdbcType=VARCHAR},
       </if>
+      <if test="record.carnum != null" >
+        carnum = #{record.carnum,jdbcType=VARCHAR},
+      </if>
       <if test="record.stncode != null" >
         stncode = #{record.stncode,jdbcType=VARCHAR},
       </if>
@@ -360,6 +370,7 @@
     set id = #{record.id,jdbcType=VARCHAR},
       tenantid = #{record.tenantid,jdbcType=VARCHAR},
       userid = #{record.userid,jdbcType=VARCHAR},
+      carnum = #{record.carnum,jdbcType=VARCHAR},
       stncode = #{record.stncode,jdbcType=VARCHAR},
       stnname = #{record.stnname,jdbcType=VARCHAR},
       saleno = #{record.saleno,jdbcType=VARCHAR},
@@ -391,6 +402,9 @@
       </if>
       <if test="userid != null" >
         userid = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="carnum != null" >
+        carnum = #{carnum,jdbcType=VARCHAR},
       </if>
       <if test="stncode != null" >
         stncode = #{stncode,jdbcType=VARCHAR},
@@ -456,6 +470,7 @@
     update iot_sellorder
     set tenantid = #{tenantid,jdbcType=VARCHAR},
       userid = #{userid,jdbcType=VARCHAR},
+      carnum = #{carnum,jdbcType=VARCHAR},
       stncode = #{stncode,jdbcType=VARCHAR},
       stnname = #{stnname,jdbcType=VARCHAR},
       saleno = #{saleno,jdbcType=VARCHAR},
