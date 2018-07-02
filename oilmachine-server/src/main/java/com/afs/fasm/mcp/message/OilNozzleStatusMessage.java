@@ -2,6 +2,8 @@ package com.afs.fasm.mcp.message;
 
 import com.afs.base.constants.MessageTypeConstants;
 import com.afs.tupeasy.exception.CommunicationException;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.pcitc.oilmachine.commons.utils.ByteUtil;
 
 import io.netty.buffer.ByteBuf;
@@ -19,9 +21,7 @@ public class OilNozzleStatusMessage extends FasmAbstractMessage {
 	private static final long serialVersionUID = 1L;
 	private String messageContent;
 	private long oildeviceid;
-	private int nozzleno;
-	private int nozzlestatus;
-	private long vtot;
+	private int nozzlesize;
 	
 	@Override
 	public void decode(ByteBuf in) throws CommunicationException {
@@ -29,13 +29,24 @@ public class OilNozzleStatusMessage extends FasmAbstractMessage {
 		byte[] oildeviceByte = new byte[4];
 		in.readBytes(oildeviceByte);
 		oildeviceid = ByteUtil.getLongBy4BytesR(oildeviceByte);
-		byte nozzlenoByte = in.readByte();
-		byte nozzlestatusByte = in.readByte();
-		byte[] vtotByte = new byte[4];
-		in.readBytes(vtotByte);
-		nozzleno = ByteUtil.getUIntByByte(nozzlenoByte);
-		nozzlestatus = ByteUtil.getUIntByByte(nozzlestatusByte);
-		vtot = ByteUtil.getLongBy4BytesR(vtotByte);
+		byte nozzlesizeByte = in.readByte();
+		nozzlesize = ByteUtil.getUIntByByte(nozzlesizeByte);
+		JSONArray nozzlearray = new JSONArray();
+		for(int i = 0; i<nozzlesize; i++){
+			byte nozzlenoByte = in.readByte();
+			byte nozzlestatusByte = in.readByte();
+			byte[] vtotByte = new byte[4];
+			in.readBytes(vtotByte);
+			JSONObject nozzle = new JSONObject();
+			Integer nozzleno = ByteUtil.getUIntByByte(nozzlenoByte);
+			Integer nozzlestatus = ByteUtil.getUIntByByte(nozzlestatusByte);
+			Long vtot = ByteUtil.getLongBy4BytesR(vtotByte);
+			nozzle.put("nozzleno", nozzleno);
+			nozzle.put("nozzlestatus", nozzlestatus);
+			nozzle.put("vtot", vtot);
+			nozzlearray.add(nozzle);
+		}
+		messageContent = nozzlearray.toJSONString();
 	}
 	
 	
@@ -53,17 +64,7 @@ public class OilNozzleStatusMessage extends FasmAbstractMessage {
 		return oildeviceid;
 	}
 	
-	public int getNozzleno() {
-		return nozzleno;
+	public int getNozzlesize() {
+		return nozzlesize;
 	}
-
-	public int getNozzlestatus() {
-		return nozzlestatus;
-	}
-
-	public long getVtot() {
-		return vtot;
-	}
-
-	
 }

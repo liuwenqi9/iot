@@ -1,9 +1,5 @@
 package com.afs.fasm.mcp.datahandler;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 
 import com.afs.base.util.MySpringContextUtil;
@@ -25,10 +21,8 @@ public class OilNozzleStatusHandler extends CommonMessageHandler {
 			if(session != null && session.getReceivedata() != 0){
 				return message;
 			}
-			oilnozzlestatusMsg.getNozzleno();
-			oilnozzlestatusMsg.getNozzlestatus();
-			oilnozzlestatusMsg.getVtot();
-			super.sendMessageToMQ(message,commonService.getQueueName(),0);
+			oilnozzlestatusMsg.getMessageContent();
+			super.sendMessageToMQ(message,commonService.getQueueName(),1);
 			
 		} catch (Exception e) {
 		}

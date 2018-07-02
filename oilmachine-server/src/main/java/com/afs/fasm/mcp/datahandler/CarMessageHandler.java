@@ -68,11 +68,11 @@ public class CarMessageHandler extends CommonMessageHandler {
 			StringRedisTemplate stringRedisTemplate = (StringRedisTemplate) MySpringContextUtil.getBean("stringRedisTemplate");
 			Devices devices = cameradevice.get(carMessage.getCameraid());
 			if(devices == null){
-				devices = commonService.findCameraByConnid(String.valueOf(carMessage.getCameraid()));
+				devices = commonService.findDeviceByConnid(String.valueOf(carMessage.getCameraid()),Constant.CAMERA_CODE);
 				if(devices == null){
 					commonService.saveDeviceConnectError(String.valueOf(carMessage.getCameraid()), null,"当前设备没有备案导致车牌数据未存储");
 					Session camerasession = SessionManager.getSession(String.valueOf(carMessage.getCameraid()));
-					camerasession.setReceivedata(0);//设置拒绝接收该相机数据
+					camerasession.setReceivedata(1);//设置拒绝接收该相机数据
 					return message;
 				}
 				cameradevice.put(carMessage.getCameraid(), devices);

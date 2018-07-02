@@ -222,7 +222,7 @@ public class UserAuthenticationService{
 			userLoginfo.setOilno(oilno);
 			userLoginfo.setPrice(StringUtils.multiplication(price, "100"));
 			userLoginfo.setNozzleno(nozzleno);
-			String saleno = commonService.getSaleno(devices.getConnid(),screencode,oilcode);
+			String saleno = commonService.getSaleno(devices.getConnid(),nozzleno,oilcode);
 			userLoginfo.setSaleno(saleno);
 			boolean canlogin = commonService.userIsLogin(userinfo, userLoginfo, devices);
 			PreAuthorization pa = null;

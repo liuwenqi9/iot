@@ -49,9 +49,11 @@ import com.pcitc.oilmachine.form.EaccountInfo;
 import com.pcitc.oilmachine.form.UserInfo;
 import com.pcitc.oilmachine.form.Vehicle;
 import com.pcitc.oilmachine.model.AdInfo;
+import com.pcitc.oilmachine.model.DeviceFault;
 import com.pcitc.oilmachine.model.Devices;
 import com.pcitc.oilmachine.model.DevicesArea;
 import com.pcitc.oilmachine.model.DictionaryData;
+import com.pcitc.oilmachine.model.NozzleStatus;
 import com.pcitc.oilmachine.model.PosRecord;
 import com.pcitc.oilmachine.model.PreAuthorization;
 import com.pcitc.oilmachine.model.SellDiscounts;
@@ -61,8 +63,10 @@ import com.pcitc.oilmachine.service.BaseService;
 import com.pcitc.oilmachine.service.dictionary.DictionaryDataService;
 import com.pcitc.oilmachine.service.hsf.SharedClient;
 import com.pcitc.oilmachine.service.modelservice.ad.AdInfoService;
+import com.pcitc.oilmachine.service.modelservice.devices.DeviceFaultService;
 import com.pcitc.oilmachine.service.modelservice.devices.DevicesAreaService;
 import com.pcitc.oilmachine.service.modelservice.devices.DevicesService;
+import com.pcitc.oilmachine.service.modelservice.devices.NozzleStatusService;
 import com.pcitc.oilmachine.service.modelservice.order.PosRecordService;
 import com.pcitc.oilmachine.service.modelservice.order.PreAuthorizationService;
 import com.pcitc.oilmachine.service.modelservice.order.SellDiscountsService;
@@ -106,6 +110,10 @@ public class CommonService extends BaseService{
 	private PosRecordService posRecordService;
 	@Resource
 	private SystemParamService systemParamService;
+	@Resource
+	private DeviceFaultService deviceFaultService;
+	@Resource
+	private NozzleStatusService nozzleStatusService;
 	
 	private static Logger log = LoggerFactory.getLogger(CommonService.class);
 	
@@ -711,8 +719,8 @@ public class CommonService extends BaseService{
 	 * @return
 	 * @throws PTPECAppException 
 	 */
-	public Devices findCameraByConnid(String cameraid) throws PTPECAppException{
-		Devices devices = devicesService.findByConnid(cameraid, Constant.CAMERA_CODE);//获取摄像头的基础数据
+	public Devices findDeviceByConnid(String cameraid,String devicestypecode) throws PTPECAppException{
+		Devices devices = devicesService.findByConnid(cameraid, devicestypecode);//获取摄像头的基础数据
 		return devices;
 	}
 	
@@ -1588,13 +1596,17 @@ public class CommonService extends BaseService{
 		byte[] tmac = new byte[4];
 		System.arraycopy(posrecordbyte, 91, tmac, 0, 4);
 		posRecord.setTmac(ByteUtil.getLongBy4BytesR(tmac));
+		if(StringUtils.isBlank(saleno)){
+			saleno = getSaleno(devices.getConnid(), String.valueOf(posRecord.getNzn()), posRecord.getGcode());
+		}
+		posRecord.setSaleno(saleno);
 		posRecord = posRecordService.insertPosRecord(posRecord);
 		String ttypeStr = posRecord.getTtype();
 		ttypeStr = ttypeStr.substring(ttypeStr.length()-4, ttypeStr.length());
 		if("0000".equals(ttypeStr)){
 			String asnStr = String.valueOf(posRecord.getAsn());
 			String cartype = asnStr.substring(3, 5);
-			if("04".equals(cartype)){
+			if("04".equals(cartype) || "0".equals(userid)){
 				//同步成交记录至室内大屏
 				List<Vehicle> vehicles = getCurrentVehiclesHasnouser(devices.getConnid());
 				Vehicle ve = new Vehicle();
@@ -1709,5 +1721,17 @@ public class CommonService extends BaseService{
 	
 	public String getQueueName(){
 		return systemParamService.queueName;
+	}
+	
+	public void saveOrupdateNozzleStatus(NozzleStatus nozzleStatus,String username){
+		BoundHashOperations<String, String, String> hashOpertions = stringRedisTemplate.boundHashOps(nozzleStatus.getTenantid()+nozzleStatus.getDeviceconnid()+nozzleStatus.getNozzleno());
+		//return nozzleStatusService.saveOrupdate(nozzleStatus, username);
+		hashOpertions.put("nozzleno",String.valueOf(nozzleStatus.getNozzleno()));
+		hashOpertions.put("nozzlestatus", String.valueOf(nozzleStatus.getNozzlestatus()));
+		hashOpertions.put("vtot", String.valueOf(nozzleStatus.getVtot()));
+	}
+	
+	public DeviceFault saveOrupdateDeviceFault(DeviceFault deviceFault,String username){
+		return deviceFaultService.saveOrupdate(deviceFault, username);
 	}
 }

@@ -30,6 +30,12 @@ public class BusiMessageHandlerFactoryImpl implements DataHandlerFactory {
 				case MessageTypeConstants.oildheartin:
 					m = new OildeviceHertBeatHandler();
 					break;
+				case MessageTypeConstants.oilNozzleStatus:
+					m = new OilNozzleStatusHandler();
+					break;
+				case MessageTypeConstants.oilfaultMsg:
+					m = new OilfaultMsgHandler();
+					break;
 				default:
 					m = new CommonMessageHandler();
 				}

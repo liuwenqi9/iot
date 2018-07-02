@@ -3,7 +3,6 @@ package com.afs.fasm.mcp.datahandler;
 import io.netty.channel.ChannelHandlerContext;
 
 import com.afs.base.util.MySpringContextUtil;
-import com.afs.fasm.mcp.message.OilNozzleStatusMessage;
 import com.afs.fasm.mcp.message.OilfaultMessage;
 import com.afs.tupeasy.message.AbstractMcpEasyMessage;
 import com.afs.tupeasy.session.Session;
@@ -22,7 +21,7 @@ public class OilfaultMsgHandler extends CommonMessageHandler {
 			if(session != null && session.getReceivedata() != 0){
 				return message;
 			}
-			super.sendMessageToMQ(message,commonService.getQueueName(),1);
+			super.sendMessageToMQ(message,commonService.getQueueName(),2);
 			
 		} catch (Exception e) {
 		}

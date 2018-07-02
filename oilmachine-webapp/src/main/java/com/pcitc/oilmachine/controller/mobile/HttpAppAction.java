@@ -97,7 +97,6 @@ public class HttpAppAction extends BaseAction {
 		//编辑文本状态并写入缓存区中
 		response.setCharacterEncoding("utf-8");
   	    response.getWriter().write(result);
-	
 	}
 	
 	/**

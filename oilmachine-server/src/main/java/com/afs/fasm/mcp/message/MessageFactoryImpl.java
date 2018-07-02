@@ -26,7 +26,14 @@ public class MessageFactoryImpl implements MessageFactory {
 		case MessageTypeConstants.oildheartin:
 			m = new OildeviceheartBeatMessage();
 			break;
+		case MessageTypeConstants.oilNozzleStatus:
+			m = new OilNozzleStatusMessage();
+			break;
+		case MessageTypeConstants.oilfaultMsg:
+			m = new OilfaultMessage();
+			break;
 		}
+		
 	}
 		return m;
 	}
