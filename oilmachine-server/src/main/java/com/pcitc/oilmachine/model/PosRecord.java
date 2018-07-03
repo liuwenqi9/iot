@@ -75,6 +75,10 @@ public class PosRecord {
 
     private Date createdate;
 
+    private String stncode;
+
+    private Byte orderstatus;
+
     public String getId() {
         return id;
     }
@@ -361,5 +365,21 @@ public class PosRecord {
 
     public void setCreatedate(Date createdate) {
         this.createdate = createdate;
+    }
+
+    public String getStncode() {
+        return stncode;
+    }
+
+    public void setStncode(String stncode) {
+        this.stncode = stncode == null ? null : stncode.trim();
+    }
+
+    public Byte getOrderstatus() {
+        return orderstatus;
+    }
+
+    public void setOrderstatus(Byte orderstatus) {
+        this.orderstatus = orderstatus;
     }
 }

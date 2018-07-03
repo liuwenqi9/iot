@@ -38,6 +38,8 @@
     <result column="updateuser" property="updateuser" jdbcType="VARCHAR" />
     <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
     <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="stncode" property="stncode" jdbcType="VARCHAR" />
+    <result column="orderstatus" property="orderstatus" jdbcType="TINYINT" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -100,7 +102,8 @@
   <sql id="Base_Column_List" >
     id, tenantid, userid, saleno, deviceconnid, posttc, ttype, time, asn, bal, amn, ctc, 
     tac, gmac, psamtac, psamasn, psamtid, psamttc, ds, unit, ctype, ver, nzn, gcode, 
-    vol, prc, emp, vtot, rfu, tmac, status, sorts, creator, updateuser, updatetime, createdate
+    vol, prc, emp, vtot, rfu, tmac, status, sorts, creator, updateuser, updatetime, createdate, 
+    stncode, orderstatus
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pcitc.oilmachine.model.PosRecordExample" >
     select
@@ -143,7 +146,8 @@
       prc, emp, vtot, rfu, 
       tmac, status, sorts, 
       creator, updateuser, updatetime, 
-      createdate)
+      createdate, stncode, orderstatus
+      )
     values (#{id,jdbcType=VARCHAR}, #{tenantid,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, 
       #{saleno,jdbcType=VARCHAR}, #{deviceconnid,jdbcType=VARCHAR}, #{posttc,jdbcType=BIGINT}, 
       #{ttype,jdbcType=VARCHAR}, #{time,jdbcType=BIGINT}, #{asn,jdbcType=BIGINT}, #{bal,jdbcType=BIGINT}, 
@@ -154,7 +158,8 @@
       #{prc,jdbcType=BIGINT}, #{emp,jdbcType=BIGINT}, #{vtot,jdbcType=BIGINT}, #{rfu,jdbcType=BIGINT}, 
       #{tmac,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, #{sorts,jdbcType=BIGINT}, 
       #{creator,jdbcType=VARCHAR}, #{updateuser,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, 
-      #{createdate,jdbcType=TIMESTAMP})
+      #{createdate,jdbcType=TIMESTAMP}, #{stncode,jdbcType=VARCHAR}, #{orderstatus,jdbcType=TINYINT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.pcitc.oilmachine.model.PosRecord" >
     insert into iot_posrecord
@@ -267,6 +272,12 @@
       <if test="createdate != null" >
         createdate,
       </if>
+      <if test="stncode != null" >
+        stncode,
+      </if>
+      <if test="orderstatus != null" >
+        orderstatus,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -376,6 +387,12 @@
       </if>
       <if test="createdate != null" >
         #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stncode != null" >
+        #{stncode,jdbcType=VARCHAR},
+      </if>
+      <if test="orderstatus != null" >
+        #{orderstatus,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -496,6 +513,12 @@
       <if test="record.createdate != null" >
         createdate = #{record.createdate,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.stncode != null" >
+        stncode = #{record.stncode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderstatus != null" >
+        orderstatus = #{record.orderstatus,jdbcType=TINYINT},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -538,7 +561,9 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       updateuser = #{record.updateuser,jdbcType=VARCHAR},
       updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
-      createdate = #{record.createdate,jdbcType=TIMESTAMP}
+      createdate = #{record.createdate,jdbcType=TIMESTAMP},
+      stncode = #{record.stncode,jdbcType=VARCHAR},
+      orderstatus = #{record.orderstatus,jdbcType=TINYINT}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -651,6 +676,12 @@
       <if test="createdate != null" >
         createdate = #{createdate,jdbcType=TIMESTAMP},
       </if>
+      <if test="stncode != null" >
+        stncode = #{stncode,jdbcType=VARCHAR},
+      </if>
+      <if test="orderstatus != null" >
+        orderstatus = #{orderstatus,jdbcType=TINYINT},
+      </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
@@ -690,7 +721,9 @@
       creator = #{creator,jdbcType=VARCHAR},
       updateuser = #{updateuser,jdbcType=VARCHAR},
       updatetime = #{updatetime,jdbcType=TIMESTAMP},
-      createdate = #{createdate,jdbcType=TIMESTAMP}
+      createdate = #{createdate,jdbcType=TIMESTAMP},
+      stncode = #{stncode,jdbcType=VARCHAR},
+      orderstatus = #{orderstatus,jdbcType=TINYINT}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

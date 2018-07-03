@@ -1,6 +1,7 @@
 package com.pcitc.oilmachine.service.modelservice.order;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -9,6 +10,8 @@ import com.pcitc.oilmachine.commons.exception.PTPECAppException;
 import com.pcitc.oilmachine.commons.utils.StringUtils;
 import com.pcitc.oilmachine.dao.PosRecordMapper;
 import com.pcitc.oilmachine.model.PosRecord;
+import com.pcitc.oilmachine.model.PosRecordExample;
+import com.pcitc.oilmachine.model.PosRecordExample.Criteria;
 
 import org.springframework.stereotype.Service;
 
@@ -42,6 +45,20 @@ public class PosRecordService {
 		} catch (Exception e) {
 			throw new PTPECAppException("保存加油机成交记录信息异常："+e.getMessage(),e);
 		}
+	}
+	
+	public List<PosRecord> getPosRecord(String tenantid, String stncode,
+			String deviceidconnid, Long nozzleno) throws PTPECAppException{
+		PosRecordExample pre = new PosRecordExample();
+		Criteria createCriteria =  pre.createCriteria();
+		createCriteria.andTenantidEqualTo(tenantid).andStncodeEqualTo(stncode).andOrderstatusEqualTo((byte)1);
+		if(StringUtils.isNotBlank(deviceidconnid)){
+			createCriteria.andDeviceconnidEqualTo(deviceidconnid);
+		}
+		if(nozzleno != null){
+			createCriteria.andNznEqualTo(nozzleno);
+		}
+		return posRecordMapper.selectByExample(pre);
 	}
 
 }

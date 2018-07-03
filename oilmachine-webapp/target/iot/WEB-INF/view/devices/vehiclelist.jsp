@@ -28,21 +28,17 @@
 			columns : [ {
 				"data" : "cameraid"
 			}, {
+				"data" : "carnum"
+			}, {
+				"data" : "userid"
+			}, {
+				"data" : "username"
+			}, {
 				"data" : "carcolorname"
 			}, {
 				"data" : "cartypename"
 			}, {
-				"data" : "left"
-			}, {
-				"data" : "top"
-			}, {
-				"data" : "right"
-			}, {
-				"data" : "bottom"
-			}, {
 				"data" : "carstatus"
-			}, {
-				"data" : "carnum"
 			}, {
 				"data" : "areacode"
 			}, {
@@ -205,14 +201,12 @@
 							<label class="pos-rel"> <input type="checkbox" class="ace" id="vehicle_checkbox" /> <span class="lbl"></span>
 							</label>
 						</th>
+						<th class="center" width="10%">车牌号</th>
+						<th class="center" width="10%">用户ID</th>
+						<th class="center" width="10%">用户名</th>
 						<th class="center" width="10%">车辆颜色</th>
 						<th class="center" width="10%">车辆类型</th>
-						<th class="center" width="10%">左(米)</th>
-						<th class="center" width="10%">上(米)</th>
-						<th class="center" width="10%">右(米)</th>
-						<th class="center" width="10%">下(米)</th>
 						<th class="center" width="10%">车辆状态</th>
-						<th class="center" width="10%">车牌号</th>
 						<th class="center" width="10%">所属区域号</th>
  						<th class="center" width="8%">操作</th>
 					</tr>

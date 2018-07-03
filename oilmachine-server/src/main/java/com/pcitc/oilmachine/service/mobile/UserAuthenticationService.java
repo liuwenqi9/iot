@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.afs.base.util.MySpringContextUtil;
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
@@ -28,70 +30,71 @@ import com.pcitc.oilmachine.model.UserLoginfo;
  * @author zizhi.zhang
  *
  */
+@Service
 public class UserAuthenticationService{
-	
+	@Resource
+	private CommonService commonService;
 	
 	public MobileResultInfo execute(String data, String funName,String ip,Devices devices) {
 		MobileResultInfo result = new MobileResultInfo();
-		CommonService commonService = (CommonService) MySpringContextUtil.getBean("commonService");
 		try {
 			if (StringUtils.isBlank(funName)) {
 				result.setError(Constant.MOBILE_FUN_ERROR);
 			}
 			//0油机签到接口
 			else if(funName.equals("signIn")){
-				result = signIn(commonService,data,ip,devices);
+				result = signIn(data,ip,devices);
 			}
 			//1 车牌识别认证接口
 			else if(funName.equals("vehicleAccess")){
-				result = vehicleAccess(commonService,data,ip,devices);
+				result = vehicleAccess(data,ip,devices);
 			}
 			
 			//2、清除用户认证信息
 			else if(funName.equals("clearAccessUserinfo")){
-				result = clearAccessUserinfo(commonService,data,ip,devices);
+				result = clearAccessUserinfo(data,ip,devices);
 			}
 			
 			//3 获取用户认证信息
 			else if(funName.equals("getLoginUserinfo")){
-				result = getLoginUserinfo(commonService,data,ip,devices);
+				result = getLoginUserinfo(data,ip,devices);
 			}
 			//4 加油完成结算接口
 			else if(funName.equals("gasSuccess")){
-				result = gasSuccess(commonService,data,ip,devices);
+				result = gasSuccess(data,ip,devices);
 			}
 			//5获取广告播放列表接口
 			else if(funName.equals("getAdInfoList")){
-				result = getAdInfoList(commonService,data,ip,devices);
+				result = getAdInfoList(data,ip,devices);
 			}
 			
 			//6获取车牌信息
 			else if(funName.equals("getVehicleNOs")){
-				result = getVehicleNOs(commonService,data,ip,devices);
+				result = getVehicleNOs(data,ip,devices);
 			}
 			
 			//7获取车牌信息
 			else if(funName.equals("getVehicleNOsByphone")){
-				result = getVehicleNOsByphone(commonService,data,ip,devices);
+				result = getVehicleNOsByphone(data,ip,devices);
 			}
 			
 			//8获取推荐商品信息
 			else if(funName.equals("getUserProductInfo")){
-				result = getUserProductInfo(commonService,data,ip,devices);
+				result = getUserProductInfo(data,ip,devices);
 			}
 			
 			//9获取用户待提货单
 			else if(funName.equals("getUserBillOfLading")){
-				result = getUserBillOfLading(commonService,data,ip,devices);
+				result = getUserBillOfLading(data,ip,devices);
 			}
 			
 			//10获取用户提货单明细
 			else if(funName.equals("getDetailByVoucherno")){
-				result = getDetailByVoucherno(commonService,data,ip,devices);
+				result = getDetailByVoucherno(data,ip,devices);
 			}
 			//11上传加油机成交记录
 			else if(funName.equals("uploadPosRecord")){
-				result = uploadPosRecord(commonService,data,ip,devices);
+				result = uploadPosRecord(data,ip,devices);
 			}
 			result.setFunName(funName);
 		}catch (Exception e) {
@@ -116,7 +119,7 @@ public class UserAuthenticationService{
 	 * @param devices  设备
 	 * @return
 	 */
-	private MobileResultInfo signIn(CommonService commonService,String data, String ip,Devices devices) throws Exception{
+	private MobileResultInfo signIn(String data, String ip,Devices devices) throws Exception{
 		MobileResultInfo result = new MobileResultInfo();
 		try {
 			JSONObject jsondata = JSONObject.parseObject(data);
@@ -153,7 +156,7 @@ public class UserAuthenticationService{
 	 * @param devices  设备
 	 * @return
 	 */
-	private MobileResultInfo vehicleAccess(CommonService commonService,String data,String ip,Devices devices) throws Exception{
+	private MobileResultInfo vehicleAccess(String data,String ip,Devices devices) throws Exception{
 		MobileResultInfo result = new MobileResultInfo();
 		UserLoginfo userLoginfo = null;
 		String carNum = "";
@@ -272,7 +275,7 @@ public class UserAuthenticationService{
 	 * @param devices  设备
 	 * @return
 	 */
-	private MobileResultInfo getLoginUserinfo(CommonService commonService,String data,String ip,Devices devices)  throws Exception{
+	private MobileResultInfo getLoginUserinfo(String data,String ip,Devices devices)  throws Exception{
 		MobileResultInfo result = new MobileResultInfo();
 		UserLoginfo userLoginInfo = null;
 		try{
@@ -342,7 +345,7 @@ public class UserAuthenticationService{
 	 * @param devices  设备
 	 * @return
 	 */
-	private MobileResultInfo gasSuccess(CommonService commonService,String data,String ip,Devices devices) throws Exception{
+	private MobileResultInfo gasSuccess(String data,String ip,Devices devices) throws Exception{
 		MobileResultInfo result = new MobileResultInfo();
 		UserLoginfo userLoginInfo = null;
 		try{
@@ -422,7 +425,7 @@ public class UserAuthenticationService{
 	 * @param devices  设备
 	 * @return
 	 */
-	private MobileResultInfo getAdInfoList(CommonService commonService,String data, String ip,Devices devices) throws Exception{
+	private MobileResultInfo getAdInfoList(String data, String ip,Devices devices) throws Exception{
 		MobileResultInfo result = new MobileResultInfo();
 		try {
 			JSONObject jsondata = JSONObject.parseObject(data);
@@ -463,7 +466,7 @@ public class UserAuthenticationService{
 	 * @return
 	 * @throws PTPECAppException 
 	 */
-	private MobileResultInfo uploadPosRecord(CommonService commonService,String data, String ip,Devices devices) throws PTPECAppException {
+	private MobileResultInfo uploadPosRecord(String data, String ip,Devices devices) throws PTPECAppException {
 		MobileResultInfo result = new MobileResultInfo();
 		try {
 			JSONObject jsondata = JSONObject.parseObject(data);
@@ -490,7 +493,7 @@ public class UserAuthenticationService{
 	 * @param devices  设备
 	 * @return
 	 */
-	private MobileResultInfo clearAccessUserinfo(CommonService commonService,String data,String ip,Devices devices) throws Exception{
+	private MobileResultInfo clearAccessUserinfo(String data,String ip,Devices devices) throws Exception{
 		MobileResultInfo result = new MobileResultInfo();
 		try {
 			JSONObject jsondata = JSONObject.parseObject(data);
@@ -526,7 +529,7 @@ public class UserAuthenticationService{
 	 * @param devices  设备
 	 * @return
 	 */
-	private MobileResultInfo getVehicleNOs(CommonService commonService,String data,String ip,Devices devices)  throws Exception{
+	private MobileResultInfo getVehicleNOs(String data,String ip,Devices devices)  throws Exception{
 		MobileResultInfo result = new MobileResultInfo();
 		try {
 			JSONArray jsonArrData = new JSONArray();
@@ -559,7 +562,7 @@ public class UserAuthenticationService{
 	 * @return
 	 * @throws Exception
 	 */
-	private MobileResultInfo getVehicleNOsByphone(CommonService commonService,String data,String ip,Devices devices)   throws Exception{
+	private MobileResultInfo getVehicleNOsByphone(String data,String ip,Devices devices)   throws Exception{
 		MobileResultInfo result = new MobileResultInfo();
 		try {
 			JSONObject jsondata = JSONObject.parseObject(data);
@@ -610,7 +613,7 @@ public class UserAuthenticationService{
 	 * @return
 	 * @throws Exception
 	 */
-	public MobileResultInfo getUserProductInfo(CommonService commonService,String data,String ip,Devices devices) throws Exception{
+	public MobileResultInfo getUserProductInfo(String data,String ip,Devices devices) throws Exception{
 		MobileResultInfo result = new MobileResultInfo();
 		try {
 				JSONObject jsondata = JSONObject.parseObject(data);
@@ -701,7 +704,7 @@ public class UserAuthenticationService{
 	 * @return
 	 * @throws Exception
 	 */
-	public MobileResultInfo getUserBillOfLading(CommonService commonService,String data,String ip,Devices devices) throws Exception{
+	public MobileResultInfo getUserBillOfLading(String data,String ip,Devices devices) throws Exception{
 		MobileResultInfo result = new MobileResultInfo();
 		try {
 				JSONObject jsondata = JSONObject.parseObject(data);
@@ -741,7 +744,7 @@ public class UserAuthenticationService{
 	 * @return
 	 * @throws Exception
 	 */
-	public MobileResultInfo getDetailByVoucherno(CommonService commonService,String data,String ip,Devices devices) throws Exception{
+	public MobileResultInfo getDetailByVoucherno(String data,String ip,Devices devices) throws Exception{
 		MobileResultInfo result = new MobileResultInfo();
 		try {
 				JSONObject jsondata = JSONObject.parseObject(data);

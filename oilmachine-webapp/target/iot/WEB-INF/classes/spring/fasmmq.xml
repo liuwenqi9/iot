@@ -28,14 +28,14 @@
 			<property name="exchangeName" value="${queueName}" />
 		</bean>
 		
-		<!--消费者配置
+		<!--消费者配置-->
 		<bean id="messageReceiveSample" class="com.afs.fasm.mcp.mq.DownMessageReceiveService" init-method="startDownMessageConsumer" >
 			<property name="factory" ref="connFactory"></property>
 			<property name="messageHandlerId" value="MessageHandlerSample"></property>
 			<property name="queueName" value="${queueName}"></property>
 			<property name="consumerCount" value="1"></property>
 		</bean>
-		<bean id="MessageHandlerSample" class="com.afs.fasm.mcp.mq.DownMessageConsumer" scope="prototype"/>-->
+		<bean id="MessageHandlerSample" class="com.afs.fasm.mcp.mq.DownMessageConsumer" scope="prototype"/>
 		
 		
 		<!-- 消息入库的消费者 queueNameforMove

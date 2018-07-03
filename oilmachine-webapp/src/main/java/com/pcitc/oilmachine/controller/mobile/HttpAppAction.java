@@ -3,7 +3,6 @@ package com.pcitc.oilmachine.controller.mobile;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Method;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -23,12 +22,13 @@ import com.pcitc.oilmachine.commons.constant.Constant;
 import com.pcitc.oilmachine.commons.utils.AESUtil;
 import com.pcitc.oilmachine.commons.utils.DateUtils;
 import com.pcitc.oilmachine.commons.utils.JsonEncryptUtil;
-import com.pcitc.oilmachine.commons.utils.ServiceInfos;
 import com.pcitc.oilmachine.commons.utils.StringUtils;
 import com.pcitc.oilmachine.controller.BaseAction;
 import com.pcitc.oilmachine.form.MobileDataInfo;
 import com.pcitc.oilmachine.form.MobileResultInfo;
 import com.pcitc.oilmachine.model.Devices;
+import com.pcitc.oilmachine.service.mobile.OrderService;
+import com.pcitc.oilmachine.service.mobile.UserAuthenticationService;
 import com.pcitc.oilmachine.service.modelservice.devices.DevicesService;
 import com.pcitc.oilmachine.service.modelservice.order.PreAuthorizationService;
  
@@ -54,6 +54,10 @@ public class HttpAppAction extends BaseAction {
 	private DevicesService devicesService;
 	@Resource
 	private PreAuthorizationService preAuthorizationService;
+	@Resource
+	private UserAuthenticationService userAuthenticationService;
+	@Resource
+	private OrderService orderService;
 	
 	/**
 	 * 手机调用接口
@@ -167,83 +171,97 @@ public class HttpAppAction extends BaseAction {
 	 * @return
 	 * @throws ClassNotFoundException 
 	 */ 
-	@SuppressWarnings({"unchecked", "rawtypes"})
-	private String execute(MobileDataInfo scb,String ip) {
+	private String execute(MobileDataInfo scb,String ip) throws ClassNotFoundException {
 		MobileResultInfo srb = new MobileResultInfo();
 		Devices devices = null;
 		String funname = "";
 		if(StringUtils.isNotBlank(scb.getFunName())){
 			funname = scb.getFunName();
-			try {
-				JSONObject assistData = null;
-				if(Constant.SIGNIN_METHOD_NAME.equals(scb.getFunName())){
-					scb = SDKUtil.securityCReceiveMsg(scb, Constant.SIGNIN_SECURITY_CODE);
-					assistData = JSONObject.parseObject(scb.getAssistdata());
-					JSONObject data = JSONObject.parseObject(scb.getData());
-					devices = new Devices();
-					devices.setTenantid(assistData.getString("tenantId"));
-					devices.setConnid(data.getString("deviceid"));
-					devices.setNodecode(data.getString("stncode"));
-				}else{
-					//根据signid获取对应公钥
-					if(StringUtils.isNotBlank(scb.getSignid())){
-						devices = devicesService.findDevicesbySignid(scb.getSignid());
-						if(devices == null){
+			String[] fn = funname.split(",");
+			if(fn.length == 2){
+				System.out.println(" REV >>:"+DateUtils.formatName()+">>"+JSONObject.toJSONString(scb));
+				try {
+					try {
+						if("orderService".equals(fn[0])){
+							srb = orderService.execute(scb.getData(), fn[1],ip);
+						}else{
+							srb.setError("您请求的服务不存在");
+						}
+					}catch (Exception e) {
+						e.printStackTrace();
+						srb.setError("您请求的服务初始时发生异常，请联系管理人员检查！");
+					}
+				}catch(BusinessException e){
+					srb.setError(e.getMessage());
+					srb.setErrorcode(0);
+				}catch(Exception e) {
+					srb.setError("未知错误:请联系开发人员");
+				} 
+				return getResult(srb);
+			}else{
+				try {
+					JSONObject assistData = null;
+					if(Constant.SIGNIN_METHOD_NAME.equals(scb.getFunName())){
+						scb = SDKUtil.securityCReceiveMsg(scb, Constant.SIGNIN_SECURITY_CODE);
+						assistData = JSONObject.parseObject(scb.getAssistdata());
+						JSONObject data = JSONObject.parseObject(scb.getData());
+						devices = new Devices();
+						devices.setTenantid(assistData.getString("tenantId"));
+						devices.setConnid(data.getString("deviceid"));
+						devices.setNodecode(data.getString("stncode"));
+					}else{
+						//根据signid获取对应公钥
+						if(StringUtils.isNotBlank(scb.getSignid())){
+							devices = devicesService.findDevicesbySignid(scb.getSignid());
+							if(devices == null){
+								throw new BusinessException("访问非法");
+							}
+							//解密
+							scb = SDKUtil.securityCReceiveMsg(scb, scb.getRandomcode(), devices.getPrivatekey());
+						}else{
 							throw new BusinessException("访问非法");
 						}
-						//解密
-						scb = SDKUtil.securityCReceiveMsg(scb, scb.getRandomcode(), devices.getPrivatekey());
-					}else{
-						throw new BusinessException("访问非法");
+						assistData = JSONObject.parseObject(scb.getAssistdata());
 					}
-					assistData = JSONObject.parseObject(scb.getAssistdata());
-				}
-				
-				System.out.println(" REV >>:"+DateUtils.formatName()+">>"+JSONObject.toJSONString(scb));
-				if (ServiceInfos.serviceClass(assistData.getString("serviceCode"))) {
-						try {
-							Class stringclass = ServiceInfos.stringclass;
-							Method method = stringclass.getMethod("execute", String.class, String.class, String.class, Devices.class);
-							srb = (MobileResultInfo) method.invoke(stringclass.newInstance(), scb.getData(), scb.getFunName(),ip,devices);
-						} catch (InstantiationException e) {
-							srb.setError("您请求的服务是一个接口或是一个抽象类，您没有权限访问！");
-						} catch (IllegalAccessException e) {
-							srb.setError("您请求的服务被执行时出现异常，请联系管理人员检查！");
-						} catch (IllegalArgumentException e) {
-							srb.setError("您请求的服务无法接收规范的参数，请联系管理人员检查！");
-						} catch (Exception e) {
-							srb.setError("您请求的服务初始时发生异常，请联系管理人员检查！");
+					
+					System.out.println(" REV >>:"+DateUtils.formatName()+">>"+JSONObject.toJSONString(scb));
+					try {
+						if("com.pcitc.oilmachine.service.mobile.UserAuthenticationService".equals(assistData.getString("serviceCode"))){
+							srb = userAuthenticationService.execute(scb.getData(), scb.getFunName(),ip,devices);
+						}else{
+							srb.setError("您请求的服务不存在");
 						}
-				} else {
-					srb.setError("您请求的服务不存在");
+					}catch (Exception e) {
+						srb.setError("您请求的服务初始时发生异常，请联系管理人员检查！");
+					}
+				}catch(BusinessException e){
+					srb.setError(e.getMessage());
+					srb.setErrorcode(0);
+				}catch(Exception e) {
+					srb.setError("未知错误:请联系开发人员");
+				} 
+				srb.setFunName(funname);
+				System.out.println(" RETURN >>:"+DateUtils.formatName()+">>"+JSONObject.toJSONString(srb));
+				try{
+					if(Constant.SIGNIN_METHOD_NAME.equals(scb.getFunName())){
+						return SDKUtil.securityCReturnMsg(srb, Constant.SIGNIN_SECURITY_CODE);
+					}else{
+						if(devices != null){
+							String randomcode = StringUtils.GenerationEVerifyMessageCode(22);
+							randomcode = AESUtil.getSecretKeyStr(randomcode);
+							return SDKUtil.securityCReturnMsg(srb, randomcode, devices.getPublickey());
+						}
+						return getResult(srb);
+					}
+				}catch(Exception e){
+					return getResult(srb);
 				}
-			} catch (ClassNotFoundException e) {
-				srb.setError("您请求的服务不存在");
-			} catch(BusinessException e){
-				srb.setError(e.getMessage());
-				srb.setErrorcode(0);
-			}catch(Exception e) {
-				srb.setError("未知错误:请联系开发人员");
-			} 
-		}
-		srb.setFunName(funname);
-		System.out.println(" RETURN >>:"+DateUtils.formatName()+">>"+JSONObject.toJSONString(srb));
-		try{
-			if(Constant.SIGNIN_METHOD_NAME.equals(scb.getFunName())){
-				return SDKUtil.securityCReturnMsg(srb, Constant.SIGNIN_SECURITY_CODE);
-			}else{
-				if(devices != null){
-					String randomcode = StringUtils.GenerationEVerifyMessageCode(22);
-					randomcode = AESUtil.getSecretKeyStr(randomcode);
-					return SDKUtil.securityCReturnMsg(srb, randomcode, devices.getPublickey());
-				}
-				return getResult(srb);
 			}
-		}catch(Exception e){
+			
+		}else{
+			srb.setError("您请求的服务不存在");
 			return getResult(srb);
 		}
-		
-		
 	}
 	public static String getBasePath() {
 		return basePath;

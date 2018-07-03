@@ -2394,6 +2394,136 @@ public class PosRecordExample {
             addCriterion("createdate not between", value1, value2, "createdate");
             return (Criteria) this;
         }
+
+        public Criteria andStncodeIsNull() {
+            addCriterion("stncode is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeIsNotNull() {
+            addCriterion("stncode is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeEqualTo(String value) {
+            addCriterion("stncode =", value, "stncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeNotEqualTo(String value) {
+            addCriterion("stncode <>", value, "stncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeGreaterThan(String value) {
+            addCriterion("stncode >", value, "stncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeGreaterThanOrEqualTo(String value) {
+            addCriterion("stncode >=", value, "stncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeLessThan(String value) {
+            addCriterion("stncode <", value, "stncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeLessThanOrEqualTo(String value) {
+            addCriterion("stncode <=", value, "stncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeLike(String value) {
+            addCriterion("stncode like", value, "stncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeNotLike(String value) {
+            addCriterion("stncode not like", value, "stncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeIn(List<String> values) {
+            addCriterion("stncode in", values, "stncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeNotIn(List<String> values) {
+            addCriterion("stncode not in", values, "stncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeBetween(String value1, String value2) {
+            addCriterion("stncode between", value1, value2, "stncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeNotBetween(String value1, String value2) {
+            addCriterion("stncode not between", value1, value2, "stncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderstatusIsNull() {
+            addCriterion("orderstatus is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderstatusIsNotNull() {
+            addCriterion("orderstatus is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderstatusEqualTo(Byte value) {
+            addCriterion("orderstatus =", value, "orderstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderstatusNotEqualTo(Byte value) {
+            addCriterion("orderstatus <>", value, "orderstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderstatusGreaterThan(Byte value) {
+            addCriterion("orderstatus >", value, "orderstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderstatusGreaterThanOrEqualTo(Byte value) {
+            addCriterion("orderstatus >=", value, "orderstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderstatusLessThan(Byte value) {
+            addCriterion("orderstatus <", value, "orderstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderstatusLessThanOrEqualTo(Byte value) {
+            addCriterion("orderstatus <=", value, "orderstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderstatusIn(List<Byte> values) {
+            addCriterion("orderstatus in", values, "orderstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderstatusNotIn(List<Byte> values) {
+            addCriterion("orderstatus not in", values, "orderstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderstatusBetween(Byte value1, Byte value2) {
+            addCriterion("orderstatus between", value1, value2, "orderstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderstatusNotBetween(Byte value1, Byte value2) {
+            addCriterion("orderstatus not between", value1, value2, "orderstatus");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

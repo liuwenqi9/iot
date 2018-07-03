@@ -180,7 +180,7 @@ public class MQClientSenderService{
 			channel.close();
 			connection.close();
 		} catch (Exception e) {
-        	e.printStackTrace();
+        	//e.printStackTrace();
         }
 	}
 }

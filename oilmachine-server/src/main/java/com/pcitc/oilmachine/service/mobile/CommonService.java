@@ -1485,8 +1485,10 @@ public class CommonService extends BaseService{
 			posRecord.setCreator(userid);
 		}
 		posRecord.setDeviceconnid(devices.getConnid());
+		posRecord.setStncode(devices.getNodecode());
 		posRecord.setUserid(userid);
 		posRecord.setSaleno(saleno);
+		posRecord.setOrderstatus((byte)1);
 		//解析成交记录
 		byte[] posrecordbyte  = Base64.decode(transdata);
 		byte[] posttc = new byte[4];
@@ -1733,5 +1735,65 @@ public class CommonService extends BaseService{
 	
 	public DeviceFault saveOrupdateDeviceFault(DeviceFault deviceFault,String username){
 		return deviceFaultService.saveOrupdate(deviceFault, username);
+	}
+
+	/**
+	 * 获取订单信息（已付款）
+	 * @param tenantid
+	 * @param stncode
+	 * @param userid
+	 * @param deviceid
+	 * @param nozzleno
+	 * @param bTime
+	 * @param eTime
+	 * @param start
+	 * @param end
+	 * @param order
+	 * @return
+	 */
+	public JSONObject getSellOrder(String tenantid, String stncode,
+			String userid, String deviceid, Integer nozzleno, Long bTime,
+			Long eTime, Integer start, Integer end, String order) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * 18、员工卡加油成交记录查询(未付款)
+	 * @param tenantid
+	 * @param stncode
+	 * @param deviceidconnid
+	 * @param nozzleno
+	 * @param bTime
+	 * @param eTime
+	 * @param start
+	 * @param end
+	 * @param order
+	 * @return
+	 * @throws PTPECAppException 
+	 */
+	public JSONArray getPosRecord(String tenantid, String stncode,
+			String deviceidconnid, Integer nozzleno) throws PTPECAppException {
+		JSONArray posrecordarr = new JSONArray();
+		List<PosRecord>  posRecords = posRecordService.getPosRecord(tenantid,stncode,deviceidconnid,nozzleno.longValue());
+		if(StringUtils.isNotBlank(deviceidconnid)){
+			List<Vehicle> vehicles = getCurrentVehiclesHasnouser(deviceidconnid);
+			for(PosRecord pr : posRecords){
+				JSONObject jbo = new JSONObject();
+				jbo.put("posRecord", pr);
+				jbo.put("vehicles", vehicles);
+				posrecordarr.add(jbo);
+			}
+		}else{
+			for(PosRecord pr : posRecords){
+				List<Vehicle> vehicles = getCurrentVehiclesHasnouser(pr.getDeviceconnid());
+				JSONObject jbo = new JSONObject();
+				jbo.put("posRecord", pr);
+				jbo.put("vehicles", vehicles);
+				posrecordarr.add(jbo);
+			}
+		}
+		
+		return posrecordarr;
 	}
 }
