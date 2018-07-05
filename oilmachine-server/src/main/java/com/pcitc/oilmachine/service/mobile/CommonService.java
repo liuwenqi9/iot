@@ -1357,7 +1357,7 @@ public class CommonService extends BaseService{
 								long rightbottomx = da.getRightbottomx().multiply(cm).longValue();
 								long rightbottomy = da.getRightbottomy().multiply(cm).longValue();
 								boolean rate = InMatrix.inside(left, top, right, bottom, lefttopx, lefttopy, rightbottomx, rightbottomy);
-								System.out.println("oilconnid:"+oilconnid+":carnumshasuser:carnum"+carnum+":"+rate);
+								log.info("oilconnid:"+oilconnid+":carnumshasuser:carnum"+carnum+":"+rate);
 								if(rate){
 									//获取当前车牌的所有用户信息
 									Vehicle vehicle = new Vehicle();
@@ -1448,7 +1448,7 @@ public class CommonService extends BaseService{
 								long rightbottomx = da.getRightbottomx().multiply(cm).longValue();
 								long rightbottomy = da.getRightbottomy().multiply(cm).longValue();
 								boolean rate = InMatrix.inside(left, top, right, bottom, lefttopx, lefttopy, rightbottomx, rightbottomy);
-								System.out.println("oilconnid:"+oilconnid+":carnumsnouser:carnum"+carnum+":"+rate);
+								log.info("oilconnid:"+oilconnid+":carnumsnouser:carnum"+carnum+":"+rate);
 								if(rate){
 									//获取当前车牌的所有用户信息
 									Vehicle vehicle = new Vehicle();
@@ -1734,9 +1734,7 @@ public class CommonService extends BaseService{
 		hashOpertions.put("nozzleno",String.valueOf(nozzleStatus.getNozzleno()));
 		hashOpertions.put("nozzlestatus", String.valueOf(nozzleStatus.getNozzlestatus()));
 		hashOpertions.put("vtot", String.valueOf(nozzleStatus.getVtot()));
-		log.warn("warn======================");
 		log.info(JSONObject.toJSON(nozzleStatus)+"＝＝＝＝＝＝＝枪状态＝＝＝＝＝＝＝＝＝＝");
-		log.debug("debug======================");
 	}
 	
 	public DeviceFault saveOrupdateDeviceFault(DeviceFault deviceFault,String username){
@@ -1803,7 +1801,6 @@ public class CommonService extends BaseService{
 				posrecordarr.add(jbo);
 			}
 		}
-		
 		return posrecordarr;
 	}
 }

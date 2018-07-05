@@ -193,8 +193,8 @@ public class CarMessageHandler extends CommonMessageHandler {
 						log.info("**************处理摄像头数据2:"+cameraid+"***车牌号:"+carnum+"未绑定会员**************");
 					}
 				}
-				System.out.println("摄像头："+carMessage.getCameraid()+",识别到的未绑定会员的车牌号数据集合："+cameraOpertions.get("carnumsnouser"));
-				System.out.println("摄像头："+carMessage.getCameraid()+",识别到的绑定会员的车牌号数据集合："+cameraOpertions.get("carnums"));
+				log.info("摄像头："+carMessage.getCameraid()+",识别到的未绑定会员的车牌号数据集合："+cameraOpertions.get("carnumsnouser"));
+				log.info("摄像头："+carMessage.getCameraid()+",识别到的绑定会员的车牌号数据集合："+cameraOpertions.get("carnums"));
 			}
 		} catch (Exception e) {
 			commonService.saveDeviceConnectError(String.valueOf(carMessage.getCameraid()), null, JSONObject.toJSONString(carMessage));

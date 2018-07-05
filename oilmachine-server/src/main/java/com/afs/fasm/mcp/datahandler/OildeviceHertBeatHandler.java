@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -23,7 +26,7 @@ import com.pcitc.oilmachine.form.Vehicle;
 import com.pcitc.oilmachine.service.mobile.CommonService;
 
 public class OildeviceHertBeatHandler extends CommonMessageHandler {
-	private static Logger log = LoggerFactory.getLogger(OildeviceHertBeatHandler.class);
+	private static Logger log = LogManager.getLogger(OildeviceHertBeatHandler.class.getName());
 	@Override
 	public AbstractMcpEasyMessage handlerMessage(AbstractMcpEasyMessage message,
 			ChannelHandlerContext ctx) {

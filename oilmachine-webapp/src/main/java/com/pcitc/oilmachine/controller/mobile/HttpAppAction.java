@@ -9,6 +9,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -58,6 +60,7 @@ public class HttpAppAction extends BaseAction {
 	private UserAuthenticationService userAuthenticationService;
 	@Resource
 	private OrderService orderService;
+	private static Logger log = LogManager.getLogger(HttpAppAction.class.getName());
 	
 	/**
 	 * 手机调用接口
@@ -93,7 +96,7 @@ public class HttpAppAction extends BaseAction {
 		    //整理返回数据
 		    result =execute(gson.parseObject(strBuff.toString(), MobileDataInfo.class),ip);
          }catch(Exception e){
-			System.out.println(e);
+			log.error(e);
 		}
 		if(result==null){
 			result = "";
@@ -113,7 +116,7 @@ public class HttpAppAction extends BaseAction {
 	@RequestMapping(value="/esrcallback", method = RequestMethod.POST)
 	public void esrcallback(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		JSONObject result = new JSONObject();
-		System.out.println("预授权回调==================");
+		log.info("预授权回调==================");
 		result.put("success", true);
 		JSONObject rObject = null;
 		try {
@@ -144,10 +147,10 @@ public class HttpAppAction extends BaseAction {
 					result.put("success", false);
 					result.put("msg", "不支持的回调类型");
 				}
-				System.out.println("返回解密结果：--------"+decryDate);
+				log.info("返回解密结果：--------"+decryDate);
 			}
 		} catch (Exception e) {
-			System.out.println("回调失败:"+rObject.toJSONString());
+			log.error("回调失败:"+rObject.toJSONString());
 			e.printStackTrace();
 			result.put("success", false);
 			result.put("msg", e.getMessage());
@@ -179,7 +182,7 @@ public class HttpAppAction extends BaseAction {
 			funname = scb.getFunName();
 			String[] fn = funname.split(",");
 			if(fn.length == 2){
-				System.out.println(" REV >>:"+DateUtils.formatName()+">>"+JSONObject.toJSONString(scb));
+				log.info(" REV >>:"+DateUtils.formatName()+">>"+JSONObject.toJSONString(scb));
 				try {
 					try {
 						if("orderService".equals(fn[0])){
@@ -224,7 +227,7 @@ public class HttpAppAction extends BaseAction {
 						assistData = JSONObject.parseObject(scb.getAssistdata());
 					}
 					
-					System.out.println(" REV >>:"+DateUtils.formatName()+">>"+JSONObject.toJSONString(scb));
+					log.info(" REV >>:"+DateUtils.formatName()+">>"+JSONObject.toJSONString(scb));
 					try {
 						if("com.pcitc.oilmachine.service.mobile.UserAuthenticationService".equals(assistData.getString("serviceCode"))){
 							srb = userAuthenticationService.execute(scb.getData(), scb.getFunName(),ip,devices);
@@ -241,7 +244,7 @@ public class HttpAppAction extends BaseAction {
 					srb.setError("未知错误:请联系开发人员");
 				} 
 				srb.setFunName(funname);
-				System.out.println(" RETURN >>:"+DateUtils.formatName()+">>"+JSONObject.toJSONString(srb));
+				log.info(" RETURN >>:"+DateUtils.formatName()+">>"+JSONObject.toJSONString(srb));
 				try{
 					if(Constant.SIGNIN_METHOD_NAME.equals(scb.getFunName())){
 						return SDKUtil.securityCReturnMsg(srb, Constant.SIGNIN_SECURITY_CODE);
