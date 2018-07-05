@@ -385,6 +385,76 @@ public class PosRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andStncodeIsNull() {
+            addCriterion("stncode is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeIsNotNull() {
+            addCriterion("stncode is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeEqualTo(String value) {
+            addCriterion("stncode =", value, "stncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeNotEqualTo(String value) {
+            addCriterion("stncode <>", value, "stncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeGreaterThan(String value) {
+            addCriterion("stncode >", value, "stncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeGreaterThanOrEqualTo(String value) {
+            addCriterion("stncode >=", value, "stncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeLessThan(String value) {
+            addCriterion("stncode <", value, "stncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeLessThanOrEqualTo(String value) {
+            addCriterion("stncode <=", value, "stncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeLike(String value) {
+            addCriterion("stncode like", value, "stncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeNotLike(String value) {
+            addCriterion("stncode not like", value, "stncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeIn(List<String> values) {
+            addCriterion("stncode in", values, "stncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeNotIn(List<String> values) {
+            addCriterion("stncode not in", values, "stncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeBetween(String value1, String value2) {
+            addCriterion("stncode between", value1, value2, "stncode");
+            return (Criteria) this;
+        }
+
+        public Criteria andStncodeNotBetween(String value1, String value2) {
+            addCriterion("stncode not between", value1, value2, "stncode");
+            return (Criteria) this;
+        }
+
         public Criteria andDeviceconnidIsNull() {
             addCriterion("deviceconnid is null");
             return (Criteria) this;
@@ -1655,6 +1725,76 @@ public class PosRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andGnameIsNull() {
+            addCriterion("gname is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGnameIsNotNull() {
+            addCriterion("gname is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGnameEqualTo(String value) {
+            addCriterion("gname =", value, "gname");
+            return (Criteria) this;
+        }
+
+        public Criteria andGnameNotEqualTo(String value) {
+            addCriterion("gname <>", value, "gname");
+            return (Criteria) this;
+        }
+
+        public Criteria andGnameGreaterThan(String value) {
+            addCriterion("gname >", value, "gname");
+            return (Criteria) this;
+        }
+
+        public Criteria andGnameGreaterThanOrEqualTo(String value) {
+            addCriterion("gname >=", value, "gname");
+            return (Criteria) this;
+        }
+
+        public Criteria andGnameLessThan(String value) {
+            addCriterion("gname <", value, "gname");
+            return (Criteria) this;
+        }
+
+        public Criteria andGnameLessThanOrEqualTo(String value) {
+            addCriterion("gname <=", value, "gname");
+            return (Criteria) this;
+        }
+
+        public Criteria andGnameLike(String value) {
+            addCriterion("gname like", value, "gname");
+            return (Criteria) this;
+        }
+
+        public Criteria andGnameNotLike(String value) {
+            addCriterion("gname not like", value, "gname");
+            return (Criteria) this;
+        }
+
+        public Criteria andGnameIn(List<String> values) {
+            addCriterion("gname in", values, "gname");
+            return (Criteria) this;
+        }
+
+        public Criteria andGnameNotIn(List<String> values) {
+            addCriterion("gname not in", values, "gname");
+            return (Criteria) this;
+        }
+
+        public Criteria andGnameBetween(String value1, String value2) {
+            addCriterion("gname between", value1, value2, "gname");
+            return (Criteria) this;
+        }
+
+        public Criteria andGnameNotBetween(String value1, String value2) {
+            addCriterion("gname not between", value1, value2, "gname");
+            return (Criteria) this;
+        }
+
         public Criteria andVolIsNull() {
             addCriterion("vol is null");
             return (Criteria) this;
@@ -2012,6 +2152,66 @@ public class PosRecordExample {
 
         public Criteria andTmacNotBetween(Long value1, Long value2) {
             addCriterion("tmac not between", value1, value2, "tmac");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderstatusIsNull() {
+            addCriterion("orderstatus is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderstatusIsNotNull() {
+            addCriterion("orderstatus is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderstatusEqualTo(Byte value) {
+            addCriterion("orderstatus =", value, "orderstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderstatusNotEqualTo(Byte value) {
+            addCriterion("orderstatus <>", value, "orderstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderstatusGreaterThan(Byte value) {
+            addCriterion("orderstatus >", value, "orderstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderstatusGreaterThanOrEqualTo(Byte value) {
+            addCriterion("orderstatus >=", value, "orderstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderstatusLessThan(Byte value) {
+            addCriterion("orderstatus <", value, "orderstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderstatusLessThanOrEqualTo(Byte value) {
+            addCriterion("orderstatus <=", value, "orderstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderstatusIn(List<Byte> values) {
+            addCriterion("orderstatus in", values, "orderstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderstatusNotIn(List<Byte> values) {
+            addCriterion("orderstatus not in", values, "orderstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderstatusBetween(Byte value1, Byte value2) {
+            addCriterion("orderstatus between", value1, value2, "orderstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderstatusNotBetween(Byte value1, Byte value2) {
+            addCriterion("orderstatus not between", value1, value2, "orderstatus");
             return (Criteria) this;
         }
 
@@ -2395,133 +2595,73 @@ public class PosRecordExample {
             return (Criteria) this;
         }
 
-        public Criteria andStncodeIsNull() {
-            addCriterion("stncode is null");
+        public Criteria andEightcodeIsNull() {
+            addCriterion("eightcode is null");
             return (Criteria) this;
         }
 
-        public Criteria andStncodeIsNotNull() {
-            addCriterion("stncode is not null");
+        public Criteria andEightcodeIsNotNull() {
+            addCriterion("eightcode is not null");
             return (Criteria) this;
         }
 
-        public Criteria andStncodeEqualTo(String value) {
-            addCriterion("stncode =", value, "stncode");
+        public Criteria andEightcodeEqualTo(String value) {
+            addCriterion("eightcode =", value, "eightcode");
             return (Criteria) this;
         }
 
-        public Criteria andStncodeNotEqualTo(String value) {
-            addCriterion("stncode <>", value, "stncode");
+        public Criteria andEightcodeNotEqualTo(String value) {
+            addCriterion("eightcode <>", value, "eightcode");
             return (Criteria) this;
         }
 
-        public Criteria andStncodeGreaterThan(String value) {
-            addCriterion("stncode >", value, "stncode");
+        public Criteria andEightcodeGreaterThan(String value) {
+            addCriterion("eightcode >", value, "eightcode");
             return (Criteria) this;
         }
 
-        public Criteria andStncodeGreaterThanOrEqualTo(String value) {
-            addCriterion("stncode >=", value, "stncode");
+        public Criteria andEightcodeGreaterThanOrEqualTo(String value) {
+            addCriterion("eightcode >=", value, "eightcode");
             return (Criteria) this;
         }
 
-        public Criteria andStncodeLessThan(String value) {
-            addCriterion("stncode <", value, "stncode");
+        public Criteria andEightcodeLessThan(String value) {
+            addCriterion("eightcode <", value, "eightcode");
             return (Criteria) this;
         }
 
-        public Criteria andStncodeLessThanOrEqualTo(String value) {
-            addCriterion("stncode <=", value, "stncode");
+        public Criteria andEightcodeLessThanOrEqualTo(String value) {
+            addCriterion("eightcode <=", value, "eightcode");
             return (Criteria) this;
         }
 
-        public Criteria andStncodeLike(String value) {
-            addCriterion("stncode like", value, "stncode");
+        public Criteria andEightcodeLike(String value) {
+            addCriterion("eightcode like", value, "eightcode");
             return (Criteria) this;
         }
 
-        public Criteria andStncodeNotLike(String value) {
-            addCriterion("stncode not like", value, "stncode");
+        public Criteria andEightcodeNotLike(String value) {
+            addCriterion("eightcode not like", value, "eightcode");
             return (Criteria) this;
         }
 
-        public Criteria andStncodeIn(List<String> values) {
-            addCriterion("stncode in", values, "stncode");
+        public Criteria andEightcodeIn(List<String> values) {
+            addCriterion("eightcode in", values, "eightcode");
             return (Criteria) this;
         }
 
-        public Criteria andStncodeNotIn(List<String> values) {
-            addCriterion("stncode not in", values, "stncode");
+        public Criteria andEightcodeNotIn(List<String> values) {
+            addCriterion("eightcode not in", values, "eightcode");
             return (Criteria) this;
         }
 
-        public Criteria andStncodeBetween(String value1, String value2) {
-            addCriterion("stncode between", value1, value2, "stncode");
+        public Criteria andEightcodeBetween(String value1, String value2) {
+            addCriterion("eightcode between", value1, value2, "eightcode");
             return (Criteria) this;
         }
 
-        public Criteria andStncodeNotBetween(String value1, String value2) {
-            addCriterion("stncode not between", value1, value2, "stncode");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderstatusIsNull() {
-            addCriterion("orderstatus is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderstatusIsNotNull() {
-            addCriterion("orderstatus is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderstatusEqualTo(Byte value) {
-            addCriterion("orderstatus =", value, "orderstatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderstatusNotEqualTo(Byte value) {
-            addCriterion("orderstatus <>", value, "orderstatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderstatusGreaterThan(Byte value) {
-            addCriterion("orderstatus >", value, "orderstatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderstatusGreaterThanOrEqualTo(Byte value) {
-            addCriterion("orderstatus >=", value, "orderstatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderstatusLessThan(Byte value) {
-            addCriterion("orderstatus <", value, "orderstatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderstatusLessThanOrEqualTo(Byte value) {
-            addCriterion("orderstatus <=", value, "orderstatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderstatusIn(List<Byte> values) {
-            addCriterion("orderstatus in", values, "orderstatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderstatusNotIn(List<Byte> values) {
-            addCriterion("orderstatus not in", values, "orderstatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderstatusBetween(Byte value1, Byte value2) {
-            addCriterion("orderstatus between", value1, value2, "orderstatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andOrderstatusNotBetween(Byte value1, Byte value2) {
-            addCriterion("orderstatus not between", value1, value2, "orderstatus");
+        public Criteria andEightcodeNotBetween(String value1, String value2) {
+            addCriterion("eightcode not between", value1, value2, "eightcode");
             return (Criteria) this;
         }
     }

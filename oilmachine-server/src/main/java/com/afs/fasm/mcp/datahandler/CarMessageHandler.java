@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
@@ -32,7 +32,7 @@ import com.pcitc.oilmachine.model.DictionaryData;
 import com.pcitc.oilmachine.service.mobile.CommonService;
 
 public class CarMessageHandler extends CommonMessageHandler {
-	private static Logger log = LoggerFactory.getLogger(CarMessageHandler.class);
+	private static Logger log = LogManager.getLogger(CarMessageHandler.class.getName());
 	private static Map<Long,Devices> cameradevice = new ConcurrentHashMap<Long,Devices>();
 	@Override
 	public AbstractMcpEasyMessage handlerMessage(AbstractMcpEasyMessage message,

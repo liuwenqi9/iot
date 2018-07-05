@@ -29,6 +29,12 @@ public enum DictionaryEnum {
             return "003";//车型
         }
     },
+    CODE2EIGHTCODE{
+        @Override
+        public String toString() {
+            return "oil_code2eightcode";//加油机编与石化编码对照关系
+        }
+    },
     BUSINESSPARAM{
         @Override
         public String toString() {

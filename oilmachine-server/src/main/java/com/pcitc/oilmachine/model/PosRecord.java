@@ -11,6 +11,8 @@ public class PosRecord {
 
     private String saleno;
 
+    private String stncode;
+
     private String deviceconnid;
 
     private Long posttc;
@@ -51,6 +53,8 @@ public class PosRecord {
 
     private String gcode;
 
+    private String gname;
+
     private Long vol;
 
     private Long prc;
@@ -62,6 +66,8 @@ public class PosRecord {
     private Long rfu;
 
     private Long tmac;
+
+    private Byte orderstatus;
 
     private Byte status;
 
@@ -75,9 +81,7 @@ public class PosRecord {
 
     private Date createdate;
 
-    private String stncode;
-
-    private Byte orderstatus;
+    private String eightcode;
 
     public String getId() {
         return id;
@@ -109,6 +113,14 @@ public class PosRecord {
 
     public void setSaleno(String saleno) {
         this.saleno = saleno == null ? null : saleno.trim();
+    }
+
+    public String getStncode() {
+        return stncode;
+    }
+
+    public void setStncode(String stncode) {
+        this.stncode = stncode == null ? null : stncode.trim();
     }
 
     public String getDeviceconnid() {
@@ -271,6 +283,14 @@ public class PosRecord {
         this.gcode = gcode == null ? null : gcode.trim();
     }
 
+    public String getGname() {
+        return gname;
+    }
+
+    public void setGname(String gname) {
+        this.gname = gname == null ? null : gname.trim();
+    }
+
     public Long getVol() {
         return vol;
     }
@@ -317,6 +337,14 @@ public class PosRecord {
 
     public void setTmac(Long tmac) {
         this.tmac = tmac;
+    }
+
+    public Byte getOrderstatus() {
+        return orderstatus;
+    }
+
+    public void setOrderstatus(Byte orderstatus) {
+        this.orderstatus = orderstatus;
     }
 
     public Byte getStatus() {
@@ -367,19 +395,11 @@ public class PosRecord {
         this.createdate = createdate;
     }
 
-    public String getStncode() {
-        return stncode;
+    public String getEightcode() {
+        return eightcode;
     }
 
-    public void setStncode(String stncode) {
-        this.stncode = stncode == null ? null : stncode.trim();
-    }
-
-    public Byte getOrderstatus() {
-        return orderstatus;
-    }
-
-    public void setOrderstatus(Byte orderstatus) {
-        this.orderstatus = orderstatus;
+    public void setEightcode(String eightcode) {
+        this.eightcode = eightcode == null ? null : eightcode.trim();
     }
 }

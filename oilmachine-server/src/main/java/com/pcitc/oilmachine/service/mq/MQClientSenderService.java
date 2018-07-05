@@ -167,6 +167,7 @@ public class MQClientSenderService{
 	//ordercenter
 	public void ntranSendPosrecord(JSONObject jop) {
 		try { 
+			System.out.println(jop.toJSONString()+"＝＝＝＝＝＝＝＝＝＝＝成交记录＝＝＝＝＝＝＝＝");
 			ConnectionFactory factory = new ConnectionFactory();
 			factory.setHost(ipordercenter);
 			factory.setPort(Integer.parseInt(portordercenter));

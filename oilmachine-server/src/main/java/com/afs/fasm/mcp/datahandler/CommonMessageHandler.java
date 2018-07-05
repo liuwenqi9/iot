@@ -1,7 +1,7 @@
 package com.afs.fasm.mcp.datahandler;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import io.netty.channel.ChannelHandlerContext;
 
@@ -22,7 +22,7 @@ import com.alibaba.fastjson.JSONObject;
  *
  */
 public class CommonMessageHandler implements DataHandlerBase {
-	private static Logger log = LoggerFactory.getLogger(CommonMessageHandler.class);
+	private static Logger log = LogManager.getLogger(CommonMessageHandler.class.getName());
 	
 	protected int sendMessageToMQ(AbstractMcpEasyMessage message,String routingKey,int messageType){
 		Gson gson =  new GsonBuilder().setDateFormat(TimeFormatConstant.YYYYMMDDHHMMSS).create();

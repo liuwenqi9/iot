@@ -18,6 +18,13 @@ public class OrderService {
 	@Resource
 	private CommonService commonService;
 	
+	/**
+	 * 
+	 * @param data
+	 * @param funName
+	 * @param ip
+	 * @return
+	 */
 	public MobileResultInfo execute(String data, String funName,String ip){
 		MobileResultInfo result = new MobileResultInfo();
 		try {

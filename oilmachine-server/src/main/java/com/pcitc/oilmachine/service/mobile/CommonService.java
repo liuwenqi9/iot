@@ -15,9 +15,9 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.http.ParseException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bouncycastle.util.encoders.Base64;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -115,7 +115,7 @@ public class CommonService extends BaseService{
 	@Resource
 	private NozzleStatusService nozzleStatusService;
 	
-	private static Logger log = LoggerFactory.getLogger(CommonService.class);
+	private static Logger log = LogManager.getLogger(CommonService.class.getName());
 	
 	
 	/**
@@ -1574,7 +1574,6 @@ public class CommonService extends BaseService{
 		String bingcode = ByteUtil.binary(gcode, 2);
 		String bingcodestr = ByteUtil.bcd2str(bingcode);
 		posRecord.setGcode(bingcodestr);
-		
 		byte[] vol = new byte[3];
 		System.arraycopy(posrecordbyte, 70, vol, 0, 3);
 		posRecord.setVol(ByteUtil.getLongBy4BytesR(vol));
@@ -1602,6 +1601,10 @@ public class CommonService extends BaseService{
 			saleno = getSaleno(devices.getConnid(), String.valueOf(posRecord.getNzn()), posRecord.getGcode());
 		}
 		posRecord.setSaleno(saleno);
+		//根据油机油品编码获取石化8位标准编码
+		DictionaryData dd = getDataByDoubleCode(DictionaryEnum.CODE2EIGHTCODE, bingcodestr, "f652e66ac0714627aa66c58471455680");
+		posRecord.setGname(dd.getItemName());
+		posRecord.setEightcode(dd.getItemValue());
 		posRecord = posRecordService.insertPosRecord(posRecord);
 		String ttypeStr = posRecord.getTtype();
 		ttypeStr = ttypeStr.substring(ttypeStr.length()-4, ttypeStr.length());
@@ -1731,6 +1734,9 @@ public class CommonService extends BaseService{
 		hashOpertions.put("nozzleno",String.valueOf(nozzleStatus.getNozzleno()));
 		hashOpertions.put("nozzlestatus", String.valueOf(nozzleStatus.getNozzlestatus()));
 		hashOpertions.put("vtot", String.valueOf(nozzleStatus.getVtot()));
+		log.warn("warn======================");
+		log.info(JSONObject.toJSON(nozzleStatus)+"＝＝＝＝＝＝＝枪状态＝＝＝＝＝＝＝＝＝＝");
+		log.debug("debug======================");
 	}
 	
 	public DeviceFault saveOrupdateDeviceFault(DeviceFault deviceFault,String username){
@@ -1775,7 +1781,11 @@ public class CommonService extends BaseService{
 	public JSONArray getPosRecord(String tenantid, String stncode,
 			String deviceidconnid, Integer nozzleno) throws PTPECAppException {
 		JSONArray posrecordarr = new JSONArray();
-		List<PosRecord>  posRecords = posRecordService.getPosRecord(tenantid,stncode,deviceidconnid,nozzleno.longValue());
+		Long nozzlen = null;
+		if(nozzleno != null){
+			nozzlen = nozzleno.longValue();
+		}
+		List<PosRecord>  posRecords = posRecordService.getPosRecord(tenantid,stncode,deviceidconnid,nozzlen);
 		if(StringUtils.isNotBlank(deviceidconnid)){
 			List<Vehicle> vehicles = getCurrentVehiclesHasnouser(deviceidconnid);
 			for(PosRecord pr : posRecords){
