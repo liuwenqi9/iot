@@ -21,6 +21,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.pcitc.oilmachine.commons.certificate.BusinessException;
 import com.pcitc.oilmachine.commons.certificate.SDKUtil;
 import com.pcitc.oilmachine.commons.constant.Constant;
+import com.pcitc.oilmachine.commons.constant.ResultConstant;
 import com.pcitc.oilmachine.commons.utils.AESUtil;
 import com.pcitc.oilmachine.commons.utils.DateUtils;
 import com.pcitc.oilmachine.commons.utils.JsonEncryptUtil;
@@ -184,21 +185,13 @@ public class HttpAppAction extends BaseAction {
 			if(fn.length == 2){
 				log.info(" REV >>:"+DateUtils.formatName()+">>"+JSONObject.toJSONString(scb));
 				try {
-					try {
-						if("orderService".equals(fn[0])){
-							srb = orderService.execute(scb.getData(), fn[1],ip);
-						}else{
-							srb.setError("您请求的服务不存在");
-						}
-					}catch (Exception e) {
-						e.printStackTrace();
-						srb.setError("您请求的服务初始时发生异常，请联系管理人员检查！");
+					if("orderService".equals(fn[0])){
+						srb = orderService.execute(scb.getData(), fn[1],ip);
+					}else{
+						srb.setErrorcode(ResultConstant.ERROR_SERVICE_NOTFOUND);
 					}
-				}catch(BusinessException e){
-					srb.setError(e.getMessage());
-					srb.setErrorcode(0);
 				}catch(Exception e) {
-					srb.setError("未知错误:请联系开发人员");
+					srb.setErrorcode(ResultConstant.ERROR_UNKNOWN);
 				} 
 				return getResult(srb);
 			}else{

@@ -12,13 +12,19 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.pcitc.oilmachine.commons.constant.Constant;
+import com.pcitc.oilmachine.commons.exception.PTPECAppException;
 import com.pcitc.oilmachine.controller.BaseAction;
 import com.pcitc.oilmachine.enums.DictionaryEnum;
 import com.pcitc.oilmachine.form.UserInfo;
 import com.pcitc.oilmachine.model.Devices;
+import com.pcitc.oilmachine.model.DevicesArea;
 import com.pcitc.oilmachine.model.DictionaryData;
+import com.pcitc.oilmachine.model.NozzleStatus;
 import com.pcitc.oilmachine.service.dictionary.DictionaryDataService;
+import com.pcitc.oilmachine.service.modelservice.devices.DevicesAreaService;
 import com.pcitc.oilmachine.service.modelservice.devices.DevicesService;
+import com.pcitc.oilmachine.service.modelservice.devices.NozzleStatusService;
 import com.pcitc.oilmachine.view.GridData;
 
 
@@ -36,9 +42,56 @@ public class DevicesController extends BaseAction {
 
 	@Resource
 	private DevicesService devicesService;
-	
 	@Resource
 	private DictionaryDataService dictionaryDataService;
+	@Resource
+	private NozzleStatusService nozzleStatusService;
+	@Resource
+	private DevicesAreaService devicesAreaService;
+	
+	@ResponseBody
+	@RequestMapping(value = "/nozzleAdd", produces = {"application/text;charset=UTF-8" })
+	public String nozzleAdd(String deviceid,String areacode,String nozzleno) {
+		JSONObject json = new JSONObject();
+		UserInfo userinfo = this.getUserInfo();
+		try {
+			if(StringUtils.isNotBlank(deviceid)){
+				Devices devices = devicesService.findById(deviceid);
+				NozzleStatus ns = new NozzleStatus();
+				ns.setNodecode(devices.getNodecode());
+				ns.setNodetag(devices.getNodetag());
+				ns.setTenantid(devices.getTenantid());
+				ns.setDeviceconnid(devices.getConnid());
+				ns.setNozzleno(Byte.valueOf(nozzleno));
+				ns.setAreacode(Byte.valueOf(areacode));
+				nozzleStatusService.saveOrupdate(ns, userinfo.getUsername());
+			}
+			json.put("status", true);
+		} catch (Exception e) {
+			json.put("status", false);
+			json.put("msg", e.getMessage());
+			e.printStackTrace();
+		}
+		return toJSONFormat(json);
+	}
+	
+	@RequestMapping(value = "/nozzleinfo", produces = {"application/text;charset=UTF-8" })
+	public ModelAndView nozzleinfo(String devicesId) throws PTPECAppException {
+		ModelAndView modelAndView = new ModelAndView("view/devices/nozzleinfo");
+		if(StringUtils.isNotBlank(devicesId)){
+			Devices devices = devicesService.findById(devicesId);//获取点击的摄像机对象信息
+			
+			//查询已创建的区域编码列表
+			List<DevicesArea> list = devicesAreaService.findAreanumListByDevicesids(devices.getDevicesid(),Constant.OILMACH_CODE);
+			modelAndView.addObject("arealist", JSON.toJSONString(list));
+		}
+		return modelAndView;
+	}
+	
+	@RequestMapping("/nozzlePage")
+	public String nozzlePage(){
+		return "view/devices/nozzleList";
+	}
 	
 	/**
 	 * 跳转列表页面
