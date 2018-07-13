@@ -38,28 +38,35 @@ public class HttpTest01 {
 	static String deviceid = "105015011";
 	static String stncode = "10501501";
 	
-	public static void main(String[] args) throws IOException {
+	public static void main1(String[] args) throws IOException {
 		//getHexString
 		/*byte[] bytes = ByteUtil.str2Byte("京NZK281", "GB2312");
 		System.out.println(ByteUtil.getHexString(bytes));
 		System.out.println(Integer.valueOf("1111",2).toString());*/
 		/*byte[] bytes = ByteUtil.long2byte(3255001801l, 4);
 		System.out.println(ByteUtil.getHexString(bytes));*/
-		//String basestr = "AAAByhAgGAYGEzciAQAEERAAABRIce5rKAAAAAAAAWH2KGMAAAAAAAAAAAEAEBEQAABQlYcTEQBQlYcAAAAZABAAEQIQUgAAAAMVCAADpi4AAAAAAAAAAAAAAL/zqCg=";
+		String basestr = "AAAEEgggGAcJGTMJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADuT4Go=";
 		/*
 		byte[] bytes = ByteUtil.long2byte(325500181l, 4);
 		System.out.println(ByteUtil.getHexString(bytes));*/
-		for(int i = 0; i< 1000; i++){
-			getPosRecord(2);
+		/*getPosRecord(2);
+		
+		String ttypeStr = "1000";
+		ttypeStr = ttypeStr.substring(ttypeStr.length()-4, ttypeStr.length());
+		System.out.println(ttypeStr);*/
+		String str = "97# 清洁汽油@97#";
+		String[] gns = str.split("@");
+		if(gns.length == 2) {
+			System.out.println(gns[1]);
+		}else {
+			System.out.println(str);
 		}
-		
-		
 	}
 	
 	
 	
 	
-	public static void main1(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception {
 		System.out.println("************网点:"+stncode+"加油机:"+deviceid+"签到开始*************");
 		String result = signIn(stncode,deviceid);
 		JSONObject signResult = JSONObject.parseObject(result);
@@ -300,10 +307,11 @@ public class HttpTest01 {
 					httpConn.setReadTimeout(15000);
 					httpConn.setRequestProperty("Content-Type", "application/octet-stream");
 					JSONObject pa1 = new JSONObject();
-					pa1.put("deviceid", "325500181");
-					pa1.put("stncode", "32550018");
+					pa1.put("deviceid", "105015011");
+					pa1.put("stncode", "10501501");
 					String transdata = "AAAByhAgGAYGEzciAQAEERAAABRIce5rKAAAAAAAAWH2KGMAAAAAAAAAAAEAEBEQAABQlYcTEQBQlYcAAAAZABAAEQIQUgAAAAMVCAADpi4AAAAAAAAAAAAAAL/zqCg=";
 					pa1.put("transdata", transdata);
+					pa1.put("screencode", "1");
 					JSONObject pa2 = new JSONObject();
 					pa2.put("serviceCode", "com.pcitc.oilmachine.service.mobile.UserAuthenticationService");
 					pa2.put("tenantId", "f652e66ac0714627aa66c58471455680");

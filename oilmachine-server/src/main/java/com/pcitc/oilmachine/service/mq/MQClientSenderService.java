@@ -9,6 +9,8 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -58,6 +60,8 @@ public class MQClientSenderService{
 	private MqSendExceptionService mqSendExceptionService;
 	
 	private ExecutorService executor;
+	
+	private static Logger log = LogManager.getLogger(MQClientSenderService.class.getName());
 
 	@PostConstruct
 	public void init() {
@@ -160,6 +164,7 @@ public class MQClientSenderService{
 			channel.close();
 			connection.close(); 
         } catch (Exception e) {
+        	log.error(JSONObject.toJSONString(loginfo)+"==========================");
         	e.printStackTrace();
         }
 	}
@@ -173,11 +178,11 @@ public class MQClientSenderService{
 			factory.setPort(Integer.parseInt(portordercenter));
 			factory.setUsername(usernameordercenter);
 			factory.setPassword(passwordordercenter);
-			String queueName="oiltrade";
+			String queueName="orderinfo_oil";
 			Connection connection = factory.newConnection();
 			Channel channel = connection.createChannel();
 			channel.queueDeclare(queueName, true, false, false, null);
-			channel.basicPublish(queueName, "sanyingOilTrade", null, JSONObject.toJSONBytes(jop));
+			channel.basicPublish(queueName, "orderinfo_oil", null, JSONObject.toJSONBytes(jop));
 			channel.close();
 			connection.close();
 		} catch (Exception e) {

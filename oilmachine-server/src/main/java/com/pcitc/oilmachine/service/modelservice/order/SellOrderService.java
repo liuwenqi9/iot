@@ -11,6 +11,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.afs.base.util.MySpringContextUtil;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.pcitc.oilmachine.commons.constant.Constant;
 import com.pcitc.oilmachine.commons.exception.PTPECAppException;
 import com.pcitc.oilmachine.commons.utils.BeanUtil;
@@ -19,6 +21,7 @@ import com.pcitc.oilmachine.dao.SellOrderMapper;
 import com.pcitc.oilmachine.dao.relationdao.RelationMapper;
 import com.pcitc.oilmachine.form.UserInfo;
 import com.pcitc.oilmachine.model.Devices;
+import com.pcitc.oilmachine.model.PosRecord;
 import com.pcitc.oilmachine.model.SellDiscounts;
 import com.pcitc.oilmachine.model.SellOrder;
 import com.pcitc.oilmachine.model.SellOrderExample;
@@ -64,6 +67,47 @@ public class SellOrderService extends BaseService{
 			sellOrder.setSorts(Constant.DEFAULT_VALUE_LONG);
 			sellOrder.setCreator(userLoginInfo.getUserid());
 			sellOrder.setUpdateuser(userLoginInfo.getUserid());
+			sellOrder.setUpdatetime(new Date());
+			sellOrder.setCreatedate(new Date());
+			sellOrderMapper.insert(sellOrder);
+		} catch (Exception e) {
+			throw new PTPECAppException("保存订单信息异常："+e.getMessage(),e);
+		}
+		//调用预授权完成接口
+		return sellOrder;
+	}
+	
+	public SellOrder saveSellOrder(PosRecord posRecord,String payway,String paywayname,long ystotal,String paycardno) throws PTPECAppException {
+		SellOrder sellOrder  = null;
+		try {
+			sellOrder = new SellOrder();
+			sellOrder.setId(StringUtils.makeUUID());
+			sellOrder.setTenantid(posRecord.getTenantid());
+			sellOrder.setUserid(posRecord.getUserid());
+			String carnums = posRecord.getCarnums();
+			JSONArray cararr = JSONObject.parseArray(carnums);
+			if(cararr.size() == 1) {
+				JSONObject car = (JSONObject)cararr.get(0);
+				sellOrder.setCarnum(car.getString("carnum"));
+			}
+			
+			sellOrder.setStncode(posRecord.getStncode());
+			//sellOrder.setStnname(userLoginInfo.getStnname());
+			//获取预授申请单信息
+			sellOrder.setSaleno(posRecord.getSaleno());
+			sellOrder.setOpetime(new Date());
+			sellOrder.setDeviceid(posRecord.getDeviceconnid());
+			sellOrder.setNozzleno(String.valueOf(posRecord.getNzn()));
+			sellOrder.setYhtotal(0l);
+			sellOrder.setYstotal(ystotal);
+			sellOrder.setSstotal(ystotal);
+			sellOrder.setPaytypecode(payway);
+			sellOrder.setPaytypename(paywayname);
+			sellOrder.setAccountid(paycardno);
+			sellOrder.setStatus(Constant.DEFAULT_VALUE_BYTE);
+			sellOrder.setSorts(Constant.DEFAULT_VALUE_LONG);
+			sellOrder.setCreator("admin");
+			sellOrder.setUpdateuser("admin");
 			sellOrder.setUpdatetime(new Date());
 			sellOrder.setCreatedate(new Date());
 			sellOrderMapper.insert(sellOrder);

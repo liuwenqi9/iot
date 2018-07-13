@@ -6,7 +6,6 @@
     <result column="tenantid" property="tenantid" jdbcType="VARCHAR" />
     <result column="userid" property="userid" jdbcType="VARCHAR" />
     <result column="saleno" property="saleno" jdbcType="VARCHAR" />
-    <result column="stncode" property="stncode" jdbcType="VARCHAR" />
     <result column="deviceconnid" property="deviceconnid" jdbcType="VARCHAR" />
     <result column="posttc" property="posttc" jdbcType="BIGINT" />
     <result column="ttype" property="ttype" jdbcType="VARCHAR" />
@@ -27,21 +26,23 @@
     <result column="ver" property="ver" jdbcType="VARCHAR" />
     <result column="nzn" property="nzn" jdbcType="BIGINT" />
     <result column="gcode" property="gcode" jdbcType="VARCHAR" />
-    <result column="gname" property="gname" jdbcType="VARCHAR" />
     <result column="vol" property="vol" jdbcType="BIGINT" />
     <result column="prc" property="prc" jdbcType="BIGINT" />
     <result column="emp" property="emp" jdbcType="BIGINT" />
     <result column="vtot" property="vtot" jdbcType="BIGINT" />
     <result column="rfu" property="rfu" jdbcType="BIGINT" />
     <result column="tmac" property="tmac" jdbcType="BIGINT" />
-    <result column="orderstatus" property="orderstatus" jdbcType="TINYINT" />
     <result column="status" property="status" jdbcType="TINYINT" />
     <result column="sorts" property="sorts" jdbcType="BIGINT" />
     <result column="creator" property="creator" jdbcType="VARCHAR" />
     <result column="updateuser" property="updateuser" jdbcType="VARCHAR" />
     <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
     <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="stncode" property="stncode" jdbcType="VARCHAR" />
+    <result column="orderstatus" property="orderstatus" jdbcType="TINYINT" />
+    <result column="gname" property="gname" jdbcType="VARCHAR" />
     <result column="eightcode" property="eightcode" jdbcType="VARCHAR" />
+    <result column="carnums" property="carnums" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -102,10 +103,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, tenantid, userid, saleno, stncode, deviceconnid, posttc, ttype, time, asn, bal, 
-    amn, ctc, tac, gmac, psamtac, psamasn, psamtid, psamttc, ds, unit, ctype, ver, nzn, 
-    gcode, gname, vol, prc, emp, vtot, rfu, tmac, orderstatus, status, sorts, creator, 
-    updateuser, updatetime, createdate, eightcode
+    id, tenantid, userid, saleno, deviceconnid, posttc, ttype, time, asn, bal, amn, ctc, 
+    tac, gmac, psamtac, psamasn, psamtid, psamttc, ds, unit, ctype, ver, nzn, gcode, 
+    vol, prc, emp, vtot, rfu, tmac, status, sorts, creator, updateuser, updatetime, createdate, 
+    stncode, orderstatus, gname, eightcode, carnums
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pcitc.oilmachine.model.PosRecordExample" >
     select
@@ -139,29 +140,31 @@
   </delete>
   <insert id="insert" parameterType="com.pcitc.oilmachine.model.PosRecord" >
     insert into iot_posrecord (id, tenantid, userid, 
-      saleno, stncode, deviceconnid, 
-      posttc, ttype, time, 
-      asn, bal, amn, ctc, 
-      tac, gmac, psamtac, psamasn, 
-      psamtid, psamttc, ds, 
-      unit, ctype, ver, nzn, 
-      gcode, gname, vol, prc, 
-      emp, vtot, rfu, tmac, 
-      orderstatus, status, sorts, 
+      saleno, deviceconnid, posttc, 
+      ttype, time, asn, bal, 
+      amn, ctc, tac, gmac, 
+      psamtac, psamasn, psamtid, 
+      psamttc, ds, unit, ctype, 
+      ver, nzn, gcode, vol, 
+      prc, emp, vtot, rfu, 
+      tmac, status, sorts, 
       creator, updateuser, updatetime, 
-      createdate, eightcode)
+      createdate, stncode, orderstatus, 
+      gname, eightcode, carnums
+      )
     values (#{id,jdbcType=VARCHAR}, #{tenantid,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, 
-      #{saleno,jdbcType=VARCHAR}, #{stncode,jdbcType=VARCHAR}, #{deviceconnid,jdbcType=VARCHAR}, 
-      #{posttc,jdbcType=BIGINT}, #{ttype,jdbcType=VARCHAR}, #{time,jdbcType=BIGINT}, 
-      #{asn,jdbcType=BIGINT}, #{bal,jdbcType=BIGINT}, #{amn,jdbcType=BIGINT}, #{ctc,jdbcType=BIGINT}, 
-      #{tac,jdbcType=BIGINT}, #{gmac,jdbcType=BIGINT}, #{psamtac,jdbcType=BIGINT}, #{psamasn,jdbcType=VARCHAR}, 
-      #{psamtid,jdbcType=BIGINT}, #{psamttc,jdbcType=BIGINT}, #{ds,jdbcType=BIGINT}, 
-      #{unit,jdbcType=VARCHAR}, #{ctype,jdbcType=VARCHAR}, #{ver,jdbcType=VARCHAR}, #{nzn,jdbcType=BIGINT}, 
-      #{gcode,jdbcType=VARCHAR}, #{gname,jdbcType=VARCHAR}, #{vol,jdbcType=BIGINT}, #{prc,jdbcType=BIGINT}, 
-      #{emp,jdbcType=BIGINT}, #{vtot,jdbcType=BIGINT}, #{rfu,jdbcType=BIGINT}, #{tmac,jdbcType=BIGINT}, 
-      #{orderstatus,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{sorts,jdbcType=BIGINT}, 
+      #{saleno,jdbcType=VARCHAR}, #{deviceconnid,jdbcType=VARCHAR}, #{posttc,jdbcType=BIGINT}, 
+      #{ttype,jdbcType=VARCHAR}, #{time,jdbcType=BIGINT}, #{asn,jdbcType=BIGINT}, #{bal,jdbcType=BIGINT}, 
+      #{amn,jdbcType=BIGINT}, #{ctc,jdbcType=BIGINT}, #{tac,jdbcType=BIGINT}, #{gmac,jdbcType=BIGINT}, 
+      #{psamtac,jdbcType=BIGINT}, #{psamasn,jdbcType=VARCHAR}, #{psamtid,jdbcType=BIGINT}, 
+      #{psamttc,jdbcType=BIGINT}, #{ds,jdbcType=BIGINT}, #{unit,jdbcType=VARCHAR}, #{ctype,jdbcType=VARCHAR}, 
+      #{ver,jdbcType=VARCHAR}, #{nzn,jdbcType=BIGINT}, #{gcode,jdbcType=VARCHAR}, #{vol,jdbcType=BIGINT}, 
+      #{prc,jdbcType=BIGINT}, #{emp,jdbcType=BIGINT}, #{vtot,jdbcType=BIGINT}, #{rfu,jdbcType=BIGINT}, 
+      #{tmac,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, #{sorts,jdbcType=BIGINT}, 
       #{creator,jdbcType=VARCHAR}, #{updateuser,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, 
-      #{createdate,jdbcType=TIMESTAMP}, #{eightcode,jdbcType=VARCHAR})
+      #{createdate,jdbcType=TIMESTAMP}, #{stncode,jdbcType=VARCHAR}, #{orderstatus,jdbcType=TINYINT}, 
+      #{gname,jdbcType=VARCHAR}, #{eightcode,jdbcType=VARCHAR}, #{carnums,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.pcitc.oilmachine.model.PosRecord" >
     insert into iot_posrecord
@@ -177,9 +180,6 @@
       </if>
       <if test="saleno != null" >
         saleno,
-      </if>
-      <if test="stncode != null" >
-        stncode,
       </if>
       <if test="deviceconnid != null" >
         deviceconnid,
@@ -241,9 +241,6 @@
       <if test="gcode != null" >
         gcode,
       </if>
-      <if test="gname != null" >
-        gname,
-      </if>
       <if test="vol != null" >
         vol,
       </if>
@@ -261,9 +258,6 @@
       </if>
       <if test="tmac != null" >
         tmac,
-      </if>
-      <if test="orderstatus != null" >
-        orderstatus,
       </if>
       <if test="status != null" >
         status,
@@ -283,8 +277,20 @@
       <if test="createdate != null" >
         createdate,
       </if>
+      <if test="stncode != null" >
+        stncode,
+      </if>
+      <if test="orderstatus != null" >
+        orderstatus,
+      </if>
+      <if test="gname != null" >
+        gname,
+      </if>
       <if test="eightcode != null" >
         eightcode,
+      </if>
+      <if test="carnums != null" >
+        carnums,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -299,9 +305,6 @@
       </if>
       <if test="saleno != null" >
         #{saleno,jdbcType=VARCHAR},
-      </if>
-      <if test="stncode != null" >
-        #{stncode,jdbcType=VARCHAR},
       </if>
       <if test="deviceconnid != null" >
         #{deviceconnid,jdbcType=VARCHAR},
@@ -363,9 +366,6 @@
       <if test="gcode != null" >
         #{gcode,jdbcType=VARCHAR},
       </if>
-      <if test="gname != null" >
-        #{gname,jdbcType=VARCHAR},
-      </if>
       <if test="vol != null" >
         #{vol,jdbcType=BIGINT},
       </if>
@@ -383,9 +383,6 @@
       </if>
       <if test="tmac != null" >
         #{tmac,jdbcType=BIGINT},
-      </if>
-      <if test="orderstatus != null" >
-        #{orderstatus,jdbcType=TINYINT},
       </if>
       <if test="status != null" >
         #{status,jdbcType=TINYINT},
@@ -405,8 +402,20 @@
       <if test="createdate != null" >
         #{createdate,jdbcType=TIMESTAMP},
       </if>
+      <if test="stncode != null" >
+        #{stncode,jdbcType=VARCHAR},
+      </if>
+      <if test="orderstatus != null" >
+        #{orderstatus,jdbcType=TINYINT},
+      </if>
+      <if test="gname != null" >
+        #{gname,jdbcType=VARCHAR},
+      </if>
       <if test="eightcode != null" >
         #{eightcode,jdbcType=VARCHAR},
+      </if>
+      <if test="carnums != null" >
+        #{carnums,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -430,9 +439,6 @@
       </if>
       <if test="record.saleno != null" >
         saleno = #{record.saleno,jdbcType=VARCHAR},
-      </if>
-      <if test="record.stncode != null" >
-        stncode = #{record.stncode,jdbcType=VARCHAR},
       </if>
       <if test="record.deviceconnid != null" >
         deviceconnid = #{record.deviceconnid,jdbcType=VARCHAR},
@@ -494,9 +500,6 @@
       <if test="record.gcode != null" >
         gcode = #{record.gcode,jdbcType=VARCHAR},
       </if>
-      <if test="record.gname != null" >
-        gname = #{record.gname,jdbcType=VARCHAR},
-      </if>
       <if test="record.vol != null" >
         vol = #{record.vol,jdbcType=BIGINT},
       </if>
@@ -514,9 +517,6 @@
       </if>
       <if test="record.tmac != null" >
         tmac = #{record.tmac,jdbcType=BIGINT},
-      </if>
-      <if test="record.orderstatus != null" >
-        orderstatus = #{record.orderstatus,jdbcType=TINYINT},
       </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=TINYINT},
@@ -536,8 +536,20 @@
       <if test="record.createdate != null" >
         createdate = #{record.createdate,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.stncode != null" >
+        stncode = #{record.stncode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderstatus != null" >
+        orderstatus = #{record.orderstatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.gname != null" >
+        gname = #{record.gname,jdbcType=VARCHAR},
+      </if>
       <if test="record.eightcode != null" >
         eightcode = #{record.eightcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carnums != null" >
+        carnums = #{record.carnums,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -550,7 +562,6 @@
       tenantid = #{record.tenantid,jdbcType=VARCHAR},
       userid = #{record.userid,jdbcType=VARCHAR},
       saleno = #{record.saleno,jdbcType=VARCHAR},
-      stncode = #{record.stncode,jdbcType=VARCHAR},
       deviceconnid = #{record.deviceconnid,jdbcType=VARCHAR},
       posttc = #{record.posttc,jdbcType=BIGINT},
       ttype = #{record.ttype,jdbcType=VARCHAR},
@@ -571,21 +582,23 @@
       ver = #{record.ver,jdbcType=VARCHAR},
       nzn = #{record.nzn,jdbcType=BIGINT},
       gcode = #{record.gcode,jdbcType=VARCHAR},
-      gname = #{record.gname,jdbcType=VARCHAR},
       vol = #{record.vol,jdbcType=BIGINT},
       prc = #{record.prc,jdbcType=BIGINT},
       emp = #{record.emp,jdbcType=BIGINT},
       vtot = #{record.vtot,jdbcType=BIGINT},
       rfu = #{record.rfu,jdbcType=BIGINT},
       tmac = #{record.tmac,jdbcType=BIGINT},
-      orderstatus = #{record.orderstatus,jdbcType=TINYINT},
       status = #{record.status,jdbcType=TINYINT},
       sorts = #{record.sorts,jdbcType=BIGINT},
       creator = #{record.creator,jdbcType=VARCHAR},
       updateuser = #{record.updateuser,jdbcType=VARCHAR},
       updatetime = #{record.updatetime,jdbcType=TIMESTAMP},
       createdate = #{record.createdate,jdbcType=TIMESTAMP},
-      eightcode = #{record.eightcode,jdbcType=VARCHAR}
+      stncode = #{record.stncode,jdbcType=VARCHAR},
+      orderstatus = #{record.orderstatus,jdbcType=TINYINT},
+      gname = #{record.gname,jdbcType=VARCHAR},
+      eightcode = #{record.eightcode,jdbcType=VARCHAR},
+      carnums = #{record.carnums,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -601,9 +614,6 @@
       </if>
       <if test="saleno != null" >
         saleno = #{saleno,jdbcType=VARCHAR},
-      </if>
-      <if test="stncode != null" >
-        stncode = #{stncode,jdbcType=VARCHAR},
       </if>
       <if test="deviceconnid != null" >
         deviceconnid = #{deviceconnid,jdbcType=VARCHAR},
@@ -665,9 +675,6 @@
       <if test="gcode != null" >
         gcode = #{gcode,jdbcType=VARCHAR},
       </if>
-      <if test="gname != null" >
-        gname = #{gname,jdbcType=VARCHAR},
-      </if>
       <if test="vol != null" >
         vol = #{vol,jdbcType=BIGINT},
       </if>
@@ -685,9 +692,6 @@
       </if>
       <if test="tmac != null" >
         tmac = #{tmac,jdbcType=BIGINT},
-      </if>
-      <if test="orderstatus != null" >
-        orderstatus = #{orderstatus,jdbcType=TINYINT},
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=TINYINT},
@@ -707,8 +711,20 @@
       <if test="createdate != null" >
         createdate = #{createdate,jdbcType=TIMESTAMP},
       </if>
+      <if test="stncode != null" >
+        stncode = #{stncode,jdbcType=VARCHAR},
+      </if>
+      <if test="orderstatus != null" >
+        orderstatus = #{orderstatus,jdbcType=TINYINT},
+      </if>
+      <if test="gname != null" >
+        gname = #{gname,jdbcType=VARCHAR},
+      </if>
       <if test="eightcode != null" >
         eightcode = #{eightcode,jdbcType=VARCHAR},
+      </if>
+      <if test="carnums != null" >
+        carnums = #{carnums,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=VARCHAR}
@@ -718,7 +734,6 @@
     set tenantid = #{tenantid,jdbcType=VARCHAR},
       userid = #{userid,jdbcType=VARCHAR},
       saleno = #{saleno,jdbcType=VARCHAR},
-      stncode = #{stncode,jdbcType=VARCHAR},
       deviceconnid = #{deviceconnid,jdbcType=VARCHAR},
       posttc = #{posttc,jdbcType=BIGINT},
       ttype = #{ttype,jdbcType=VARCHAR},
@@ -739,21 +754,23 @@
       ver = #{ver,jdbcType=VARCHAR},
       nzn = #{nzn,jdbcType=BIGINT},
       gcode = #{gcode,jdbcType=VARCHAR},
-      gname = #{gname,jdbcType=VARCHAR},
       vol = #{vol,jdbcType=BIGINT},
       prc = #{prc,jdbcType=BIGINT},
       emp = #{emp,jdbcType=BIGINT},
       vtot = #{vtot,jdbcType=BIGINT},
       rfu = #{rfu,jdbcType=BIGINT},
       tmac = #{tmac,jdbcType=BIGINT},
-      orderstatus = #{orderstatus,jdbcType=TINYINT},
       status = #{status,jdbcType=TINYINT},
       sorts = #{sorts,jdbcType=BIGINT},
       creator = #{creator,jdbcType=VARCHAR},
       updateuser = #{updateuser,jdbcType=VARCHAR},
       updatetime = #{updatetime,jdbcType=TIMESTAMP},
       createdate = #{createdate,jdbcType=TIMESTAMP},
-      eightcode = #{eightcode,jdbcType=VARCHAR}
+      stncode = #{stncode,jdbcType=VARCHAR},
+      orderstatus = #{orderstatus,jdbcType=TINYINT},
+      gname = #{gname,jdbcType=VARCHAR},
+      eightcode = #{eightcode,jdbcType=VARCHAR},
+      carnums = #{carnums,jdbcType=VARCHAR}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

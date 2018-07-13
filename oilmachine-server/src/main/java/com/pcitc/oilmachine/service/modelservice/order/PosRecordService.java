@@ -49,16 +49,44 @@ public class PosRecordService {
 	
 	public List<PosRecord> getPosRecord(String tenantid, String stncode,
 			String deviceidconnid, Long nozzleno) throws PTPECAppException{
-		PosRecordExample pre = new PosRecordExample();
-		Criteria createCriteria =  pre.createCriteria();
-		createCriteria.andTenantidEqualTo(tenantid).andStncodeEqualTo(stncode).andOrderstatusEqualTo((byte)1);
-		if(StringUtils.isNotBlank(deviceidconnid)){
-			createCriteria.andDeviceconnidEqualTo(deviceidconnid);
+		try{
+			PosRecordExample pre = new PosRecordExample();
+			Criteria createCriteria =  pre.createCriteria();
+			createCriteria.andTenantidEqualTo(tenantid).andStncodeEqualTo(stncode).andOrderstatusEqualTo((byte)1).andSalenoNotEqualTo("0");
+			if(StringUtils.isNotBlank(deviceidconnid)){
+				createCriteria.andDeviceconnidEqualTo(deviceidconnid);
+			}
+			if(nozzleno != null){
+				createCriteria.andNznEqualTo(nozzleno);
+			}
+			return posRecordMapper.selectByExample(pre);
+		}catch(Exception e){
+			throw new PTPECAppException("获取加油机成交记录信息异常："+e.getMessage(),e);
 		}
-		if(nozzleno != null){
-			createCriteria.andNznEqualTo(nozzleno);
+		
+	}
+	
+	public List<PosRecord> getPosRecord(String tenantid,String saleno) throws PTPECAppException{
+		try{
+			PosRecordExample pre = new PosRecordExample();
+			Criteria createCriteria =  pre.createCriteria();
+			createCriteria.andTenantidEqualTo(tenantid).andSalenoEqualTo(saleno).andOrderstatusEqualTo((byte)1).andSalenoNotEqualTo("0");
+			return posRecordMapper.selectByExample(pre);
+		}catch(Exception e){
+			throw new PTPECAppException("获取加油机成交记录信息异常："+e.getMessage(),e);
 		}
-		return posRecordMapper.selectByExample(pre);
+		
+	}
+	
+	public PosRecord updatePosRecord(PosRecord posRecord,String username)  throws PTPECAppException{
+		try {
+			posRecord.setUpdatetime(new Date());
+			posRecord.setUpdateuser(username);
+			posRecordMapper.updateByPrimaryKey(posRecord);
+		}catch(Exception e) {
+			throw new PTPECAppException("更新加油机成交记录信息异常："+e.getMessage(),e);
+		}
+		return posRecord;
 	}
 
 }

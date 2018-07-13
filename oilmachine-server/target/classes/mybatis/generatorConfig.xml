@@ -58,9 +58,10 @@
 		<table tableName="iot_sellOrder" domainObjectName="SellOrder"/>
 		<table tableName="iot_userlogininfo" domainObjectName="UserLoginfo"/> 
 		
-		<table tableName="iot_nozzlestatus" domainObjectName="NozzleStatus"/>
+		
 		<table tableName="iot_devicefault" domainObjectName="DeviceFault"/>-->
 		<table tableName="iot_posrecord" domainObjectName="PosRecord"/>
+		<table tableName="iot_nozzlestatus" domainObjectName="NozzleStatus"/>
 		
 		 
 		

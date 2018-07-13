@@ -98,7 +98,7 @@ public class UserAuthenticationService{
 			}
 			result.setFunName(funName);
 		}catch (Exception e) {
-			commonService.saveUserAuthenticationError(funName,null, null, StringUtils.getErrorInfoFromException(e));
+			commonService.saveLog(Constant.logmodule_userlog,Constant.logtype_error,funName,null, null, StringUtils.getErrorInfoFromException(e));
 			result.setFunName(funName);
 			String resultMsg = e.getMessage();
 			if(StringUtils.isBlank(resultMsg) || "NULL".equals(resultMsg.toUpperCase()) || !resultMsg.contains("*")){
@@ -395,7 +395,7 @@ public class UserAuthenticationService{
 				outer.put("litle", "0");//加油升数
 				gasstatus = "0";
 			}else{
-				SellOrder sellOrder = commonService.saveSaleOrder(userLoginInfo, devices, amount, liter,accountid,saleno,transdata);
+				SellOrder sellOrder = commonService.saveSaleOrder(userLoginInfo, devices,accountid,saleno,transdata);
 				outer.put("gasorderid", sellOrder.getSaleno());//加油流水ID
 				outer.put("paytotal", String.valueOf((double)sellOrder.getSstotal()/100));//实付款
 				outer.put("yhtotal", String.valueOf((double)sellOrder.getYhtotal()/100));//优惠金额
@@ -471,10 +471,11 @@ public class UserAuthenticationService{
 		try {
 			JSONObject jsondata = JSONObject.parseObject(data);
 			String transdata = jsondata.getString("transdata");
+			String screencode = jsondata.getString("screencode");
 			if(StringUtils.isBlank(transdata)){
 				throw new BusinessException("参数错误：transdata");
 			}
-			commonService.insertPosRecord(transdata,devices,null,null);
+			commonService.insertPosRecord(transdata,devices,null,null,screencode);
 			result.setCode(0);
 			result.setSuccess("SUCCESS");
 		} catch(JSONException e){

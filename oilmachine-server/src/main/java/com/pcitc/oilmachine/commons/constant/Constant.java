@@ -99,6 +99,9 @@ public class Constant {
 	public static final Integer logmodule_camera = 0;//0摄像头采集数据日志  1:用户认证日志  2:加油机采集数据日志..
 	public static final Integer logmodule_userlog = 1;
 	public static final Integer logmodule_oilm = 2;
+	public static final Integer logmodule_orderRelation = 3;
+	
+	public static final String TENANTID = "tenantid";
 	
 	
 	

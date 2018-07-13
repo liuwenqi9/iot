@@ -3,11 +3,13 @@ package com.pcitc.oilmachine.service.mobile;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.pcitc.oilmachine.commons.certificate.BusinessException;
 import com.pcitc.oilmachine.commons.constant.Constant;
+import com.pcitc.oilmachine.commons.constant.ResultConstant;
 import com.pcitc.oilmachine.commons.exception.PTPECAppException;
 import com.pcitc.oilmachine.commons.utils.StringUtils;
 import com.pcitc.oilmachine.form.MobileResultInfo;
@@ -29,14 +31,15 @@ public class OrderService {
 		MobileResultInfo result = new MobileResultInfo();
 		try {
 			if (StringUtils.isBlank(funName)) {
-				result.setError(Constant.MOBILE_FUN_ERROR);
+				result.setErrorcode(ResultConstant.ERROR_FUN);
 			}else if(funName.equals("getPosRecord")){
 				result = getPosRecord(data,ip);
 			}else if(funName.equals("getSellOrder")){
 				result = getSellOrder(data,ip);
 			}
 		}catch (Exception e) {
-			
+			commonService.saveLog(Constant.logmodule_orderRelation,Constant.logtype_error,funName,null, null, StringUtils.getErrorInfoFromException(e));
+			result.setErrorcode(ResultConstant.ERROR_SYSTEM);
 		}
 		return result;
 	}
@@ -72,7 +75,7 @@ public class OrderService {
 			result.setCode(0);
 			result.setSuccess(orderJson.toJSONString());
 		}catch(JSONException e){
-			result.setError("数据格式错误");
+			result.setErrorcode(ResultConstant.ERROR_PARAM_FORMAT);
 		}catch(BusinessException e){
 			result.setError(e.getMessage());
 		}
@@ -105,9 +108,10 @@ public class OrderService {
 			result.setCode(0);
 			result.setSuccess(orderJson.toJSONString());
 		}catch(JSONException e){
-			result.setError("数据格式错误");
+			result.setErrorcode(ResultConstant.ERROR_PARAM_FORMAT);
 		}catch(BusinessException e){
 			result.setError(e.getMessage());
+			result.setErrorcode(ResultConstant.ERROR_PARAMS);
 		}
 		return result;
 	}

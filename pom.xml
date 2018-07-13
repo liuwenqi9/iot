@@ -40,9 +40,9 @@
 		</pluginRepository>
 	</pluginRepositories>
 	<modules>
-		<!-- <module>oilmachine-server</module> -->
 		<module>oilmachine-api</module>
 		<module>oilmachine-webapp</module>
+		<module>oilmachine-server</module>
 	</modules>
 	<properties>
 		<!-- spring版本 -->

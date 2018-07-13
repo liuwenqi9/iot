@@ -14,8 +14,8 @@ public class MobileResultInfo {
 		 */
 		private int code = 1;
 		
-		private String funName;//方法名  为适应三盈app特殊要求
-		private String userid;//用户ID
+		private String funName;//方法名  适应三盈app特殊要求
+		private String userid;//用户ID   适应三盈app特殊要求
 		private String randomcode;
 		
 		/**

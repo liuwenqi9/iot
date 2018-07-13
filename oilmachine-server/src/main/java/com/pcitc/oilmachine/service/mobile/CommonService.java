@@ -593,7 +593,7 @@ public class CommonService extends BaseService{
 			try{
 				result = HttpKit.httpClientPost(url, JSON.toJSONString(object), false);
 			}catch(Exception e){
-				saveUserAuthenticationError("ntranpreAuthorizationWC","预授权完成异常", data.toJSONString(), StringUtils.getErrorInfoFromException(e));
+				saveLog(Constant.logmodule_userlog,Constant.logtype_error,"ntranpreAuthorizationWC","预授权完成异常", data.toJSONString(), StringUtils.getErrorInfoFromException(e));
 			}
 			// 校验签名解密数据
 			JSONObject rObject = JSON.parseObject(result);
@@ -602,7 +602,7 @@ public class CommonService extends BaseService{
 				// 解密数据
 				String code = rObject.getString("code");// 临时秘钥
 				if(!"0000".equals(code)){
-					saveUserAuthenticationError("ntranpreAuthorizationWC","预授权完成异常", data.toJSONString(), rObject.getString("msg"));
+					saveLog(Constant.logmodule_userlog,Constant.logtype_error,"ntranpreAuthorizationWC","预授权完成异常", data.toJSONString(), rObject.getString("msg"));
 				}
 			}
 	}
@@ -619,6 +619,42 @@ public class CommonService extends BaseService{
 		return preAuthorizationService.findPreAuthorization(devices.getTenantid(),userid,saleno);
 	}
 	
+	public String getTenantidByStncode(String stncode) {
+		return "f652e66ac0714627aa66c58471455680";
+	}
+	
+	public SellOrder saveSaleOrder(JSONObject messages) throws PTPECAppException {
+		String stdorgcode = messages.getString("stdorgcode");
+		String tenantid = getTenantidByStncode(stdorgcode);
+		String saleno = messages.getString("extbillno");
+		JSONArray orderPayDtos = messages.getJSONArray("orderPayDTOs");
+		SellOrder sellOrder = null;
+		if(orderPayDtos.size() == 1) {
+			JSONObject orderpay = (JSONObject)orderPayDtos.get(0);
+			String payWay = orderpay.getString("payway");
+			String paytype = orderpay.getString("paytype");
+			BigDecimal paytotal = orderpay.getBigDecimal("paytotal");
+			String paycardno = orderpay.getString("paycardno");
+			List<PosRecord> posRecords=posRecordService.getPosRecord(tenantid, saleno);
+			PosRecord posRecord = null;
+			if(posRecords.size() == 1){
+				posRecord = posRecords.get(0);
+				posRecord.setOrderstatus((byte)2);
+				posRecordService.updatePosRecord(posRecord, "ordercenter");
+			}else {
+				throw new PTPECAppException("订单号："+saleno+",不存在该笔订单或订单存在多条");
+			}
+			BigDecimal cm = new BigDecimal("100"); 
+			sellOrder = sellOrderService.saveSellOrder(posRecord, paytype, payWay, cm.multiply(paytotal).longValue(), paycardno);
+			SellDiscounts selldiscounts = new SellDiscounts();
+			selldiscounts.setDiscountsamount(0l);
+			sellProductService.saveSellProduct(posRecord,sellOrder,selldiscounts);
+		}else {
+			throw new PTPECAppException("订单号："+saleno+",没有支付信息");
+		}
+		return sellOrder;
+	}
+	
 	/**
 	 * 保存订单相关信息
 	 * @param userLoginInfo
@@ -629,12 +665,13 @@ public class CommonService extends BaseService{
 	 * @throws PTPECAppException 
 	 */
 	public SellOrder saveSaleOrder(UserLoginfo userLoginInfo,
-			Devices devices, String amount, String liter,String accountid,String saleno,String transdata) throws PTPECAppException{
+			Devices devices,String accountid,String saleno,String transdata) throws PTPECAppException{
 		//0:获取优惠信息
 		//1：生成加油流水
 		SellOrder sellOrder = sellOrderService.querySellOrder(devices.getTenantid(),userLoginInfo.getUserid(),accountid,saleno);
 		if(sellOrder == null){
-			Long total = StringUtils.multiplication(amount, "100");
+			PosRecord posRecord = insertPosRecord(transdata, devices,userLoginInfo.getUserid(),saleno,userLoginInfo.getAreacode());
+			Long total = posRecord.getAmn();
 			//生成优惠信息
 			boolean hasdiscounts = true;
 			long discountsamount = 0;
@@ -664,11 +701,10 @@ public class CommonService extends BaseService{
 				selldiscounts = sellDiscountsService.saveSelDiscounts(selldiscounts,userLoginInfo);
 			}
 			sellOrder = sellOrderService.saveSellOrder(userLoginInfo,devices,total,saleno,selldiscounts);
-			insertPosRecord(transdata, devices,userLoginInfo.getUserid(),sellOrder.getSaleno());
 			//预授权完成
 			ntranpreAuthorizationWC(userLoginInfo.getUserid(), accountid, saleno, devices,sellOrder.getSstotal());
 			//2:生成订单商品数据
-			sellProductService.saveSellProduct(userLoginInfo,sellOrder,liter,selldiscounts);
+			sellProductService.saveSellProduct(posRecord,sellOrder,selldiscounts);
 		}
 		//3:记录订单优惠信息
 		return sellOrder;
@@ -1324,7 +1360,7 @@ public class CommonService extends BaseService{
 				}
 				BoundHashOperations<String, String, String> cameraOpertions = stringRedisTemplate.boundHashOps(cameradevice.getTenantid()+cameradevice.getConnid());
 				String carnums = cameraOpertions.get("carnums");
-				System.out.println("oilconnid:"+oilconnid+":cameraid"+cameradevice.getConnid()+":carnumshasuser"+carnums);
+				log.info("oilconnid:"+oilconnid+":cameraid"+cameradevice.getConnid()+":carnumshasuser"+carnums);
 				if(StringUtils.isNotBlank(carnums)){
 					String[] carnumarr = carnums.split("&");
 					for(String carnum : carnumarr){
@@ -1393,7 +1429,7 @@ public class CommonService extends BaseService{
 	 * @return
 	 * @throws PTPECAppException 
 	 */
-	public List<Vehicle> getCurrentVehiclesHasnouser(String oilconnid) throws PTPECAppException{
+	public List<Vehicle> getCurrentVehiclesHasnouser(String oilconnid,String screencode) throws PTPECAppException{
 		List<Vehicle> vehicles = new ArrayList<Vehicle>();
 		Devices oildevice = devicesService.findByConnid(oilconnid, Constant.OILMACH_CODE);
 		if(oildevice == null){
@@ -1420,7 +1456,7 @@ public class CommonService extends BaseService{
 				}
 				BoundHashOperations<String, String, String> cameraOpertions = stringRedisTemplate.boundHashOps(cameradevice.getTenantid()+cameradevice.getConnid());
 				String carnums = cameraOpertions.get("carnumsnouser");
-				System.out.println("oilconnid:"+oilconnid+":cameraid"+cameradevice.getConnid()+":carnumsnouser"+carnums);
+				log.info("oilconnid:"+oilconnid+":cameraid"+cameradevice.getConnid()+":carnumsnouser"+carnums);
 				if(StringUtils.isNotBlank(carnums)){
 					String[] carnumarr = carnums.split("&");
 					for(String carnum : carnumarr){
@@ -1454,8 +1490,17 @@ public class CommonService extends BaseService{
 									Vehicle vehicle = new Vehicle();
 									vehicle.setCarnum(carnumcache);
 									String showcode = carnumShowOnScreen(String.valueOf(areacode));
-									vehicle.setAreacode(String.valueOf(showcode));
-									vehicles.add(vehicle);
+									if(StringUtils.isNotBlank(screencode)){//如果有操作位号，则只获取当前操作位号对应的车辆信息，如果没有操作位号，则获取与当前油机绑定的所有车辆信息
+										String showcodetemp = carnumShowOnScreen(screencode);
+										if(showcode.equals(showcodetemp)){
+											vehicle.setAreacode(String.valueOf(showcode));
+											vehicles.add(vehicle);
+										}
+									}else{
+										vehicle.setAreacode(String.valueOf(showcode));
+										vehicles.add(vehicle);
+									}
+									
 								}
 							}
 						}
@@ -1473,7 +1518,7 @@ public class CommonService extends BaseService{
 	 * @return
 	 * @throws PTPECAppException 
 	 */
-	public PosRecord insertPosRecord(String transdata,Devices devices,String userid,String saleno) throws PTPECAppException{
+	public PosRecord insertPosRecord(String transdata,Devices devices,String userid,String saleno,String screencode) throws PTPECAppException{
 		PosRecord posRecord = new PosRecord();
 		posRecord.setTenantid(devices.getTenantid());
 		if(StringUtils.isBlank(userid)){
@@ -1487,8 +1532,7 @@ public class CommonService extends BaseService{
 		posRecord.setDeviceconnid(devices.getConnid());
 		posRecord.setStncode(devices.getNodecode());
 		posRecord.setUserid(userid);
-		posRecord.setSaleno(saleno);
-		posRecord.setOrderstatus((byte)1);
+		
 		//解析成交记录
 		byte[] posrecordbyte  = Base64.decode(transdata);
 		byte[] posttc = new byte[4];
@@ -1597,35 +1641,62 @@ public class CommonService extends BaseService{
 		byte[] tmac = new byte[4];
 		System.arraycopy(posrecordbyte, 91, tmac, 0, 4);
 		posRecord.setTmac(ByteUtil.getLongBy4BytesR(tmac));
-		if(StringUtils.isBlank(saleno)){
-			saleno = getSaleno(devices.getConnid(), String.valueOf(posRecord.getNzn()), posRecord.getGcode());
-		}
-		posRecord.setSaleno(saleno);
+		
 		//根据油机油品编码获取石化8位标准编码
 		DictionaryData dd = getDataByDoubleCode(DictionaryEnum.CODE2EIGHTCODE, bingcodestr, "f652e66ac0714627aa66c58471455680");
-		posRecord.setGname(dd.getItemName());
-		posRecord.setEightcode(dd.getItemValue());
-		posRecord = posRecordService.insertPosRecord(posRecord);
-		String ttypeStr = posRecord.getTtype();
-		ttypeStr = ttypeStr.substring(ttypeStr.length()-4, ttypeStr.length());
-		if("0000".equals(ttypeStr)){
-			String asnStr = String.valueOf(posRecord.getAsn());
-			String cartype = asnStr.substring(3, 5);
-			if("04".equals(cartype) || "0".equals(userid)){
-				//同步成交记录至室内大屏
-				List<Vehicle> vehicles = getCurrentVehiclesHasnouser(devices.getConnid());
-				Vehicle ve = new Vehicle();
-				ve.setCarnum("京A12345");
-				ve.setAreacode("1100");
-				vehicles.add(ve);
-				JSONObject temp = new JSONObject();
-				temp.put("posRecord", posRecord);
-				temp.put("vehicles", vehicles);
-				System.out.println(temp.toJSONString());
-				mqSenderService.ntranSendPosrecord(temp);
+		if(dd != null){
+			String gname = dd.getItemName();
+			if(StringUtils.isNotBlank(gname)){
+				String[] gns = gname.split("@");
+				if(gns.length == 2) {
+					posRecord.setGname(gns[1]);
+				}else {
+					posRecord.setGname(gname);
+				}
 			}
+			
+			posRecord.setEightcode(dd.getItemValue());
 		}
-		
+		String ttypeStr = posRecord.getTtype();
+		try{
+			ttypeStr = ttypeStr.substring(ttypeStr.length()-4, ttypeStr.length());
+			if("0000".equals(ttypeStr)){
+				posRecord.setOrderstatus((byte)1);
+				if(StringUtils.isBlank(saleno)){
+					saleno = getSaleno(devices.getConnid(), String.valueOf(posRecord.getNzn()), posRecord.getGcode());
+				}
+				posRecord.setSaleno(saleno);
+			}else{
+				posRecord.setOrderstatus((byte)0);
+				posRecord.setSaleno("0");
+			}
+		}catch(Exception e){
+			log.error(StringUtils.getErrorInfoFromException(e));
+		}
+		List<Vehicle> vehicles = getCurrentVehiclesHasnouser(devices.getConnid(),screencode);
+		/*Vehicle vehicle = new Vehicle();
+		vehicle.setCarnum("京A12345");
+		vehicle.setAreacode("1100");
+		vehicles.add(vehicle);*/
+		posRecord.setCarnums(JSONObject.toJSONString(vehicles));
+		posRecord = posRecordService.insertPosRecord(posRecord);
+		/*if("0000".equals(ttypeStr)){
+			String asnStr = String.valueOf(posRecord.getAsn());
+			String cartype = "";
+			try{
+				cartype = asnStr.substring(3, 5);
+				if("04".equals(cartype) || "0".equals(userid)){
+					//同步成交记录至室内大屏
+					JSONObject temp = new JSONObject();
+					temp.put("posRecord", posRecord);
+					temp.put("vehicles", vehicles);
+					mqSenderService.ntranSendPosrecord(temp);
+				}
+			}catch(Exception e){
+				log.error(StringUtils.getErrorInfoFromException(e));
+			}
+			
+		}*/
 		return posRecord;
 	}
 	
@@ -1635,10 +1706,10 @@ public class CommonService extends BaseService{
 	 * @param cameraid
 	 * @param carnum
 	 */
-	public void saveUserAuthenticationError(String methodname,String remark,String data,String msg){
+	public void saveLog(Integer logmodule,Integer logtype,String methodname,String remark,String data,String msg){
 		SystemLog loginfo = new SystemLog();
-		loginfo.setLogmodule(Constant.logmodule_userlog);
-		loginfo.setLogtype(Constant.logtype_error);
+		loginfo.setLogmodule(logmodule);
+		loginfo.setLogtype(logtype);
 		loginfo.setRemark(remark);
 		JSONObject logmsg = new JSONObject();
 		logmsg.put("methodname", methodname);
@@ -1784,22 +1855,13 @@ public class CommonService extends BaseService{
 			nozzlen = nozzleno.longValue();
 		}
 		List<PosRecord>  posRecords = posRecordService.getPosRecord(tenantid,stncode,deviceidconnid,nozzlen);
-		if(StringUtils.isNotBlank(deviceidconnid)){
-			List<Vehicle> vehicles = getCurrentVehiclesHasnouser(deviceidconnid);
-			for(PosRecord pr : posRecords){
-				JSONObject jbo = new JSONObject();
-				jbo.put("posRecord", pr);
-				jbo.put("vehicles", vehicles);
-				posrecordarr.add(jbo);
-			}
-		}else{
-			for(PosRecord pr : posRecords){
-				List<Vehicle> vehicles = getCurrentVehiclesHasnouser(pr.getDeviceconnid());
-				JSONObject jbo = new JSONObject();
-				jbo.put("posRecord", pr);
-				jbo.put("vehicles", vehicles);
-				posrecordarr.add(jbo);
-			}
+		for(PosRecord pr : posRecords){
+			JSONObject jbo = new JSONObject();
+			jbo.put("posRecord", pr);
+			String vehiclesStr = pr.getCarnums();
+			pr.setCarnums(null);
+			jbo.put("vehicles", JSONArray.parseArray(vehiclesStr));
+			posrecordarr.add(jbo);
 		}
 		return posrecordarr;
 	}

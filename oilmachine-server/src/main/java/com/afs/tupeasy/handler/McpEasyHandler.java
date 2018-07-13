@@ -15,8 +15,8 @@
  */
 package com.afs.tupeasy.handler;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
@@ -32,7 +32,7 @@ import com.afs.tupeasy.message.AbstractMcpEasyMessage;
  */
 @Sharable
 public class McpEasyHandler extends SimpleChannelInboundHandler<AbstractMcpEasyMessage> {
-	private static Logger log = LoggerFactory.getLogger(McpEasyHandler.class);
+	private static Logger log = LogManager.getLogger(McpEasyHandler.class.getName());
     private NettyReceiveMessageService receiveMessageService = new NettyReceiveMessageServiceImpl();
     public McpEasyHandler(){
     	

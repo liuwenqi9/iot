@@ -577,7 +577,7 @@ public class DevicesService extends BaseService {
 	 * @throws Exception 
 	 */
 	public List<Vehicle> getCurrentVehicle(String tenatid,String stncode, String connid) throws Exception{
-		List<Vehicle> hasnouser = commonService.getCurrentVehiclesHasnouser(connid);
+		List<Vehicle> hasnouser = commonService.getCurrentVehiclesHasnouser(connid,null);
 		List<Vehicle> hasuser = commonService.getCurrentVehicles(connid);
 		hasuser.addAll(hasnouser);
 		return hasuser;

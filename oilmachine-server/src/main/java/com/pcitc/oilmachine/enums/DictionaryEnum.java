@@ -40,6 +40,12 @@ public enum DictionaryEnum {
         public String toString() {
             return "business_param";//业务参数
         }
+    },
+    SYSPARAMSOUTER{
+        @Override
+        public String toString() {
+            return "sys_params_outer";//业务参数
+        }
     }
 	;
 }

@@ -57,7 +57,7 @@ public class OildeviceHertBeatHandler extends CommonMessageHandler {
 		List<Vehicle> vehiclesnoUser = new ArrayList<Vehicle>();
 		try {
 			vehicles = commonService.getCurrentVehicles(oilconnid);
-			vehiclesnoUser = commonService.getCurrentVehiclesHasnouser(oilconnid);
+			vehiclesnoUser = commonService.getCurrentVehiclesHasnouser(oilconnid,null);
 		} catch (PTPECAppException e) {
 			e.printStackTrace();
 		}

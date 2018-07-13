@@ -7,5 +7,6 @@ public class DownMessageReceiveService extends MessageReceiveService {
 		//String serverName = MyIPv4Util.getHostName();
 		//this.setQueueName(serverName);
 		super.run();
+		
 	}
 }
