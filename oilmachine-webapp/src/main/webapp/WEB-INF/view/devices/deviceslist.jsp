@@ -61,7 +61,13 @@
 			},
 			"targets" : 6,
 			"center" : "center"
-		}, {
+		},/*   {
+			"render" : function(data, type, row) {
+				return "<a class=\"green\" href=\"javascript:;\" onclick=\"addnozzle('"+row.connid  +"','"+ row.devicestypecode+"')\" ><i class=\"ace-icon fa fa-floppy-o bigger-130\"></i></a>";
+			},
+			"targets" : 7,
+			"center" : "center"
+		}, */{
 			"render" : function(data, type, row) {
 				return "<a class=\"green\" href=\"javascript:;\" onclick=\"seeVehivleInfo('"+row.connid+"','"+row.devicestypecode+"')\" ><i class=\"ace-icon fa fa-search bigger-130\"></i></a>";
 			},
@@ -237,6 +243,31 @@
 			});
 		}
 	}
+	
+	
+	//加油机油枪维护
+	function addnozzle(id,typecode){
+		if(typecode == "001"){//摄像头区域维护
+		//根据租户id.网点编码查询已维护的加油机数据
+			DevicesId = id;
+			openDialog({
+				type : 1,
+				title : "添加油枪",
+				shadeClose : false,
+				maxmin : true, //开启最大化最小化按钮
+				skin : 'layui-layer-rim',
+				area : [ '750px', '500px' ],
+				scrollbar : false,
+				content : "devices/nozzlePage.do",
+				viewid : "dialogPage",
+				btn : [ '确定'],
+				yes : function(index) {
+					layer.close(index);
+				}
+			});
+		
+		}
+	}
 	//查看当前车辆信息
 	function seeVehivleInfo(connid,devicestypecode){
 		Connid = connid;
@@ -283,6 +314,7 @@
 						<th class="center" width="8%">设备类型编码</th>
 						<th class="center" width="10%">设备类型名称</th>
 						<th class="center" width="8%">区域维护</th>
+						<!-- <th class="center" width="8%">油枪维护</th> -->
 						<th class="center" width="8%">当前车辆</th>
 						<th class="center" width="8%">操作</th>
 					</tr>
