@@ -187,7 +187,7 @@ public class UserAuthenticationService{
 			}
 			Vehicle vehicleTemp = null;
 			List<Vehicle> vehicles = commonService.getCurrentVehicles(devices.getConnid());
-			String selfhelp = "";
+			String selfhelp = "02";
 			if(vehicles.size()>0){
 				for(Vehicle vehicle : vehicles){
 					if(carNum.equals(vehicle.getCarnum())){

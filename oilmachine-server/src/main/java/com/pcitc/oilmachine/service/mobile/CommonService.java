@@ -391,7 +391,6 @@ public class CommonService extends BaseService{
 		data.put("deviceType", selfhelp);
 		data.put("deviceId", devices.getConnid());
 		data.put("attach", devices.getConnid());
-		
 		object.put("sysSource", Constant.sysSource);
 		object.put("ver", Constant.ver);
 		object.put("data", data.toJSONString());
@@ -623,29 +622,42 @@ public class CommonService extends BaseService{
 		return "f652e66ac0714627aa66c58471455680";
 	}
 	
+	public Map<String,String> getEaccountSysInfo(String tenantid){
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("syssource", "SYS_00096");
+		map.put("mchCode", "1523610482");
+		return map;
+	}
+	
 	public SellOrder saveSaleOrder(JSONObject messages) throws PTPECAppException {
-		String stdorgcode = messages.getString("stdorgcode");
-		String tenantid = getTenantidByStncode(stdorgcode);
+		String stdstncode = messages.getString("stdstncode");
 		String saleno = messages.getString("extbillno");
+		if(StringUtils.isBlank(saleno) || StringUtils.isBlank(stdstncode)) {
+			log.error("油品订单信息数据不全："+messages.toJSONString());
+			return null;
+		}
+		String tenantid  = getTenantidByStncode(stdstncode);
 		JSONArray orderPayDtos = messages.getJSONArray("orderPayDTOs");
 		SellOrder sellOrder = null;
 		if(orderPayDtos.size() == 1) {
 			JSONObject orderpay = (JSONObject)orderPayDtos.get(0);
 			String payWay = orderpay.getString("payway");
-			String paytype = orderpay.getString("paytype");
 			BigDecimal paytotal = orderpay.getBigDecimal("paytotal");
 			String paycardno = orderpay.getString("paycardno");
 			List<PosRecord> posRecords=posRecordService.getPosRecord(tenantid, saleno);
 			PosRecord posRecord = null;
 			if(posRecords.size() == 1){
 				posRecord = posRecords.get(0);
+				if(posRecord.getOrderstatus().intValue() == 2) {
+					return null;
+				}
 				posRecord.setOrderstatus((byte)2);
 				posRecordService.updatePosRecord(posRecord, "ordercenter");
 			}else {
 				throw new PTPECAppException("订单号："+saleno+",不存在该笔订单或订单存在多条");
 			}
 			BigDecimal cm = new BigDecimal("100"); 
-			sellOrder = sellOrderService.saveSellOrder(posRecord, paytype, payWay, cm.multiply(paytotal).longValue(), paycardno);
+			sellOrder = sellOrderService.saveSellOrder(posRecord, payWay, "微信", cm.multiply(paytotal).longValue(), paycardno);
 			SellDiscounts selldiscounts = new SellDiscounts();
 			selldiscounts.setDiscountsamount(0l);
 			sellProductService.saveSellProduct(posRecord,sellOrder,selldiscounts);
