@@ -158,7 +158,7 @@ public class CarMessageHandler extends CommonMessageHandler {
 							cameraOpertions.put("carnumsnouser", carnums);
 						}else{
 							//可认为是车辆首次进站
-							//commonService.sendMobilecode(carnum, userinfo.getMemcardnum(), userinfo.getMobilephone(), devices);
+							commonService.sendMobilecode(carnum, userinfo.getMemcardnum(), userinfo.getMobilephone(), devices);
 							hashOpertions.put("userid", userinfo.getUserid());
 							hashOpertions.put("username", userinfo.getUsername());
 							hashOpertions.put("accountid", String.valueOf(eaccountinfo.getAccountid()));
@@ -197,7 +197,7 @@ public class CarMessageHandler extends CommonMessageHandler {
 				log.info("摄像头："+carMessage.getCameraid()+",识别到的绑定会员的车牌号数据集合："+cameraOpertions.get("carnums"));
 			}
 		} catch (Exception e) {
-			commonService.saveDeviceConnectError(String.valueOf(carMessage.getCameraid()), null, JSONObject.toJSONString(carMessage));
+			commonService.saveDeviceConnectError(String.valueOf(carMessage.getCameraid()), JSONObject.toJSONString(carMessage),StringUtils.getErrorInfoFromException(e) );
 		}
 		return message;
 	}

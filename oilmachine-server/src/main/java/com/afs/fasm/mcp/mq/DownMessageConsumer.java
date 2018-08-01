@@ -13,6 +13,7 @@ import com.afs.tupeasy.session.SessionManager;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.pcitc.oilmachine.commons.constant.Constant;
+import com.pcitc.oilmachine.commons.utils.StringUtils;
 import com.pcitc.oilmachine.model.DeviceFault;
 import com.pcitc.oilmachine.model.Devices;
 import com.pcitc.oilmachine.model.NozzleStatus;
@@ -30,14 +31,15 @@ public class DownMessageConsumer implements MessageHandler {
 	 */
 	@Override
 	public boolean handleMessage(byte[] message, BasicProperties prop) {
+		CommonService commonService = (CommonService) MySpringContextUtil.getBean("commonService");
+		String messageContent = "";
 		try {
 			JSONObject messages = JSONObject.parseObject(new String(message,"utf-8"));
 			Integer messagetype = messages.getInteger("type");
 			String result = messages.getString("message");
 			JSONObject resultJson = JSONObject.parseObject(result);
-			CommonService commonService = (CommonService) MySpringContextUtil.getBean("commonService");
 			String oildeviceid = resultJson.getString("oildeviceid");
-			String messageContent = resultJson.getString("messageContent");
+			messageContent = resultJson.getString("messageContent");
 			Devices devices = oildeviceMap.get(oildeviceid);
 			if(devices == null){
 				devices = commonService.findDeviceByConnid(oildeviceid,Constant.OILMACH_CODE);
@@ -85,6 +87,7 @@ public class DownMessageConsumer implements MessageHandler {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			commonService.saveLog(Constant.logmodule_oilm, Constant.logtype_error, "DownMessageConsumer.handleMessage", "保存加油机故障码及油枪状态异常", messageContent, StringUtils.getErrorInfoFromException(e));
 		}
 		return true;
 	}

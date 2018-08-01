@@ -1372,7 +1372,7 @@ public class CommonService extends BaseService{
 				}
 				BoundHashOperations<String, String, String> cameraOpertions = stringRedisTemplate.boundHashOps(cameradevice.getTenantid()+cameradevice.getConnid());
 				String carnums = cameraOpertions.get("carnums");
-				log.info("oilconnid:"+oilconnid+":cameraid"+cameradevice.getConnid()+":carnumshasuser"+carnums);
+				//log.info("oilconnid:"+oilconnid+":cameraid"+cameradevice.getConnid()+":carnumshasuser"+carnums);
 				if(StringUtils.isNotBlank(carnums)){
 					String[] carnumarr = carnums.split("&");
 					for(String carnum : carnumarr){
@@ -1405,7 +1405,7 @@ public class CommonService extends BaseService{
 								long rightbottomx = da.getRightbottomx().multiply(cm).longValue();
 								long rightbottomy = da.getRightbottomy().multiply(cm).longValue();
 								boolean rate = InMatrix.inside(left, top, right, bottom, lefttopx, lefttopy, rightbottomx, rightbottomy);
-								log.info("oilconnid:"+oilconnid+":carnumshasuser:carnum"+carnum+":"+rate);
+								//log.info("oilconnid:"+oilconnid+":carnumshasuser:carnum"+carnum+":"+rate);
 								if(rate){
 									//获取当前车牌的所有用户信息
 									Vehicle vehicle = new Vehicle();
@@ -1468,7 +1468,7 @@ public class CommonService extends BaseService{
 				}
 				BoundHashOperations<String, String, String> cameraOpertions = stringRedisTemplate.boundHashOps(cameradevice.getTenantid()+cameradevice.getConnid());
 				String carnums = cameraOpertions.get("carnumsnouser");
-				log.info("oilconnid:"+oilconnid+":cameraid"+cameradevice.getConnid()+":carnumsnouser"+carnums);
+				//log.info("oilconnid:"+oilconnid+":cameraid"+cameradevice.getConnid()+":carnumsnouser"+carnums);
 				if(StringUtils.isNotBlank(carnums)){
 					String[] carnumarr = carnums.split("&");
 					for(String carnum : carnumarr){
@@ -1496,7 +1496,7 @@ public class CommonService extends BaseService{
 								long rightbottomx = da.getRightbottomx().multiply(cm).longValue();
 								long rightbottomy = da.getRightbottomy().multiply(cm).longValue();
 								boolean rate = InMatrix.inside(left, top, right, bottom, lefttopx, lefttopy, rightbottomx, rightbottomy);
-								log.info("oilconnid:"+oilconnid+":carnumsnouser:carnum"+carnum+":"+rate);
+								//log.info("oilconnid:"+oilconnid+":carnumsnouser:carnum"+carnum+":"+rate);
 								if(rate){
 									//获取当前车牌的所有用户信息
 									Vehicle vehicle = new Vehicle();
@@ -1673,19 +1673,33 @@ public class CommonService extends BaseService{
 		try{
 			ttypeStr = ttypeStr.substring(ttypeStr.length()-4, ttypeStr.length());
 			if("0000".equals(ttypeStr)){
-				posRecord.setOrderstatus((byte)1);
-				if(StringUtils.isBlank(saleno)){
-					saleno = getSaleno(devices.getConnid(), String.valueOf(posRecord.getNzn()), posRecord.getGcode());
+				String asnstr = String.valueOf(posRecord.getAsn());
+				if(asnstr.length() > 5) {
+					if("04".equals(asnstr.substring(3, 5))) {
+						posRecord.setOrderstatus((byte)1);
+						if(StringUtils.isBlank(saleno)){
+							saleno = getSaleno(devices.getConnid(), String.valueOf(posRecord.getNzn()), posRecord.getGcode());
+						}
+						posRecord.setSaleno(saleno);
+					}else {
+						posRecord.setOrderstatus((byte)0);//加油成交记录，非员工卡加油
+						posRecord.setSaleno("0");
+					}
+				}else {
+					posRecord.setOrderstatus((byte)-1);//加油的成交记录 但数据存在问题 如卡应用号长度不对
+					posRecord.setSaleno("0");
 				}
-				posRecord.setSaleno(saleno);
 			}else{
-				posRecord.setOrderstatus((byte)0);
+				posRecord.setOrderstatus((byte)-2);//非加油的成交记录
 				posRecord.setSaleno("0");
 			}
 		}catch(Exception e){
 			log.error(StringUtils.getErrorInfoFromException(e));
+			posRecord.setOrderstatus((byte)-3);//异常的成交记录
+			posRecord.setSaleno("0");
 		}
 		List<Vehicle> vehicles = getCurrentVehiclesHasnouser(devices.getConnid(),screencode);
+		//List<Vehicle> vehicles = new ArrayList<Vehicle>();
 		/*Vehicle vehicle = new Vehicle();
 		vehicle.setCarnum("京A12345");
 		vehicle.setAreacode("1100");
@@ -1817,7 +1831,7 @@ public class CommonService extends BaseService{
 		hashOpertions.put("nozzleno",String.valueOf(nozzleStatus.getNozzleno()));
 		hashOpertions.put("nozzlestatus", String.valueOf(nozzleStatus.getNozzlestatus()));
 		hashOpertions.put("vtot", String.valueOf(nozzleStatus.getVtot()));
-		log.info(JSONObject.toJSON(nozzleStatus)+"＝＝＝＝＝＝＝枪状态＝＝＝＝＝＝＝＝＝＝");
+		//log.info(JSONObject.toJSON(nozzleStatus)+"＝＝＝＝＝＝＝枪状态＝＝＝＝＝＝＝＝＝＝");
 	}
 	
 	public DeviceFault saveOrupdateDeviceFault(DeviceFault deviceFault,String username){

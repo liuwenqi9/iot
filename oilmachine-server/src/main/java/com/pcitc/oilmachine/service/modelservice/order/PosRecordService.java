@@ -34,6 +34,13 @@ public class PosRecordService {
 	 */
 	public PosRecord insertPosRecord(PosRecord posRecord) throws PTPECAppException{
 		try {
+			PosRecordExample pre = new PosRecordExample();
+			Criteria createCriteria =  pre.createCriteria();
+			createCriteria.andTenantidEqualTo(posRecord.getTenantid()).andStncodeEqualTo(posRecord.getStncode()).andOrderstatusEqualTo((byte)1).andPosttcEqualTo(posRecord.getPosttc()).andNznEqualTo(posRecord.getNzn());
+			List<PosRecord> prs = posRecordMapper.selectByExample(pre);
+			if(prs.size() >= 1) {
+				return prs.get(0);
+			}
 			posRecord.setId(StringUtils.makeUUID());
 			posRecord.setStatus(Constant.DEFAULT_VALUE_BYTE);
 			posRecord.setSorts(Constant.DEFAULT_VALUE_LONG);

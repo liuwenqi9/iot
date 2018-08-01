@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -38,7 +39,7 @@ public class HttpTest01 {
 	static String deviceid = "105015011";
 	static String stncode = "10501501";
 	
-	public static void main1(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException {
 		//getHexString
 		/*byte[] bytes = ByteUtil.str2Byte("京NZK281", "GB2312");
 		System.out.println(ByteUtil.getHexString(bytes));
@@ -54,19 +55,23 @@ public class HttpTest01 {
 		String ttypeStr = "1000";
 		ttypeStr = ttypeStr.substring(ttypeStr.length()-4, ttypeStr.length());
 		System.out.println(ttypeStr);*/
-		String str = "97# 清洁汽油@97#";
+		/*String str = "97# 清洁汽油@97#";
 		String[] gns = str.split("@");
 		if(gns.length == 2) {
 			System.out.println(gns[1]);
 		}else {
 			System.out.println(str);
-		}
+		}*/
+		/*String str = "10004";
+		System.out.println(str.substring(3, 5));*/
+		BigDecimal bvol = new BigDecimal("1").divide(new BigDecimal(100));
+		System.out.println(bvol.doubleValue());
 	}
 	
 	
 	
 	
-	public static void main(String[] args) throws Exception {
+	public static void main1(String[] args) throws Exception {
 		System.out.println("************网点:"+stncode+"加油机:"+deviceid+"签到开始*************");
 		String result = signIn(stncode,deviceid);
 		JSONObject signResult = JSONObject.parseObject(result);
