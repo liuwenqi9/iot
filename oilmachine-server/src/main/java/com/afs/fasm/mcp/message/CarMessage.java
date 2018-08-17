@@ -105,4 +105,20 @@ public class CarMessage extends FasmAbstractMessage {
 		return carsize;
 	}
 	
+	public void setMessageContent(String messageContent) {
+		this.messageContent = messageContent;
+	}
+
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	public void setCameraid(long cameraid) {
+		this.cameraid = cameraid;
+	}
+
+	public void setCarsize(long carsize) {
+		this.carsize = carsize;
+	}
+	
 }

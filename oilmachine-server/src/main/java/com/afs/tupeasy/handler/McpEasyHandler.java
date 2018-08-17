@@ -58,4 +58,10 @@ public class McpEasyHandler extends SimpleChannelInboundHandler<AbstractMcpEasyM
     	log.error(MyExceptionUtil.getStackTrace(cause));
         ctx.close();
     }
+    
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+    	log.info("McpEasyHandler remove:"+ctx.channel().id().asLongText());
+    	super.channelInactive(ctx);
+    }
 }

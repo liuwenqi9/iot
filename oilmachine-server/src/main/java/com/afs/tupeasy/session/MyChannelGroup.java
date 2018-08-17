@@ -2,17 +2,15 @@ package com.afs.tupeasy.session;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelId;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.EventExecutor;
 
 public class MyChannelGroup extends DefaultChannelGroup{
-	private static Logger log = LoggerFactory.getLogger(MyChannelGroup.class);
+	private static Logger log = LogManager.getLogger(MyChannelGroup.class.getName());
 	private static List<ChannelOffLineListenner> channelOffLineList = new ArrayList<ChannelOffLineListenner>();
 	
 	public MyChannelGroup(EventExecutor executor) {
@@ -21,9 +19,6 @@ public class MyChannelGroup extends DefaultChannelGroup{
 	
 	@Override
 	public boolean remove(Object o) {
-		
-		log.info("MyChannelGroup remove");
-		
 		String channelId = "";
         Channel c = null;
         if (o instanceof ChannelId) {
@@ -32,7 +27,7 @@ public class MyChannelGroup extends DefaultChannelGroup{
             c = (Channel) o;
             channelId = c.id().asLongText();
         }
-		
+        log.info("MyChannelGroup remove：" +channelId);
         String clientId = SessionManager.getClientIdByChannelId(channelId);
 		SessionManager.removeSession(clientId);
 		

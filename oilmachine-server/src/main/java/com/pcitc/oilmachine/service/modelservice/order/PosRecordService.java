@@ -58,6 +58,7 @@ public class PosRecordService {
 			String deviceidconnid, Long nozzleno) throws PTPECAppException{
 		try{
 			PosRecordExample pre = new PosRecordExample();
+			pre.setOrderByClause("createdate desc");
 			Criteria createCriteria =  pre.createCriteria();
 			createCriteria.andTenantidEqualTo(tenantid).andStncodeEqualTo(stncode).andOrderstatusEqualTo((byte)1).andSalenoNotEqualTo("0");
 			if(StringUtils.isNotBlank(deviceidconnid)){

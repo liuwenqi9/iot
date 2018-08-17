@@ -4,6 +4,7 @@
 	<!-- 数据库驱动包位置 -->
 	<classPathEntry location="C:\Users\zhzhi.zhang\.m2\repository\mysql\mysql-connector-java\5.1.30\mysql-connector-java-5.1.30.jar" />
 	<context id="MysqlTables" targetRuntime="MyBatis3">
+	    <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>
 		<commentGenerator>
 			<property name="suppressAllComments" value="true" />
 			<!-- 生成的Java文件的编码 -->

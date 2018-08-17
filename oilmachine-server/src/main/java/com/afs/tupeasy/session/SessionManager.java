@@ -1,6 +1,7 @@
 package com.afs.tupeasy.session;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,7 +28,6 @@ public class SessionManager {
 		sessions.put(clientId, session);
 		channelGroup.add(channel);
 		ChannelIdToClientIdList.put(channel.id().asLongText(), clientId);
-		
 		try{
 			for(SessionCreateListenner listenner:createListennerList){
 				listenner.onSessionCreate(session);

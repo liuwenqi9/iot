@@ -11,6 +11,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Resource;
 
@@ -24,9 +25,12 @@ import org.springframework.stereotype.Service;
 
 import com.pcitc.oilmachine.form.SystemLog;
 import com.afs.base.util.MySpringContextUtil;
+import com.afs.fasm.mcp.message.CarMessage;
 import com.afs.fasm.mcp.message.OildeviceCarMessage;
 import com.afs.tupeasy.base.NettySendMessageService;
 import com.afs.tupeasy.exception.CommunicationException;
+import com.afs.tupeasy.session.Session;
+import com.afs.tupeasy.session.SessionManager;
 import com.afs.tupeasy.util.IntStepGen;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -116,6 +120,7 @@ public class CommonService extends BaseService{
 	private NozzleStatusService nozzleStatusService;
 	
 	private static Logger log = LogManager.getLogger(CommonService.class.getName());
+	private static Map<Long,Devices> cameradevice = new ConcurrentHashMap<Long,Devices>();
 	
 	
 	/**
@@ -632,6 +637,7 @@ public class CommonService extends BaseService{
 	public SellOrder saveSaleOrder(JSONObject messages) throws PTPECAppException {
 		String stdstncode = messages.getString("stdstncode");
 		String saleno = messages.getString("extbillno");
+		String billno = messages.getString("billno");
 		if(StringUtils.isBlank(saleno) || StringUtils.isBlank(stdstncode)) {
 			log.error("油品订单信息数据不全："+messages.toJSONString());
 			return null;
@@ -639,31 +645,22 @@ public class CommonService extends BaseService{
 		String tenantid  = getTenantidByStncode(stdstncode);
 		JSONArray orderPayDtos = messages.getJSONArray("orderPayDTOs");
 		SellOrder sellOrder = null;
-		if(orderPayDtos.size() == 1) {
-			JSONObject orderpay = (JSONObject)orderPayDtos.get(0);
-			String payWay = orderpay.getString("payway");
-			BigDecimal paytotal = orderpay.getBigDecimal("paytotal");
-			String paycardno = orderpay.getString("paycardno");
-			List<PosRecord> posRecords=posRecordService.getPosRecord(tenantid, saleno);
-			PosRecord posRecord = null;
-			if(posRecords.size() == 1){
-				posRecord = posRecords.get(0);
-				if(posRecord.getOrderstatus().intValue() == 2) {
-					return null;
-				}
-				posRecord.setOrderstatus((byte)2);
-				posRecordService.updatePosRecord(posRecord, "ordercenter");
-			}else {
-				throw new PTPECAppException("订单号："+saleno+",不存在该笔订单或订单存在多条");
+		List<PosRecord> posRecords=posRecordService.getPosRecord(tenantid, saleno);
+		PosRecord posRecord = null;
+		if(posRecords.size() == 1){
+			posRecord = posRecords.get(0);
+			if(posRecord.getOrderstatus().intValue() == 2) {
+				return null;
 			}
-			BigDecimal cm = new BigDecimal("100"); 
-			sellOrder = sellOrderService.saveSellOrder(posRecord, payWay, "微信", cm.multiply(paytotal).longValue(), paycardno);
-			SellDiscounts selldiscounts = new SellDiscounts();
-			selldiscounts.setDiscountsamount(0l);
-			sellProductService.saveSellProduct(posRecord,sellOrder,selldiscounts);
+			posRecord.setOrderstatus((byte)2);
+			posRecordService.updatePosRecord(posRecord, "ordercenter");
 		}else {
-			throw new PTPECAppException("订单号："+saleno+",没有支付信息");
+			throw new PTPECAppException("订单号："+saleno+",不存在该笔订单或订单存在多条");
 		}
+		sellOrder = sellOrderService.saveSellOrder(posRecord, "3", "微信", posRecord.getAmn(), billno);
+		SellDiscounts selldiscounts = new SellDiscounts();
+		selldiscounts.setDiscountsamount(0l);
+		sellProductService.saveSellProduct(posRecord,sellOrder,selldiscounts);
 		return sellOrder;
 	}
 	
@@ -1033,7 +1030,8 @@ public class CommonService extends BaseService{
 			sendService.sendMessageNoWaitResponse(connid, msg);
 		} catch (Exception e) {
 			e.printStackTrace();
-			saveDeviceConnectError(String.valueOf(connid), JSONObject.toJSONString(vehicles),"当前油机的车牌数据未下发成功");
+			log.error("车牌数据下发失败："+StringUtils.getErrorInfoFromException(e));
+			saveDeviceConnectError(String.valueOf(connid), JSONObject.toJSONString(vehicles),StringUtils.getErrorInfoFromException(e));
 		}
 	}
 	
@@ -1837,6 +1835,146 @@ public class CommonService extends BaseService{
 	public DeviceFault saveOrupdateDeviceFault(DeviceFault deviceFault,String username){
 		return deviceFaultService.saveOrupdate(deviceFault, username);
 	}
+	
+	public void saveOrUpdateCameraCarnums(CarMessage carMessage) {
+		try {
+		String messagecontent = carMessage.getMessageContent();
+		JSONArray array = JSONObject.parseArray(messagecontent);
+		StringRedisTemplate stringRedisTemplate = (StringRedisTemplate) MySpringContextUtil.getBean("stringRedisTemplate");
+		Devices devices = cameradevice.get(carMessage.getCameraid());
+		if(devices == null){
+			devices = findDeviceByConnid(String.valueOf(carMessage.getCameraid()),Constant.CAMERA_CODE);
+			if(devices == null){
+				saveDeviceConnectError(String.valueOf(carMessage.getCameraid()), null,"当前设备没有备案导致车牌数据未存储");
+				Session camerasession = SessionManager.getSession(String.valueOf(carMessage.getCameraid()));
+				camerasession.setReceivedata(1);//设置拒绝接收该相机数据
+				return;
+			}
+			cameradevice.put(carMessage.getCameraid(), devices);
+		}
+		
+		for(Object object : array){
+			JSONObject json = (JSONObject)object;
+			String carnum = json.getString(VehicleEnum.CARNUM.toString());
+			long cameraid = json.getLongValue(VehicleEnum.CAMERAID.toString());
+			//2:解析收到的数据
+			if(StringUtils.isBlank(carnum)){
+				log.info("**************摄像头0:"+cameraid+"当前数据未解析到车牌号**************");
+				continue;
+			}
+			log.info("**************摄像头1:"+cameraid+"车牌号"+carnum+"**************");
+			int status = json.getInteger(VehicleEnum.CARSTATUS.toString());
+			int carcolor = json.getIntValue(VehicleEnum.CARCOLOR.toString());
+			int cartype = json.getIntValue(VehicleEnum.CARTYPE.toString());
+			long left = json.getLongValue(VehicleEnum.LEFT.toString());
+			long top = json.getLongValue(VehicleEnum.TOP.toString());
+			long right = json.getLongValue(VehicleEnum.RIGHT.toString());
+			long bottom = json.getLongValue(VehicleEnum.BOTTOM.toString());
+			BoundHashOperations<String, String, String> hashOpertions = stringRedisTemplate.boundHashOps(carnum);
+			//保存最新数据
+			hashOpertions.put(VehicleEnum.CARCOLOR.toString(), String.valueOf(carcolor));
+			hashOpertions.put(VehicleEnum.CARTYPE.toString(), String.valueOf(cartype));
+			hashOpertions.put(VehicleEnum.LEFT.toString(), String.valueOf(left));
+			hashOpertions.put(VehicleEnum.TOP.toString(), String.valueOf(top));
+			hashOpertions.put(VehicleEnum.RIGHT.toString(), String.valueOf(right));
+			hashOpertions.put(VehicleEnum.BOTTOM.toString(), String.valueOf(bottom));
+			hashOpertions.put(VehicleEnum.CARSTATUS.toString(), String.valueOf(status));
+			hashOpertions.put(VehicleEnum.CAMERAID.toString(), String.valueOf(cameraid));
+			hashOpertions.put(VehicleEnum.CARNUM.toString(), carnum);
+			//4:获取车牌存入缓存的有效期
+			DictionaryData dd = getDataByDoubleCode(DictionaryEnum.TIMEOUT, Constant.CAR_MOVE_HEART_TIMEOUT, "f652e66ac0714627aa66c58471455680");
+			Date expireDate = null;
+			if(dd != null){
+				expireDate = DateUtils.addTimeByMinutes(new Date(), Integer.parseInt(dd.getItemValue()));
+			}else{
+				expireDate = DateUtils.addTimeByMinutes(new Date(), Constant.CAR_MOVE_HEART_TIMEOUT_DE);
+			}
+			//设置失效时间
+			hashOpertions.expireAt(expireDate);
+			//
+			String userid = hashOpertions.get("userid");
+			BoundHashOperations<String, String, String> cameraOpertions = stringRedisTemplate.boundHashOps(devices.getTenantid()+devices.getConnid());
+			if(StringUtils.isNotBlank(userid) && "0".equals(userid)){//无会员 车牌数据,如果摄像头ID改变则绑到新的摄像头上，如果没有则不做处理
+				String carnums = cameraOpertions.get("carnumsnouser");
+				if(StringUtils.isNotBlank(carnums)){
+					if(!carnums.contains(carnum)){
+						carnums = carnums + "&"+carnum;
+					}
+				}else{
+					carnums = carnum;
+				}
+				cameraOpertions.put("carnumsnouser", carnums);
+			}else if(StringUtils.isNotBlank(userid) && !"0".equals(userid)){//绑定了会员的车牌数据
+				String carnums = cameraOpertions.get("carnums");
+				if(StringUtils.isNotBlank(carnums)){
+					if(!carnums.contains(carnum)){
+						carnums = carnums + "&"+carnum;
+					}
+				}else{
+					carnums = carnum;
+				}
+				cameraOpertions.put("carnums", carnums);
+			}else{//新识别到的车牌数据
+				List<UserInfo> userinfos = getUserinfo(devices.getTenantid(),null, null, null, null,carnum);
+				if(userinfos.size() == 1){////有会员 车牌数据
+					UserInfo userinfo = userinfos.get(0);
+					EaccountInfo eaccountinfo = getEwaccount(devices.getTenantid(),userinfo.getMemcardnum(),userinfo.getGasaccid());
+					if(eaccountinfo == null){
+						log.info("**************处理摄像头数据3:"+cameraid+"***车牌号:"+carnum+"未开通电子钱包**************");
+						hashOpertions.put("userid", "0");
+						String carnums = cameraOpertions.get("carnumsnouser");
+						if(StringUtils.isNotBlank(carnums)){
+							if(!carnums.contains(carnum)){
+								carnums = carnums + "&"+carnum;
+							}
+						}else{
+							carnums = carnum;
+						}
+						cameraOpertions.put("carnumsnouser", carnums);
+					}else{
+						//可认为是车辆首次进站
+						sendMobilecode(carnum, userinfo.getMemcardnum(), userinfo.getMobilephone(), devices);
+						hashOpertions.put("userid", userinfo.getUserid());
+						hashOpertions.put("username", userinfo.getUsername());
+						hashOpertions.put("accountid", String.valueOf(eaccountinfo.getAccountid()));
+						hashOpertions.put("amount", String.valueOf(eaccountinfo.getAmount()));
+						hashOpertions.put("useableamount", String.valueOf(eaccountinfo.getUseableamount()));
+						hashOpertions.put("needpassword", isneedPassWord(userinfo));
+						hashOpertions.put("pwtype", getPwtype(userinfo));
+						hashOpertions.put("oiltypecode", userinfo.getOiltypecode());//油品型号
+						//记录当前摄像头下都有哪些车牌
+						String carnums = cameraOpertions.get("carnums");
+						if(StringUtils.isNotBlank(carnums)){
+							if(!carnums.contains(carnum)){
+								carnums = carnums + "&"+carnum;
+							}
+						}else{
+							carnums = carnum;
+						}
+						cameraOpertions.put("carnums", carnums);
+						log.info("**************处理摄像头数据4:"+cameraid+"***车牌号:"+carnum+"已绑定会员并且首次进站**************");
+					}
+				}else{
+					hashOpertions.put("userid", "0");
+					String carnums = cameraOpertions.get("carnumsnouser");
+					if(StringUtils.isNotBlank(carnums)){
+						if(!carnums.contains(carnum)){
+							carnums = carnums + "&"+carnum;
+						}
+					}else{
+						carnums = carnum;
+					}
+					cameraOpertions.put("carnumsnouser", carnums);
+					log.info("**************处理摄像头数据2:"+cameraid+"***车牌号:"+carnum+"未绑定会员**************");
+				}
+			}
+			log.info("摄像头："+carMessage.getCameraid()+",识别到的未绑定会员的车牌号数据集合："+cameraOpertions.get("carnumsnouser"));
+			log.info("摄像头："+carMessage.getCameraid()+",识别到的绑定会员的车牌号数据集合："+cameraOpertions.get("carnums"));
+		}
+	} catch (Exception e) {
+		saveDeviceConnectError(String.valueOf(carMessage.getCameraid()), JSONObject.toJSONString(carMessage),StringUtils.getErrorInfoFromException(e) );
+	}
+	}
 
 	/**
 	 * 获取订单信息（已付款）
@@ -1875,6 +2013,19 @@ public class CommonService extends BaseService{
 	 */
 	public JSONArray getPosRecord(String tenantid, String stncode,
 			String deviceidconnid, Integer nozzleno) throws PTPECAppException {
+		JSONArray posrecordarr = null;
+		if("2c9144876472ec650164871ee0340eb6".equals(tenantid)) {
+			//湖南流水，通过查询直接获，
+			posrecordarr = getPosRecord_hn(tenantid, stncode, deviceidconnid, nozzleno);
+		}else {
+			posrecordarr = getPosRecord_bj(tenantid, stncode, deviceidconnid, nozzleno);
+		}
+		
+		return posrecordarr;
+	}
+	
+	public JSONArray getPosRecord_bj(String tenantid, String stncode,
+			String deviceidconnid, Integer nozzleno) throws PTPECAppException {
 		JSONArray posrecordarr = new JSONArray();
 		Long nozzlen = null;
 		if(nozzleno != null){
@@ -1890,5 +2041,10 @@ public class CommonService extends BaseService{
 			posrecordarr.add(jbo);
 		}
 		return posrecordarr;
+	}
+	
+	public JSONArray getPosRecord_hn(String tenantid, String stncode,
+			String deviceidconnid, Integer nozzleno) {
+		return null;
 	}
 }

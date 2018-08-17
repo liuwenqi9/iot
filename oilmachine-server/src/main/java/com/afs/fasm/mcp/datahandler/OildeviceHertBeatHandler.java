@@ -42,11 +42,7 @@ public class OildeviceHertBeatHandler extends CommonMessageHandler {
 			session.setDeviceTypeCode(Constant.OILMACH_CODE);
 			SessionManager.addSession(String.valueOf(odh.getOildeviceid()), session, ch);
 		}else{
-			if(session.getChannel() == null){
-				session.setChannel(ch);
-			}
-			if(session.getChannel() != ch){
-				session.getChannel().close();
+			if(session.getChannel() == null || !ch.id().asLongText().equals(session.getChannel().id().asLongText())){
 				session.setChannel(ch);
 			}
 		}

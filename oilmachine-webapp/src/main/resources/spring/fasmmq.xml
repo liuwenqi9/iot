@@ -16,15 +16,15 @@
 			<property name="username" value="admin" />
 			<property name="password" value="admin" />
 			<property name="port" value="5672" />-->
-			<!-- <property name="host" value="10.248.245.116" />
+			<property name="host" value="10.248.245.116" />
 			<property name="username" value="shouji" />
 			<property name="password" value="shouji" />
-			<property name="port" value="5672" />  -->
+			<property name="port" value="5672" />
 			
-			<property name="host" value="10.248.245.235" />
+			<!-- <property name="host" value="10.248.245.235" />
 			<property name="username" value="admin" />
 			<property name="password" value="Ecaremq123" />
-			<property name="port" value="5672" />
+			<property name="port" value="5672" /> -->
 		</bean>
 		
 		<!-- fasmSendToMQ发送者 -->
