@@ -2045,6 +2045,7 @@ public class CommonService extends BaseService{
 	
 	public JSONArray getPosRecord_hn(String tenantid, String stncode,
 			String deviceidconnid, Integer nozzleno) {
+		
 		return null;
 	}
 }

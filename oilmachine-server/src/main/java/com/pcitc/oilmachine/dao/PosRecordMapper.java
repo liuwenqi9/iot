@@ -4,6 +4,7 @@ import com.pcitc.oilmachine.model.PosRecord;
 import com.pcitc.oilmachine.model.PosRecordExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
 
 public interface PosRecordMapper {
     int countByExample(PosRecordExample example);
@@ -15,6 +16,8 @@ public interface PosRecordMapper {
     int insert(PosRecord record);
 
     int insertSelective(PosRecord record);
+
+    List<PosRecord> selectByExampleWithRowbounds(PosRecordExample example, RowBounds rowBounds);
 
     List<PosRecord> selectByExample(PosRecordExample example);
 

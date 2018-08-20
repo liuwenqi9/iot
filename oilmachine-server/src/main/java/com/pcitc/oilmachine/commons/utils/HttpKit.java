@@ -59,6 +59,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+import com.alibaba.fastjson.JSONObject;
+
 /**
  * https 请求 微信为https的请求
  */
@@ -449,12 +451,6 @@ public class HttpKit {
 		return sb.toString();
 	}
 
-	public static void main(String[] args) {
-		String fname = "dsasdas.mp4";
-		String s = fname.substring(0, fname.lastIndexOf("."));
-		String f = fname.substring(s.length() + 1);
-		System.out.println(f);
-	}
 
 	/**
 	 * 微信支付退款发送POST请求
@@ -642,6 +638,27 @@ public class HttpKit {
 			e.printStackTrace();
 		}
 		return sslsf;
+	}
+	
+	public static void main(String[] args) throws KeyManagementException, NoSuchAlgorithmException, NoSuchProviderException, IOException {
+		/*String url = "http://10.190.15.132:8080/hxws/zhy/oildetail/getOilDetail.do?stationcode=33200122&type=2&number=1&allGun=1&gunNo=012";
+    	String result = HttpKit.get(url,false);
+    	System.out.println(result);
+    	JSONObject json = new JSONObject();
+    	json.put("gunno", "006");
+    	json.put("stationcode", "33200122");
+    	json.put("oilno", "60076899");
+    	json.put("volumn", 27.56);
+    	json.put("amount", 169.22);
+    	json.put("ttc", 109733);
+    	json.put("deal_time", "2018-08-16 18:39:42");
+    	json.put("pay_time", "2018-08-16 18:39:42");
+    	json.put("usrname", "张三");
+    	System.out.println(json.toJSONString());*/
+		String access_token = "MTJfb09CODc3bmNTdU05Y2w1UTlOaTh4SUlxQjZFSzdDQ0tSRUxKVEs0VWRmR3JwcnRmWWljaldqMjdhcXJTMU9uS25scXN6VGtRem5TT2JVTnpMcnVONHVta0hoUjlLVGhVRnNxQ0NpOTF3WDdrZ0dGTXJFc2R0aHo5RE9IRGtvV29vY1U5OGJpMWUtYnZUUUlLR0tMZEFIRFRYWQ==";
+		byte[] ats = org.apache.commons.codec.binary.Base64.decodeBase64(access_token);
+		String atStr = new String(ats,"UTF-8");
+		System.out.println(atStr);
 	}
 
 }

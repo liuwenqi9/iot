@@ -13,6 +13,7 @@ import com.pcitc.oilmachine.model.PosRecord;
 import com.pcitc.oilmachine.model.PosRecordExample;
 import com.pcitc.oilmachine.model.PosRecordExample.Criteria;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 
 /**
@@ -67,7 +68,10 @@ public class PosRecordService {
 			if(nozzleno != null){
 				createCriteria.andNznEqualTo(nozzleno);
 			}
-			return posRecordMapper.selectByExample(pre);
+			int offset = 30;
+			int limit = 0;
+			RowBounds rowBounds = new RowBounds(offset, limit);
+			return posRecordMapper.selectByExampleWithRowbounds(pre,rowBounds);
 		}catch(Exception e){
 			throw new PTPECAppException("获取加油机成交记录信息异常："+e.getMessage(),e);
 		}

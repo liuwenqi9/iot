@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Base64编码工具类
@@ -200,9 +201,9 @@ public class Base64 {
 	}
 	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws UnsupportedEncodingException {
 		
-		String imgFilePath ="D:\\测试.jpg";// 待测试图片
+		/*String imgFilePath ="D:\\测试.jpg";// 待测试图片
 		String imageString = Base64.getImageString(imgFilePath);
 		//String zipString = GZipUtil.gzipString(imageString);
 		
@@ -215,6 +216,8 @@ public class Base64 {
 		boolean flag = Base64.generateImage(imageString,path);
 		if(flag){
 			System.out.println("图片生成成功！");
-		}
+		}*/
+		byte[] s = "7D7E404C685EE18208DA907F8D022D23".getBytes("UTF-8");
+		System.out.println(Base64.encode(s));
 	}
 }
