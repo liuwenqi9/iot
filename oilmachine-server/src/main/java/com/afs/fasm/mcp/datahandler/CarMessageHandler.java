@@ -39,6 +39,7 @@ public class CarMessageHandler extends CommonMessageHandler {
 					session.setChannel(ch);
 				}
 			}*/
+			
 			if(session.getReceivedata() != 0){
 				return message;
 			}
