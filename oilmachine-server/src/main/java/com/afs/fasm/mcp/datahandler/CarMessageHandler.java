@@ -17,7 +17,6 @@ import com.pcitc.oilmachine.commons.utils.StringUtils;
 import com.pcitc.oilmachine.service.mobile.CommonService;
 
 public class CarMessageHandler extends CommonMessageHandler {
-	private static Logger log = LogManager.getLogger(CarMessageHandler.class.getName());
 	@Override
 	public AbstractMcpEasyMessage handlerMessage(AbstractMcpEasyMessage message,
 			ChannelHandlerContext ctx) {
@@ -33,13 +32,13 @@ public class CarMessageHandler extends CommonMessageHandler {
 				session.setClientId(String.valueOf(carMessage.getCameraid()));
 				session.setChannel(ch);
 				session.setDeviceTypeCode(Constant.CAMERA_CODE);
-				SessionManager.addSession(String.valueOf(carMessage.getCameraid()), session, ch);
-			}else {
+				SessionManager.addSession(String.valueOf(carMessage.getCameraid()), session, ch.id().asLongText());
+			}/*else {
 				if(session.getChannel() == null || !ch.id().asLongText().equals(session.getChannel().id().asLongText())){
 					log.info("clientid:"+String.valueOf(carMessage.getCameraid())+",channelid:"+ch.id().asLongText());
 					session.setChannel(ch);
 				}
-			}
+			}*/
 			if(session.getReceivedata() != 0){
 				return message;
 			}

@@ -37,6 +37,18 @@ public class SessionManager {
 		}
 	}
 	
+	public static void addSession(String clientId,Session session,String channelid){
+		sessions.put(clientId, session);
+		ChannelIdToClientIdList.put(channelid, clientId);
+		try{
+			for(SessionCreateListenner listenner:createListennerList){
+				listenner.onSessionCreate(session);
+			}
+		}catch(Throwable t){
+			t.printStackTrace();
+		}
+	}
+	
 	public static String getClientIdByChannelId(String channelId){
 		return ChannelIdToClientIdList.get(channelId);
 	}

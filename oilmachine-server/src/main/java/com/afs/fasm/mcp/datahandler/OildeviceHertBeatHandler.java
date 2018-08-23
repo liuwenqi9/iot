@@ -44,6 +44,7 @@ public class OildeviceHertBeatHandler extends CommonMessageHandler {
 		}else{
 			if(session.getChannel() == null || !ch.id().asLongText().equals(session.getChannel().id().asLongText())){
 				session.setChannel(ch);
+				SessionManager.addSession(String.valueOf(odh.getOildeviceid()), session, ch);
 			}
 		}
 		//根据加油机找摄像头,并获取当前摄像头下的所有车牌 
