@@ -3,8 +3,6 @@ package com.afs.fasm.mcp.datahandler;
 import java.util.Date;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import com.afs.base.util.MySpringContextUtil;
 import com.afs.fasm.mcp.message.CarMessage;
@@ -26,19 +24,20 @@ public class CarMessageHandler extends CommonMessageHandler {
 		try {
 			//1:处理摄像头连接
 			Session session = SessionManager.getSession(String.valueOf(carMessage.getCameraid()));
+			
 			if(session == null){
 				session = new Session();
 				session.setLoginTime(new Date());
 				session.setClientId(String.valueOf(carMessage.getCameraid()));
 				session.setChannel(ch);
 				session.setDeviceTypeCode(Constant.CAMERA_CODE);
-				SessionManager.addSession(String.valueOf(carMessage.getCameraid()), session, ch.id().asLongText());
-			}/*else {
+				SessionManager.addSession(String.valueOf(carMessage.getCameraid()), session, ch);
+			}else{
 				if(session.getChannel() == null || !ch.id().asLongText().equals(session.getChannel().id().asLongText())){
-					log.info("clientid:"+String.valueOf(carMessage.getCameraid())+",channelid:"+ch.id().asLongText());
 					session.setChannel(ch);
+					SessionManager.addSession(String.valueOf(carMessage.getCameraid()), session, ch);
 				}
-			}*/
+			}
 			
 			if(session.getReceivedata() != 0){
 				return message;

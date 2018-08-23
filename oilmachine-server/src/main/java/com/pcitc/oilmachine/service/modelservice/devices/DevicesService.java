@@ -137,12 +137,24 @@ public class DevicesService extends BaseService {
 			for (int i = 0; i < selectDevicesPageList.size(); i++) {
 				String devicestypecode = selectDevicesPageList.get(i).getDevicestypecode();
 				//判断摄像头或油机是否连接  session有值并且channel有值不处理，否则状态set为1前台显示失效  
-				if(Constant.CAMERA_CODE.equals(devicestypecode) || Constant.OILMACH_CODE.equals(devicestypecode)){
+				if( Constant.OILMACH_CODE.equals(devicestypecode)){
 					String connid = selectDevicesPageList.get(i).getConnid();
 					Session session = SessionManager.getSession(connid);
 					if(session != null){
 						Channel channel = session.getChannel();
 						if(channel == null ){
+							selectDevicesPageList.get(i).setConnstatus((byte)1);
+						}
+					}else{
+						selectDevicesPageList.get(i).setConnstatus((byte)1);
+					}
+				}else if(Constant.CAMERA_CODE.equals(devicestypecode)){
+					String connid = selectDevicesPageList.get(i).getConnid();
+					Session session = SessionManager.getSession(connid);
+					if(session != null){
+						long datatime = session.getDatetime();
+						long now = System.currentTimeMillis();
+						if(datatime + 360000 <= now){//摄像头连接通道的最后修改时间如果大于30分钟，则认为已失效
 							selectDevicesPageList.get(i).setConnstatus((byte)1);
 						}
 					}else{

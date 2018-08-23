@@ -26,6 +26,7 @@ import com.afs.base.util.MyExceptionUtil;
 import com.afs.tupeasy.base.NettyReceiveMessageService;
 import com.afs.tupeasy.base.NettyReceiveMessageServiceImpl;
 import com.afs.tupeasy.message.AbstractMcpEasyMessage;
+import com.afs.tupeasy.session.SessionManager;
 
 /**
  * Handles a server-side channel.
@@ -41,6 +42,9 @@ public class McpEasyHandler extends SimpleChannelInboundHandler<AbstractMcpEasyM
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
     	log.info("channelActive");
+    	//校验存活状态的channel
+    	/*SessionManager.setChannel(ctx.channel());*/
+    	SessionManager.closeUnActiveChannels();
     }
 
     @Override

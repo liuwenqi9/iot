@@ -2,6 +2,7 @@
 package com.afs.tupeasy.handler;
 
 import com.afs.base.util.MySpringContextUtil;
+import com.afs.fasm.mcp.datahandler.MyReadTimeoutHander;
 import com.afs.tupeasy.encoder.McpServerEncoder;
 
 import io.netty.channel.ChannelHandler;
@@ -22,5 +23,6 @@ public class McpEasyInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast("mcpEasyDecoder", mcpEasyDecoder);
         pipeline.addLast("McpServerEncoder", new McpServerEncoder());
         pipeline.addLast("Myhandler", new McpEasyHandler());
+        pipeline.addLast("MyReadTimeoutHander", new MyReadTimeoutHander(30));
     }
 }

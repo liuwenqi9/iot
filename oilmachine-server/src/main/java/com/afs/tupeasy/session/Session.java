@@ -16,6 +16,7 @@ public class Session
   private transient Channel channel;
   private String deviceTypeCode;//设备类型编码
   private int receivedata = 0;//是否接收数据 0 是 1 否
+  private long datetime;//最近一次接收数据的时间
 
   public void printlnSession()
   {
@@ -83,6 +84,15 @@ public String getDeviceTypeCode() {
 
 public void setDeviceTypeCode(String deviceTypeCode) {
 	this.deviceTypeCode = deviceTypeCode;
+}
+
+
+public long getDatetime() {
+	return datetime;
+}
+
+public void setDatetime(long datetime) {
+	this.datetime = datetime;
 }
 
 }
